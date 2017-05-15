@@ -57,6 +57,11 @@ body {
   border-radius: 50%;
 }
 
+.clicker:active {
+  transition: .01s;
+  transform:scale(1.05);
+}
+
 .counter {
   font-size: 1.5em;
   text-align: center;

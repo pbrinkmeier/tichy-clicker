@@ -1,7 +1,9 @@
 'use strict';
 
 var availableSystems = require('../../resources/systems.json');
+var availableUpgrades = require('../../resources/upgrades.json');
 var calculateCost = require('./calculate-cost.js');
+var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
 var dispatcher = require('./dispatcher.js');
 var getSystemGains = require('./get-system-gains.js');
 
@@ -32,12 +34,23 @@ module.exports = {
 			return system.key === action.key;
 		});
 		var cost = calculateCost(system, state.systems[action.key]);
-		console.log(cost);
 		if (cost > state.counter) {
 			return;
 		}
 
 		state.counter -= cost;
 		state.systems[action.key] += 1;
-	}
+	},
+  buyUpgrade: function (action, state) {
+    var upgrade = availableUpgrades.upgrades.find(function (upgrade) {
+      return upgrade.key === action.key;
+    });
+    var cost = calculateUpgradeCost(upgrade, state.upgrades[upgrade.key]);
+    if (cost > state.counter) {
+      return;
+    }
+
+    state.counter -= cost;
+    state.upgrades[upgrade.key] += 1;
+  }
 };

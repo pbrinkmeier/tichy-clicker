@@ -5,6 +5,7 @@ var h = require('virtual-dom/h');
 var availableSystems = require('../../resources/systems.json');
 var availableUpgrades = require('../../resources/upgrades.json');
 var calculateCost = require('./calculate-cost.js');
+var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
 var dispatcher = require('./dispatcher.js');
 var getSystemGains = require('./get-system-gains.js');
 var roundPlaces = require('./round-places.js');
@@ -19,7 +20,7 @@ module.exports = function render (state) {
 				var count = state.systems[system.key];
 				return h('li.system', [
 					h('div.system-name', system.displayText + ' (' + count + ')'),
-					h('button.system-buy', {
+          h('button.system-buy', {
             onclick: function () {
               dispatcher.dispatch({
                 type: 'buySystem',
@@ -41,9 +42,18 @@ module.exports = function render (state) {
     ]),
 		h('div.upgrades', [
       h('ul.upgrades-list', upgrades.map(function (upgrade) {
+        var count = state.upgrades[upgrade.key];
+
         return h('li.upgrade', [
-          h('div.upgrade-name', upgrade.displayText),
-          h('button.upgrade-buy', 'Develop')
+          h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
+          h('button.upgrade-buy', {
+            onclick: function () {
+              dispatcher.dispatch({
+                type: 'buyUpgrade',
+                key: upgrade.key
+              });
+            }
+          }, 'Develop (' + calculateUpgradeCost(upgrade, count) + ')')
         ]);
       }))
     ])
