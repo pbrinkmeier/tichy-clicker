@@ -9,13 +9,6 @@
 			"gain": 1
 		},
 		{
-			"key": "eclipse",
-			"displayText": "Install Eclipse",
-			"initialCost": 20,
-			"costFactor": 1.05,
-			"gain": 1
-		},
-		{
 			"key": "uml",
 			"displayText": "UML diagram",
 			"initialCost": 100,
@@ -28,13 +21,6 @@
 			"initialCost": 150,
 			"costFactor": 1.5,
 			"gain": 20
-		},
-		{
-			"key": "new",
-			"displayText": "Make a specification",
-			"initialCost": 225,
-			"costFactor": 2,
-			"gain": 45
 		},
 		{
 			"key": "jmjrst",
