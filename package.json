@@ -1,0 +1,19 @@
+{
+  "name": "flux-todo",
+  "version": "1.0.0",
+  "description": "A flux todo apo",
+  "main": "src/client/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pbrinkmeier/flux-todo.git"
+  },
+  "author": "Paul Brinkmeier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pbrinkmeier/flux-todo/issues"
+  },
+  "homepage": "https://github.com/pbrinkmeier/flux-todo#readme"
+}
