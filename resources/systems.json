@@ -20,7 +20,28 @@
 			"displayText": "UML diagram",
 			"initialCost": 100,
 			"costFactor": 1.3,
-			"gain": 5
+			"gain": 13
+		},
+		{
+			"key": "java-update",
+			"displayText": "Update Java",
+			"initialCost": 150,
+			"costFactor": 1.5,
+			"gain": 20
+		},
+		{
+			"key": "new",
+			"displayText": "Make a specification",
+			"initialCost": 225,
+			"costFactor": 2,
+			"gain": 45
+		},
+		{
+			"key": "jmjrst",
+			"displayText": "New JMJRST version",
+			"initialCost": 42000,
+			"costFactor": 1.3,
+			"gain": 3333
 		}
 	]
 }
