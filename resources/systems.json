@@ -1,0 +1,26 @@
+{
+	"interval": 0.1,
+	"systems": [
+		{
+			"key": "maven",
+			"displayText": "Install Maven",
+			"initialCost": 10,
+			"costFactor": 1.1,
+			"gain": 1
+		},
+		{
+			"key": "eclipse",
+			"displayText": "Install Eclipse",
+			"initialCost": 20,
+			"costFactor": 1.05,
+			"gain": 1
+		},
+		{
+			"key": "uml",
+			"displayText": "UML diagram",
+			"initialCost": 100,
+			"costFactor": 1.3,
+			"gain": 5
+		}
+	]
+}
