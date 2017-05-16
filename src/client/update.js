@@ -15,6 +15,14 @@ module.exports = {
         type: 'interval'
       });
     }, 1000 * availableSystems.interval);
+
+    window.addEventListener('keyup', function (e) {
+      if (e.keyCode === 32) {
+        dispatcher.dispatch({
+          type: 'increment'
+        });
+      }
+    });
   },
   increment: function (action, state) {
     var gains = getUpgradeGains(availableUpgrades.upgrades, state.upgrades);

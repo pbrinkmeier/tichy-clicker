@@ -22,16 +22,20 @@ module.exports = function render (state) {
         h('h2.section-header', 'Systems'),
         h('ul.systems-list', systems.map(function (system) {
           var count = state.systems[system.key];
+          var cost = calculateCost(system, count);
+
           return h('li.system', [
             h('div.system-name', system.displayText + ' (' + count + ')'),
+            h('div.system-desc', 'Generates ' +  system.gain + ' commits per second'),
             h('button.system-buy', {
               onclick: function () {
                 dispatcher.dispatch({
                   type: 'buySystem',
                   key: system.key
                 });
-              }
-            }, 'Buy (' + calculateCost(system, count) + 'cm.)')
+              },
+              disabled: cost > state.counter
+            }, 'Buy (' + cost + 'cm.)')
           ]);
         }))
       ]),
@@ -41,9 +45,9 @@ module.exports = function render (state) {
             dispatcher.dispatch({ type: 'increment' });
           }
         }),
-        h('div.counter', String(roundPlaces(1, state.counter)) + ' commits'),
+        h('div.counter', String(roundPlaces(0, state.counter)) + ' commits'),
         h('div.system-gain',
-          getSystemGains(systems, state.systems, 1) + '/s ' +
+          roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
           getUpgradeGains(upgrades, state.upgrades) + '/click'
         )
       ]),
@@ -51,17 +55,20 @@ module.exports = function render (state) {
         h('h2.section-header', 'Skills'),
         h('ul.upgrades-list', upgrades.map(function (upgrade) {
           var count = state.upgrades[upgrade.key];
+          var cost = calculateUpgradeCost(upgrade, count);
 
           return h('li.upgrade', [
             h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
+            h('div.upgrade-desc', 'Generates ' + upgrade.gain + ' commit(s) per click'),
             h('button.upgrade-buy', {
               onclick: function () {
                 dispatcher.dispatch({
                   type: 'buyUpgrade',
                   key: upgrade.key
                 });
-              }
-            }, 'Develop (' + calculateUpgradeCost(upgrade, count) + 'cm.)')
+              },
+              disabled: cost > state.counter
+            }, 'Develop (' + cost + 'cm.)')
           ]);
         }))
       ])

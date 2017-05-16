@@ -47,6 +47,11 @@ body {
   border-top: 1px solid #ccc;
 }
 
+.system-desc,
+.upgrade-desc {
+  font-size: .6em;
+}
+
 .system-buy,
 .upgrade-buy {
   box-sizing: border-box;
@@ -54,7 +59,7 @@ body {
 }
 
 .clickarea {
-  flex: 2;
+  flex: 1;
   border-width: 0 1px;
   border-style: solid;
   border-color: #aaa;
@@ -64,7 +69,8 @@ body {
   margin: .5em auto;
   width: 300px;
   height: 300px;
-  background-image: url('./resources/ma_walter_tichy.png');
+  background-image: url('./resources/tichy_swt.png');
+  background-position: center center;
   background-size: cover;
   border: .25em solid black;
   border-radius: 50%;
@@ -72,7 +78,7 @@ body {
 
 .clicker:active {
   border-color: red;
-  background-image: url('./resources/ma_walter_tichy_excited.png');
+  // background-image: url('./resources/ma_walter_tichy_excited.png');
   transform: translateY(.25em);
 }
 
