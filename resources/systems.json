@@ -1,40 +1,40 @@
 {
-  "interval": 0.1,
+  "interval": 0.05,
   "systems": [
     {
       "key": "maven",
       "displayText": "Install Maven",
       "initialCost": 10,
       "costFactor": 1.1,
-      "gain": 1
+      "gain": 0.2
     },
     {
       "key": "uml",
       "displayText": "UML diagram",
       "initialCost": 100,
       "costFactor": 1.3,
-      "gain": 13
+      "gain": 1
     },
     {
       "key": "java-update",
       "displayText": "Update Java",
-      "initialCost": 150,
+      "initialCost": 1330,
       "costFactor": 1.5,
-      "gain": 40
+      "gain": 5
     },
     {
       "key": "jmjrst",
       "displayText": "release new JMJRST version",
       "initialCost": 33000,
       "costFactor": 1.8,
-      "gain": 1200
+      "gain": 125
     },
     {
       "key": "spec",
       "displayText": "Write a specification (for a specification)",
       "initialCost": 420000,
       "costFactor": 1.1,
-      "gain": 8000
+      "gain": 800
     }
   ]
 }
