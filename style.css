@@ -7,14 +7,27 @@ body {
 }
 
 .container {
-  display: flex;
   margin: 0 auto;
   width: 960px;
+}
+
+.app-title {
+  transform-origin: 0 0;
+  transform: rotate(-10deg) translateY(.5em);
+}
+
+.cols {
+  display: flex;
   border: 1px solid #aaa;
 }
 
 .systems {
   flex: 1;
+}
+
+.section-header {
+  margin: .5em 0;
+  text-align: center;
 }
 
 .systems-list,
@@ -31,7 +44,7 @@ body {
 
 .system + .system,
 .upgrade + .upgrade {
-  border-top: 1px solid #aaa;
+  border-top: 1px solid #ccc;
 }
 
 .system-buy,
@@ -53,13 +66,12 @@ body {
   height: 300px;
   background-image: url('./resources/ma_walter_tichy.png');
   background-size: cover;
-  border: 2px solid black;
+  border: .25em solid black;
   border-radius: 50%;
 }
 
 .clicker:active {
-  transition: .01s;
-  transform:scale(1.05);
+  border-color: red;
 }
 
 .counter {
