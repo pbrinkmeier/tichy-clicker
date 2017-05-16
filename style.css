@@ -8,7 +8,7 @@ body {
 
 .container {
   margin: 0 auto;
-  width: 960px;
+  width: 90%;
 }
 
 .app-title {
@@ -72,6 +72,8 @@ body {
 
 .clicker:active {
   border-color: red;
+  background-image: url('./resources/ma_walter_tichy_excited.png');
+  transform: translateY(.25em);
 }
 
 .counter {

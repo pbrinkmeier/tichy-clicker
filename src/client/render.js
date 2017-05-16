@@ -39,9 +39,6 @@ module.exports = function render (state) {
         h('div.clicker', {
           onclick: function () {
             dispatcher.dispatch({ type: 'increment' });
-          },
-          style: {
-            transform: 'rotate(' + state.counter / 2 + 'deg)'
           }
         }),
         h('div.counter', String(roundPlaces(1, state.counter)) + ' commits'),

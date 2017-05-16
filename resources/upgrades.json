@@ -13,6 +13,20 @@
       "initialCost": 310,
       "costFactor": 1.1,
       "gain": 5
+    },
+    {
+      "key": "coverage",
+      "displayText": "Get 110% code coverage",
+      "initialCost": 1100,
+      "costFactor": 1.8,
+      "gain": 25
+    },
+    {
+      "key": "suit",
+      "displayText": "Wear a fancy suit",
+      "initialCost": 25000,
+      "costFactor": 1.5,
+      "gain": 450
     }
   ]
 }

@@ -1,33 +1,40 @@
 {
-	"interval": 0.1,
-	"systems": [
-		{
-			"key": "maven",
-			"displayText": "Install Maven",
-			"initialCost": 10,
-			"costFactor": 1.1,
-			"gain": 1
-		},
-		{
-			"key": "uml",
-			"displayText": "UML diagram",
-			"initialCost": 100,
-			"costFactor": 1.3,
-			"gain": 13
-		},
-		{
-			"key": "java-update",
-			"displayText": "Update Java",
-			"initialCost": 150,
-			"costFactor": 1.5,
-			"gain": 20
-		},
-		{
-			"key": "jmjrst",
-			"displayText": "New JMJRST version",
-			"initialCost": 42000,
-			"costFactor": 1.3,
-			"gain": 3333
-		}
-	]
+  "interval": 0.1,
+  "systems": [
+    {
+      "key": "maven",
+      "displayText": "Install Maven",
+      "initialCost": 10,
+      "costFactor": 1.1,
+      "gain": 1
+    },
+    {
+      "key": "uml",
+      "displayText": "UML diagram",
+      "initialCost": 100,
+      "costFactor": 1.3,
+      "gain": 13
+    },
+    {
+      "key": "java-update",
+      "displayText": "Update Java",
+      "initialCost": 150,
+      "costFactor": 1.5,
+      "gain": 40
+    },
+    {
+      "key": "jmjrst",
+      "displayText": "release new JMJRST version",
+      "initialCost": 33000,
+      "costFactor": 1.8,
+      "gain": 1200
+    },
+    {
+      "key": "spec",
+      "displayText": "Write a specification (for a specification)",
+      "initialCost": 420000,
+      "costFactor": 1.1,
+      "gain": 8000
+    }
+  ]
 }
