@@ -35,7 +35,10 @@ module.exports = function render (state) {
             h('div.system-name', system.displayText + ' (' + count + ')'),
             h('div.system-desc', 'Generates ' +  system.gain + ' commits per second'),
             h('button.system-buy', {
-              onclick: function () {
+              onclick: function (e) {
+                // Unfocus the button, so that the spacebar does not yield more buys
+                e.target.blur();
+
                 dispatcher.dispatch({
                   type: 'buySystem',
                   key: system.key
@@ -56,7 +59,8 @@ module.exports = function render (state) {
         h('div.system-gain',
           roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
           getUpgradeGains(upgrades, state.upgrades) + '/click'
-        )
+        ),
+        h('p.section-intro', 'Instead of clicking the picture, you can use the spacebar')
       ]),
       h('div.upgrades', [
         h('h2.section-header', 'Skills'),
@@ -69,7 +73,10 @@ module.exports = function render (state) {
             h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
             h('div.upgrade-desc', 'Generates ' + upgrade.gain + ' commit(s) per click'),
             h('button.upgrade-buy', {
-              onclick: function () {
+              onclick: function (e) {
+                // Unfocus the button, so that the spacebar does not yield more buys
+                e.target.blur();
+
                 dispatcher.dispatch({
                   type: 'buyUpgrade',
                   key: upgrade.key
