@@ -11,17 +11,15 @@ var update = require('./update.js');
 
 var state = init();
 
-window.state = state;
-
 dispatcher.register(function (action) {
-	// console.log(action);
+  // console.log(action);
 
-	if (action.type in update) {
-		update[action.type](action, state);
-		rerender();
-	} else {
-		console.log('Unrecognized action', action);
-	}
+  if (action.type in update) {
+    update[action.type](action, state);
+    rerender();
+  } else {
+    console.log('Unrecognized action', action);
+  }
 });
 
 var tree = render(state);
@@ -31,8 +29,8 @@ document.body.appendChild(rootNode);
 dispatcher.dispatch({ type: 'init' });
 
 function rerender () {
-	var newTree = render(state);
-	var patches = diff(tree, newTree);
-	rootNode = patch(rootNode, patches);
-	tree = newTree;
+  var newTree = render(state);
+  var patches = diff(tree, newTree);
+  rootNode = patch(rootNode, patches);
+  tree = newTree;
 }
