@@ -8,6 +8,9 @@ var dispatcher = require('./dispatcher.js');
 var getSystemGains = require('./get-system-gains.js');
 var getUpgradeGains = require('./get-upgrade-gains.js');
 
+var KEYCODE_SPACEBAR = 32;
+var KEYCODE_ENTER = 13;
+
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
@@ -17,7 +20,7 @@ module.exports = {
     }, 1000 * availableSystems.interval);
 
     window.addEventListener('keyup', function (e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
         dispatcher.dispatch({
           type: 'increment'
         });

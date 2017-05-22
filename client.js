@@ -1833,17 +1833,15 @@ var update = require('./update.js');
 
 var state = init();
 
-window.state = state;
-
 dispatcher.register(function (action) {
-	// console.log(action);
+  // console.log(action);
 
-	if (action.type in update) {
-		update[action.type](action, state);
-		rerender();
-	} else {
-		console.log('Unrecognized action', action);
-	}
+  if (action.type in update) {
+    update[action.type](action, state);
+    rerender();
+  } else {
+    console.log('Unrecognized action', action);
+  }
 });
 
 var tree = render(state);
@@ -1853,10 +1851,10 @@ document.body.appendChild(rootNode);
 dispatcher.dispatch({ type: 'init' });
 
 function rerender () {
-	var newTree = render(state);
-	var patches = diff(tree, newTree);
-	rootNode = patch(rootNode, patches);
-	tree = newTree;
+  var newTree = render(state);
+  var patches = diff(tree, newTree);
+  rootNode = patch(rootNode, patches);
+  tree = newTree;
 }
 
 },{"./dispatcher.js":39,"./init.js":42,"./render.js":44,"./update.js":46,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],44:[function(require,module,exports){
@@ -1971,6 +1969,9 @@ var dispatcher = require('./dispatcher.js');
 var getSystemGains = require('./get-system-gains.js');
 var getUpgradeGains = require('./get-upgrade-gains.js');
 
+var KEYCODE_SPACEBAR = 32;
+var KEYCODE_ENTER = 13;
+
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
@@ -1980,7 +1981,7 @@ module.exports = {
     }, 1000 * availableSystems.interval);
 
     window.addEventListener('keyup', function (e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
         dispatcher.dispatch({
           type: 'increment'
         });
