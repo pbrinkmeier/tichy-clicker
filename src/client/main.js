@@ -11,8 +11,10 @@ var update = require('./update.js');
 
 var state = init();
 
+window.state = state;
+
 dispatcher.register(function (action) {
-	console.log(action);
+	// console.log(action);
 
 	if (action.type in update) {
 		update[action.type](action, state);
