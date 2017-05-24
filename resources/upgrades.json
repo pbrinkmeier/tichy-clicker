@@ -30,7 +30,7 @@
     },
     {
       "key": "npp",
-      "displayText": "Go WOLOLO on a Notpad++ user",
+      "displayText": "Go WOLOLO on a Notepad++ user",
       "initialCost": 333000,
       "costFactor": 1.4,
       "gain": 800
