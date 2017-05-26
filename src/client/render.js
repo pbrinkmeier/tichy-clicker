@@ -60,7 +60,7 @@ module.exports = function render (state) {
           roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
           getUpgradeGains(upgrades, state.upgrades) + '/click'
         ),
-        h('p.section-intro', 'Instead of clicking the picture, you can use the spacebar')
+        h('p.section-intro.spacebar-hint', 'Instead of clicking the picture, you can use the spacebar')
       ]),
       h('div.upgrades', [
         h('h2.section-header', 'Skills'),
