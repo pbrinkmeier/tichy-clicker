@@ -3,6 +3,7 @@ html {
 }
 
 body {
+  margin: 0;
   font-family: Montserrat, sans-serif;
 }
 
@@ -97,3 +98,50 @@ body {
 .upgrades {
   flex: 1;
 }
+
+@media (max-width: 600px) {
+  .container {
+    margin: 0;
+    width: auto;
+  }
+
+  .app-title {
+    position: fixed;
+    top: 0;
+    margin-top: 0;
+    width: 100%;
+    text-align: center;
+    background-color: black;
+  }
+
+  .cols {
+    flex-direction: column;
+    margin-top: 2.5em;
+    border: none;
+  }
+
+  .clickarea {
+    order: 1;
+    border: none;
+  }
+
+  .systems {
+    order: 2;
+  }
+
+  .upgrades {
+    order: 3;
+  }
+
+  .clicker {
+    width: 200px;
+    height: 200px;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  .spacebar-hint {
+    display: none;
+  }
+}
+
