@@ -1,0 +1,8 @@
+Order allow,deny
+Allow from all
+Require all granted
+
+# Deny access to sub directory
+<Files .git/*>
+    deny from all
+</Files>
