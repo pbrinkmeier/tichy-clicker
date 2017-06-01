@@ -1861,6 +1861,7 @@ function rerender () {
 'use strict';
 
 var h = require('virtual-dom/h');
+var clickerView = require('./view/clicker-view.js');
 var rainbowSpans = require('./view/rainbow-spans.js');
 
 module.exports = function render (state) {
@@ -1870,7 +1871,7 @@ module.exports = function render (state) {
         h('h1.topbar-title', [
           rainbowSpans('Tichy-Clicker')
         ]),
-        h('p.topbar-links', [
+        h('div.topbar-links', [
           h('a.topbar-link', {
             href: 'https://github.com/pbrinkmeier/tichy-clicker',
             // The target attribute sets where to open the link, in this case in a new tab
@@ -1881,11 +1882,11 @@ module.exports = function render (state) {
         ])
       ])
     ]),
-    h('section.main', [])
+    clickerView(state)
   ]);
 };
 
-},{"./view/rainbow-spans.js":46,"virtual-dom/h":10}],45:[function(require,module,exports){
+},{"./view/clicker-view.js":46,"./view/rainbow-spans.js":47,"virtual-dom/h":10}],45:[function(require,module,exports){
 'use strict';
 
 var availableSystems = require('../../resources/systems.json');
@@ -1950,6 +1951,33 @@ module.exports = {
 };
 
 },{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}],46:[function(require,module,exports){
+'use strict';
+
+var h = require('virtual-dom/h');
+
+module.exports = function clickerView (state) {
+  // Convention: create a variable for every value that the view depends on
+  var counter = null;
+  var incomePerSecond = null;
+  var incomePerClick = null;
+
+  return h('section.main.clicker', [
+    h('div.container', [
+      h('div.clicker-clickarea', []),
+      h('div.clicker-counter', String(counter)),
+      h('div.clicker-incomes', [
+        h('span.clicker-income', String(incomePerSecond) + '/s'),
+        h('span.clicker-income', String(incomePerClick) + '/click')
+      ]),
+      h('div.clicker-controls', [
+        h('button.clicker-controls-shopbutton', 'Buy systems'),
+        h('button.clicker-controls-shopbutton', 'Develop skills')
+      ])
+    ])
+  ]);
+};
+
+},{"virtual-dom/h":10}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');

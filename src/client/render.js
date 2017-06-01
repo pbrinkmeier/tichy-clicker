@@ -1,6 +1,7 @@
 'use strict';
 
 var h = require('virtual-dom/h');
+var clickerView = require('./view/clicker-view.js');
 var rainbowSpans = require('./view/rainbow-spans.js');
 
 module.exports = function render (state) {
@@ -10,7 +11,7 @@ module.exports = function render (state) {
         h('h1.topbar-title', [
           rainbowSpans('Tichy-Clicker')
         ]),
-        h('p.topbar-links', [
+        h('div.topbar-links', [
           h('a.topbar-link', {
             href: 'https://github.com/pbrinkmeier/tichy-clicker',
             // The target attribute sets where to open the link, in this case in a new tab
@@ -21,6 +22,6 @@ module.exports = function render (state) {
         ])
       ])
     ]),
-    h('section.main', [])
+    clickerView(state)
   ]);
 };
