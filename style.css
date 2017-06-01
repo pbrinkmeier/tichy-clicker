@@ -69,7 +69,7 @@ body {
   /* Make a circle */
   border-radius: 50%;
   /* Images must be 300x300 */
-  background-image: url('./resources/tichy_swt.png');
+  background-image: url('./resources/tichy_swt.jpg');
   background-size: 100% 100%;
 }
 
