@@ -1857,108 +1857,35 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":39,"./init.js":42,"./render.js":44,"./update.js":46,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],44:[function(require,module,exports){
+},{"./dispatcher.js":39,"./init.js":42,"./render.js":44,"./update.js":45,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],44:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
-var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
-var roundPlaces = require('./round-places.js');
-
-var systems = availableSystems.systems;
-var upgrades = availableUpgrades.upgrades;
+var rainbowSpans = require('./view/rainbow-spans.js');
 
 module.exports = function render (state) {
-  return h('div.container', [
-    h('h1.app-title', 'Tichy-Clicker'.split('').map(function (character, index, array) {
-      return h('span', {
-        style: {
-          color: 'hsl(' + (index / array.length) * 360 + ',100%,50%)'
-        },
-      }, character);
-    })),
-    h('div.cols', [
-      h('div.systems', [
-        h('h2.section-header', 'Systems'),
-        h('p.section-intro', 'Generate commits over time'),
-        h('ul.systems-list', systems.map(function (system) {
-          var count = state.systems[system.key];
-          var cost = calculateCost(system, count);
-
-          return h('li.system', [
-            h('div.system-name', system.displayText + ' (' + count + ')'),
-            h('div.system-desc', 'Generates ' +  system.gain + ' commits per second'),
-            h('button.system-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
-
-                dispatcher.dispatch({
-                  type: 'buySystem',
-                  key: system.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Buy (' + cost + 'cm.)')
-          ]);
-        }))
-      ]),
-      h('div.clickarea', [
-        h('div.clicker', {
-          onclick: function () {
-            dispatcher.dispatch({ type: 'increment' });
-          }
-        }),
-        h('div.counter', String(roundPlaces(0, state.counter)) + ' commits'),
-        h('div.system-gain',
-          roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
-          getUpgradeGains(upgrades, state.upgrades) + '/click'
-        ),
-        h('p.section-intro.spacebar-hint', 'Instead of clicking the picture, you can use the spacebar')
-      ]),
-      h('div.upgrades', [
-        h('h2.section-header', 'Skills'),
-        h('p.section-intro', 'Generate more commits per click'),
-        h('ul.upgrades-list', upgrades.map(function (upgrade) {
-          var count = state.upgrades[upgrade.key];
-          var cost = calculateUpgradeCost(upgrade, count);
-
-          return h('li.upgrade', [
-            h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
-            h('div.upgrade-desc', 'Generates ' + upgrade.gain + ' commit(s) per click'),
-            h('button.upgrade-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
-
-                dispatcher.dispatch({
-                  type: 'buyUpgrade',
-                  key: upgrade.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Develop (' + cost + 'cm.)')
-          ]);
-        }))
+  return h('div.tichy-clicker', [
+    h('section.topbar', [
+      h('div.container', [
+        h('h1.topbar-title', [
+          rainbowSpans('Tichy-Clicker')
+        ]),
+        h('p.topbar-links', [
+          h('a.topbar-link', {
+            href: 'https://github.com/pbrinkmeier/tichy-clicker',
+            // The target attribute sets where to open the link, in this case in a new tab
+            target: '_blank'
+          }, 'GitHub'),
+          h('span.topbar-link', 'How to play'),
+          h('span.topbar-link', 'About')
+        ])
       ])
-    ])
+    ]),
+    h('section.main', [])
   ]);
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41,"./round-places.js":45,"virtual-dom/h":10}],45:[function(require,module,exports){
-'use strict';
-
-module.exports = function roundPlaces (places, x) {
-  return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
-};
-
-},{}],46:[function(require,module,exports){
+},{"./view/rainbow-spans.js":46,"virtual-dom/h":10}],45:[function(require,module,exports){
 'use strict';
 
 var availableSystems = require('../../resources/systems.json');
@@ -2022,4 +1949,25 @@ module.exports = {
   }
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}]},{},[43]);
+},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}],46:[function(require,module,exports){
+'use strict';
+
+var h = require('virtual-dom/h');
+
+module.exports = function rainbowSpans (text) {
+  var length = text.length;
+
+  return (
+    text.split('')
+    .map(function (character, index) {
+      var hueValue = 360 * (index / length);
+      return h('span', {
+        style: {
+          color: 'hsl(' + String(hueValue) + ',100%,50%)'
+        }
+      }, character);
+    })
+  );
+};
+
+},{"virtual-dom/h":10}]},{},[43]);
