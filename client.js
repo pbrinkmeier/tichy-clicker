@@ -1861,8 +1861,8 @@ function rerender () {
 'use strict';
 
 var h = require('virtual-dom/h');
-var clickerView = require('./view/clicker-view.js');
 var rainbowSpans = require('./view/rainbow-spans.js');
+var shopView = require('./view/shop-view.js');
 
 module.exports = function render (state) {
   return h('div.tichy-clicker', [
@@ -1882,11 +1882,11 @@ module.exports = function render (state) {
         ])
       ])
     ]),
-    clickerView(state)
+    shopView(state)
   ]);
 };
 
-},{"./view/clicker-view.js":46,"./view/rainbow-spans.js":47,"virtual-dom/h":10}],45:[function(require,module,exports){
+},{"./view/rainbow-spans.js":47,"./view/shop-view.js":48,"virtual-dom/h":10}],45:[function(require,module,exports){
 'use strict';
 
 var availableSystems = require('../../resources/systems.json');
@@ -1953,31 +1953,11 @@ module.exports = {
 },{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}],46:[function(require,module,exports){
 'use strict';
 
-var h = require('virtual-dom/h');
-
-module.exports = function clickerView (state) {
-  // Convention: create a variable for every value that the view depends on
-  var counter = null;
-  var incomePerSecond = null;
-  var incomePerClick = null;
-
-  return h('section.main.clicker', [
-    h('div.container', [
-      h('div.clicker-clickarea', []),
-      h('div.clicker-counter', String(counter)),
-      h('div.clicker-incomes', [
-        h('span.clicker-income', String(incomePerSecond) + '/s'),
-        h('span.clicker-income', String(incomePerClick) + '/click')
-      ]),
-      h('div.clicker-controls', [
-        h('button.clicker-controls-shopbutton', 'Buy systems'),
-        h('button.clicker-controls-shopbutton', 'Develop skills')
-      ])
-    ])
-  ]);
+module.exports = function calculateItemCost (item, alreadyBought) {
+  return null;
 };
 
-},{"virtual-dom/h":10}],47:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -1998,4 +1978,71 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}]},{},[43]);
+},{"virtual-dom/h":10}],48:[function(require,module,exports){
+'use strict';
+
+var calculateItemCost = require('../util/calculate-item-cost.js');
+var h = require('virtual-dom/h');
+
+module.exports = function shopView (state) {
+  var shopName = 'systems';
+  var shop = {
+    title: 'Systems',
+    description: 'Generate commits over time',
+    items: [
+      {
+        key: 'maven',
+        name: 'Install Maven',
+        description: 'Generates 0.2 commits per second',
+        initialCost: 10,
+        costFactor: 1.1,
+        income: 0.2
+      },
+      {
+        key: 'uml',
+        name: 'Draw an UML diagram',
+        description: 'Generates 1 commit per second',
+        initialCost: 100,
+        costFactor: 1.2,
+        income: 1
+      },
+      {
+        key: 'test',
+        name: 'Just a test item',
+        description: 'Lorem ipsum dolor sit amet',
+        initialCost: 42,
+        costFactor: 4.2,
+        income: 42
+      }
+    ]
+  };
+  var bought = {
+    maven: 6,
+    uml: 2,
+    test: 42
+  };
+  var counter = null;
+
+  return h('section.main.shop', [
+    h('div.container', [
+      h('div.shop-menu', [
+        h('button.shop-menu-button', 'Back'),
+        h('div.shop-menu-info', counter + ' commits')
+      ]),
+      h('h2.shop-title', shop.title),
+      h('div.shop-description', shop.description),
+      h('ul.shop-items', shop.items.map(function (item) {
+        var alreadyBought = bought[item.key];
+        var cost = calculateItemCost(item, alreadyBought);
+
+        return h('li.shop-item', [
+          h('div.shop-item-name', item.name + ' (' + alreadyBought + ')'),
+          h('div.shop-item-description', item.description),
+          h('button.shop-item-buy', 'Buy (' + String(cost) + ' commits)')
+        ]);
+      }))
+    ])
+  ]);
+};
+
+},{"../util/calculate-item-cost.js":46,"virtual-dom/h":10}]},{},[43]);

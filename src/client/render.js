@@ -1,8 +1,8 @@
 'use strict';
 
 var h = require('virtual-dom/h');
-var clickerView = require('./view/clicker-view.js');
 var rainbowSpans = require('./view/rainbow-spans.js');
+var shopView = require('./view/shop-view.js');
 
 module.exports = function render (state) {
   return h('div.tichy-clicker', [
@@ -22,6 +22,6 @@ module.exports = function render (state) {
         ])
       ])
     ]),
-    clickerView(state)
+    shopView(state)
   ]);
 };
