@@ -171,3 +171,17 @@ body {
   margin-top: .5em;
   width: 100%;
 }
+
+/* The main element on text pages */
+.text {
+}
+
+/* The title element */
+.text-title {
+  text-align: center;
+}
+
+/* The text content */
+.text-content {
+  line-height: 1.5em;
+}

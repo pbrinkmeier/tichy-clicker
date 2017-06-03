@@ -2,7 +2,7 @@
 
 var h = require('virtual-dom/h');
 var rainbowSpans = require('./view/rainbow-spans.js');
-var shopView = require('./view/shop-view.js');
+var textView = require('./view/text-view.js');
 
 module.exports = function render (state) {
   return h('div.tichy-clicker', [
@@ -22,6 +22,6 @@ module.exports = function render (state) {
         ])
       ])
     ]),
-    shopView(state)
+    textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!')
   ]);
 };
