@@ -1694,41 +1694,6 @@ module.exports={
 },{}],36:[function(require,module,exports){
 module.exports={
   "upgrades": [
-    {
-      "key": "git-article",
-      "displayText": "Read Git article",
-      "initialCost": 100,
-      "costFactor": 1.4,
-      "gain": 1
-    },
-    {
-      "key": "oop",
-      "displayText": "Become OOP guru",
-      "initialCost": 1500,
-      "costFactor": 1.1,
-      "gain": 5
-    },
-    {
-      "key": "coverage",
-      "displayText": "Get 110% code coverage",
-      "initialCost": 20000,
-      "costFactor": 1.8,
-      "gain": 25
-    },
-    {
-      "key": "suit",
-      "displayText": "Wear a fancy suit",
-      "initialCost": 45000,
-      "costFactor": 1.4,
-      "gain": 230
-    },
-    {
-      "key": "npp",
-      "displayText": "Go WOLOLO on a Notepad++ user",
-      "initialCost": 333000,
-      "costFactor": 1.4,
-      "gain": 800
-    }
   ]
 }
 
