@@ -1,147 +1,187 @@
+@charset "UTF-8";
+
 html {
 	font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-family: 'Comic Sans MS', Montserrat, sans-serif;
+  font-family: 'Comic Sans MS', sans-serif;
 }
 
+/* Helper class that centers a box */
 .container {
   margin: 0 auto;
-  width: 90%;
+  width: 720px;
 }
 
-.app-title {
+/* Top part of the site that stays the same across views */
+.topbar {
+  border-bottom: 1px solid;
 }
 
-.cols {
-  display: flex;
-  border: 1px solid #aaa;
+/* Add some white space to the page */
+.topbar > .container {
+  padding: .5em 0;
 }
 
-.systems {
-  flex: 1;
-}
-
-.section-header {
-  margin: .5em 0;
-  text-align: center;
-}
-
-.section-intro {
-  font-size: .6em;
-  text-align: center;
-}
-
-.systems-list,
-.upgrades-list {
+/* The app's title */
+.topbar-title {
   margin: 0;
-  padding: 0;
+  font-size: 2em;
+  text-align: center;
 }
 
-.system,
-.upgrade {
-  padding: .5em;
-  list-style: none;
+/* Links in the topbar (not necessarily <a> elements) */
+.topbar-links {
+  margin-top: 1em;
+  text-align: center;
 }
 
-.system + .system,
-.upgrade + .upgrade {
-  border-top: 1px solid #ccc;
+.topbar-link,
+.topbar-link:active,
+.topbar-link:visited {
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.system-desc,
-.upgrade-desc {
-  font-size: .6em;
+/* "before every topbar-link *immediately* after a topbar-link" */
+.topbar-link + .topbar-link:before {
+  content: ' · ';
 }
 
-.system-buy,
-.upgrade-buy {
-  box-sizing: border-box;
-  width: 100%;
+/* Add some white space to the page */
+.main > .container {
+  padding: .5em 0;
 }
 
-.clickarea {
-  flex: 1;
-  border-width: 0 1px;
-  border-style: solid;
-  border-color: #aaa;
-}
-
+/* .main element on the clicker page */
 .clicker {
-  margin: .5em auto;
+}
+
+/* The area where the player is supposed to click all the time */
+.clicker-clickarea {
+  margin: 0 auto;
   width: 300px;
   height: 300px;
-  background-image: url('./resources/tichy_swt.png');
-  background-position: center center;
-  background-size: cover;
-  border: .25em solid black;
+  border: 2px solid;
+  /* Make a circle */
   border-radius: 50%;
+  /* Images must be 300x300 */
+  background-image: url('./resources/tichy_swt.jpg');
+  background-size: 100% 100%;
 }
 
-.clicker:active {
-  border-color: red;
-  // background-image: url('./resources/ma_walter_tichy_excited.png');
-  transform: translateY(.25em);
-}
-
-.counter {
+/* The main score counter */
+.clicker-counter {
+  margin-top: .5em;
   font-size: 1.5em;
   text-align: center;
 }
 
-.system-gain {
+/* The main income counters */
+.clicker-incomes {
+  margin-top: .5em;
   text-align: center;
 }
 
-.upgrades {
+.clicker-income + .clicker-income:before {
+  content: ' · ';
+}
+
+/* Area where the shop buttons etc are */
+.clicker-controls {
+  margin-top: .5em;
+  text-align: center;
+}
+
+/* A button that leads to a shop */
+.clicker-controls-shopbutton {
+  padding: .5em .2em;
+}
+
+.clicker-controls-shopbutton + .clicker-controls-shopbutton {
+  margin-left: 1em;
+}
+
+/* main element on the shop pages */
+.shop {
+}
+
+.shop > .container {
+  outline: 1px dotted blue;
+}
+
+/* shop menu that can have some buttons and some info */
+.shop-menu {
+  display: flex;
+}
+
+/* a button in the shop menu */
+.shop-menu-buttom {
+}
+
+/* a text field in the shop menu. these should fill most of the space */
+.shop-menu-info {
   flex: 1;
+  text-align: right;
 }
 
-@media (max-width: 600px) {
-  .container {
-    margin: 0;
-    width: auto;
-  }
-
-  .app-title {
-    position: fixed;
-    top: 0;
-    margin-top: 0;
-    width: 100%;
-    text-align: center;
-    background-color: black;
-  }
-
-  .cols {
-    flex-direction: column;
-    margin-top: 2.5em;
-    border: none;
-  }
-
-  .clickarea {
-    order: 1;
-    border: none;
-  }
-
-  .systems {
-    order: 2;
-  }
-
-  .upgrades {
-    order: 3;
-  }
-
-  .clicker {
-    width: 200px;
-    height: 200px;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  .spacebar-hint {
-    display: none;
-  }
+/* The shop's title */
+.shop-title {
+  text-align: center;
 }
 
+/* A short (one line) description of the shop's items */
+.shop-description {
+  text-align: center;
+}
+
+/* The items one can buy in this shop */
+.shop-items {
+  padding: 0;
+}
+
+/* Items of the shop. On bigger screens, 2 should be on each "line" */
+.shop-item {
+  box-sizing: border-box;
+  padding: .25em;
+  float: left;
+  width: 50%;
+  list-style: none;
+}
+
+.shop-item:nth-child(2n+3) {
+  clear: left;
+}
+
+/* The name of the item */
+.shop-item-name {
+}
+
+/* A short (one line) description of an item */
+.shop-item-description {
+  font-size: .75em;
+}
+
+/* The button to buy the item */
+.shop-item-buy {
+  box-sizing: border-box;
+  margin-top: .5em;
+  width: 100%;
+}
+
+/* The main element on text pages */
+.text {
+}
+
+/* The title element */
+.text-title {
+  text-align: center;
+}
+
+/* The text content */
+.text-content {
+  line-height: 1.5em;
+}
