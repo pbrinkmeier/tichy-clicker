@@ -109,10 +109,6 @@ body {
 .shop {
 }
 
-.shop > .container {
-  outline: 1px dotted blue;
-}
-
 /* shop menu that can have some buttons and some info */
 .shop-menu {
   display: flex;
