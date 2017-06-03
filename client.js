@@ -1651,67 +1651,110 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.05,
-  "systems": [
-    {
-      "key": "maven",
-      "displayText": "Install Maven",
-      "initialCost": 10,
-      "costFactor": 1.1,
-      "gain": 0.2
-    },
-    {
-      "key": "uml",
-      "displayText": "UML diagram",
-      "initialCost": 100,
-      "costFactor": 1.3,
-      "gain": 1
-    },
-    {
-      "key": "java-update",
-      "displayText": "Update Java",
-      "initialCost": 1330,
-      "costFactor": 1.5,
-      "gain": 5
-    },
-    {
-      "key": "jmjrst",
-      "displayText": "release new JMJRST version",
-      "initialCost": 18080,
-      "costFactor": 1.3,
-      "gain": 125
-    },
-    {
-      "key": "spec",
-      "displayText": "Write a specification (for a specification)",
-      "initialCost": 290000,
-      "costFactor": 1.1,
-      "gain": 800
-    }
-  ]
+  "interval": 0.05
 }
 
 },{}],36:[function(require,module,exports){
 module.exports={
-  "upgrades": [
+  "shops": [
+    {
+      "name": "systems",
+      "title": "Systems",
+      "description": "Generate commits over time",
+      "items": [
+        {
+          "key": "maven",
+          "name": "Install Maven",
+          "description": "Generates 0.2 commits per second",
+          "initialCost": 10,
+          "costFactor": 1.2,
+          "income": 0.2
+        },
+        {
+          "key": "uml",
+          "displayText": "Draw UML diagram",
+          "description": "Generates 1 commits per second",
+          "initialCost": 100,
+          "costFactor": 1.3,
+          "income": 1
+        },
+        {
+          "key": "java-update",
+          "displayText": "Update Java",
+          "description": "Generates 5 commits per second",
+          "initialCost": 1330,
+          "costFactor": 1.5,
+          "income": 5
+        },
+        {
+          "key": "jmjrst",
+          "displayText": "Release a new JMJRST version",
+          "description": "Generates 125 commits per second",
+          "initialCost": 18080,
+          "costFactor": 1.3,
+          "income": 125
+        },
+        {
+          "key": "spec",
+          "displayText": "Write a specification (for a specification)",
+          "description": "Generates 800 commits per second",
+          "initialCost": 290000,
+          "costFactor": 1.1,
+          "income": 800
+        }
+      ]
+    },
+    {
+      "name": "skills",
+      "title": "Skills",
+      "description": "Generate more commits per click",
+      "items": [
+        {
+          "key": "git-article",
+          "displayText": "Read Git article",
+          "description": "Generates 1 commit per click",
+          "initialCost": 100,
+          "costFactor": 1.4,
+          "income": 1
+        },
+        {
+          "key": "oop",
+          "displayText": "Become OOP guru",
+          "description": "Generates 5 commits per click",
+          "initialCost": 1500,
+          "costFactor": 1.1,
+          "income": 5
+        },
+        {
+          "key": "coverage",
+          "displayText": "Get 110% code coverage",
+          "description": "Generate 25 commits per click",
+          "initialCost": 20000,
+          "costFactor": 1.8,
+          "income": 25
+        },
+        {
+          "key": "suit",
+          "displayText": "Wear a fancy suit",
+          "description": "Generates 230 commits per click",
+          "initialCost": 45000,
+          "costFactor": 1.4,
+          "income": 230
+        },
+        {
+          "key": "npp",
+          "displayText": "Go WOLOLO on a Notepad++ user",
+          "description": "Generates 800 commits per click",
+          "initialCost": 333000,
+          "costFactor": 1.4,
+          "income": 800
+        }
+      ]
+    }
   ]
 }
 
 },{}],37:[function(require,module,exports){
-'use strict';
-
-module.exports = function calculateCost (system, count) {
-	return Math.ceil(system.initialCost * Math.pow(system.costFactor, count));
-};
-
-},{}],38:[function(require,module,exports){
-'use strict';
-
-module.exports = function calculateUpgradeCost (upgrade, count) {
-  return Math.ceil(upgrade.initialCost * Math.pow(upgrade.costFactor, count));
-};
-
-},{}],39:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -1726,65 +1769,32 @@ module.exports = {
 	}
 };
 
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
-var add = function (a, b) {
-	return a + b;
-};
-
-module.exports = function (availableSystems, systems, factor) {
-	return (
-		availableSystems
-		.map(function (system) {
-			return systems[system.key] * system.gain;
-		})
-		.reduce(add, 0)
-		* factor
-	);
-};
-
-},{}],41:[function(require,module,exports){
-'use strict';
-
-var add = function (a, b) {
-  return a + b;
-};
-
-module.exports = function getUpgradeGains (availableUpgrades, upgrades) {
-  return (
-    availableUpgrades
-    .map(function (upgrade) {
-      return upgrade.gain * upgrades[upgrade.key];
-    })
-    .reduce(add, 1)
-  );
-};
-
-},{}],42:[function(require,module,exports){
-'use strict';
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
+var shops = require('../../resources/shops.json').shops;
 
 module.exports = function init () {
-	var systems = {};
-  var upgrades = {};
-	availableSystems.systems.forEach(function (system) {
-		systems[system.key] = 0;
-	});
-  availableUpgrades.upgrades.forEach(function (upgrade) {
-    upgrades[upgrade.key] = 0;
+  var inventory = {};
+
+  shops.forEach(function (shop) {
+    var shopInventory = {};
+
+    shop.items.forEach(function (item) {
+      shopInventory[item.key] = 0;
+    });
+
+    inventory[shop.name] = shopInventory;
   });
 
 	return {
+    page: 'clicker',
 		counter: 0,
-		systems: systems,
-    upgrades: upgrades
+    inventory: inventory
 	};
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36}],43:[function(require,module,exports){
+},{"../../resources/shops.json":36}],39:[function(require,module,exports){
 'use strict';
 
 var createElement = require('virtual-dom/create-element');
@@ -1822,7 +1832,7 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":39,"./init.js":42,"./render.js":44,"./update.js":45,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],44:[function(require,module,exports){
+},{"./dispatcher.js":37,"./init.js":38,"./render.js":40,"./update.js":41,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],40:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -1851,16 +1861,13 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./view/rainbow-spans.js":46,"./view/text-view.js":47,"virtual-dom/h":10}],45:[function(require,module,exports){
+},{"./view/rainbow-spans.js":43,"./view/text-view.js":44,"virtual-dom/h":10}],41:[function(require,module,exports){
 'use strict';
 
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
+var calculateShopIncome = require('./util/calculate-shop-income.js');
+var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
+var shops = require('../../resources/shops.json').shops;
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
@@ -1871,7 +1878,7 @@ module.exports = {
       dispatcher.dispatch({
         type: 'interval'
       });
-    }, 1000 * availableSystems.interval);
+    }, 1000 * config.interval);
 
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
@@ -1880,42 +1887,44 @@ module.exports = {
         });
       }
     });
+
+    window.state = state;
   },
   increment: function (action, state) {
-    var gains = getUpgradeGains(availableUpgrades.upgrades, state.upgrades);
-    state.counter += gains;
+    var systemsShop = shops.find(function (shop) {
+      return shop.name === 'systems';
+    });
+    var income = calculateShopIncome(systemsShop, state.inventory.systems);
+    state.counter += income;
   },
   interval: function (action, state) {
-    var gains = getSystemGains(availableSystems.systems, state.systems, availableSystems.interval);
-    state.counter += gains;
-  },
-  buySystem: function (action, state) {
-    var system = availableSystems.systems.find(function (system) {
-      return system.key === action.key;
+    var skillsShop = shops.find(function (shop) {
+      return shop.name === 'skills';
     });
-    var cost = calculateCost(system, state.systems[action.key]);
-    if (cost > state.counter) {
-      return;
-    }
-
-    state.counter -= cost;
-    state.systems[action.key] += 1;
-  },
-  buyUpgrade: function (action, state) {
-    var upgrade = availableUpgrades.upgrades.find(function (upgrade) {
-      return upgrade.key === action.key;
-    });
-    var cost = calculateUpgradeCost(upgrade, state.upgrades[upgrade.key]);
-    if (cost > state.counter) {
-      return;
-    }
-
-    state.counter -= cost;
-    state.upgrades[upgrade.key] += 1;
+    var income = calculateShopIncome(skillsShop, state.inventory.skills);
+    state.counter += income * config.interval;
   }
+  /* TODO: insert buy action */
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}],46:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./dispatcher.js":37,"./util/calculate-shop-income.js":42}],42:[function(require,module,exports){
+'use strict';
+
+module.exports = function calculateShopIncome (shop, bought) {
+  return (
+    shop.items
+    .map(function (item) {
+      return bought[item.key] * item.income;
+    })
+    .reduce(sum, 0)
+  );
+};
+
+function sum (a, b) {
+  return a + b;
+}
+
+},{}],43:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -1936,7 +1945,7 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],47:[function(require,module,exports){
+},{"virtual-dom/h":10}],44:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -1951,4 +1960,4 @@ module.exports = function textView (title, text) {
   ]);
 };
 
-},{"virtual-dom/h":10}]},{},[43]);
+},{"virtual-dom/h":10}]},{},[39]);
