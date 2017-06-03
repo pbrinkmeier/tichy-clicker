@@ -1660,11 +1660,12 @@ module.exports={
     {
       "name": "systems",
       "title": "Systems",
+      "buttonText": "Buy systems",
       "description": "Generate commits over time",
       "items": [
         {
           "key": "maven",
-          "name": "Install Maven",
+          "displayText": "Install Maven",
           "description": "Generates 0.2 commits per second",
           "initialCost": 10,
           "costFactor": 1.2,
@@ -1707,6 +1708,7 @@ module.exports={
     {
       "name": "skills",
       "title": "Skills",
+      "buttonText": "Develop skills",
       "description": "Generate more commits per click",
       "items": [
         {
@@ -1757,6 +1759,33 @@ module.exports={
 },{}],37:[function(require,module,exports){
 'use strict';
 
+var dispatcher = require('./dispatcher.js');
+
+module.exports = {
+  interval: function () {
+    dispatcher.dispatch({ type: 'interval' });
+  },
+  increment: function () {
+    dispatcher.dispatch({ type: 'increment' });
+  },
+  buy: function (shopName, itemKey) {
+    dispatcher.dispatch({
+      type: 'buy',
+      shopName: shopName,
+      itemKey: itemKey
+    });
+  },
+  setPage: function (path) {
+    dispatcher.dispatch({
+      type: 'setPage',
+      path: path
+    });
+  }
+};
+
+},{"./dispatcher.js":38}],38:[function(require,module,exports){
+'use strict';
+
 module.exports = {
 	listeners: [],
 	register: function (listener) {
@@ -1769,7 +1798,7 @@ module.exports = {
 	}
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 var shops = require('../../resources/shops.json').shops;
@@ -1794,7 +1823,7 @@ module.exports = function init () {
 	};
 };
 
-},{"../../resources/shops.json":36}],39:[function(require,module,exports){
+},{"../../resources/shops.json":36}],40:[function(require,module,exports){
 'use strict';
 
 var createElement = require('virtual-dom/create-element');
@@ -1832,14 +1861,39 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":37,"./init.js":38,"./render.js":40,"./update.js":41,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],40:[function(require,module,exports){
+},{"./dispatcher.js":38,"./init.js":39,"./render.js":41,"./update.js":42,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],41:[function(require,module,exports){
 'use strict';
 
+var actions = require('./actions.js');
+var clickerView = require('./view/clicker-view.js');
 var h = require('virtual-dom/h');
 var rainbowSpans = require('./view/rainbow-spans.js');
+var shopView = require('./view/shop-view.js');
 var textView = require('./view/text-view.js');
 
 module.exports = function render (state) {
+  var main;
+  var path = state.page.split('/');
+  if (path[0] === 'clicker') {
+    main = clickerView(state);
+  } else if (path[0] === 'how-to-play') {
+  }
+
+  switch (path[0]) {
+    case 'clicker':
+      main = clickerView(state);
+      break;
+    case 'how-to-play':
+      main = textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!');
+      break;
+    case 'about':
+      main = textView('About', 'I started this little project in a lecture some time. It is not meant to attack anyone, but if you have any inquiries or feedback, write me an E-Mail to paul (dot) brinkmeier (at) gmail (dot) com or create an issue on GitHub.');
+      break;
+    case 'shop':
+      main = shopView(path[1], state);
+      break;
+  }
+
   return h('div.tichy-clicker', [
     h('section.topbar', [
       h('div.container', [
@@ -1849,21 +1903,29 @@ module.exports = function render (state) {
         h('div.topbar-links', [
           h('a.topbar-link', {
             href: 'https://github.com/pbrinkmeier/tichy-clicker',
-            // The target attribute sets where to open the link, in this case in a new tab
             target: '_blank'
           }, 'GitHub'),
-          h('span.topbar-link', 'How to play'),
-          h('span.topbar-link', 'About')
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('how-to-play');
+            }
+          }, 'How to play'),
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('about');
+            }
+          }, 'About')
         ])
       ])
     ]),
-    textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!')
+    main
   ]);
 };
 
-},{"./view/rainbow-spans.js":43,"./view/text-view.js":44,"virtual-dom/h":10}],41:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":45,"./view/rainbow-spans.js":46,"./view/shop-view.js":47,"./view/text-view.js":48,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
+var actions = require('./actions.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
@@ -1875,16 +1937,12 @@ var KEYCODE_ENTER = 13;
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
-      dispatcher.dispatch({
-        type: 'interval'
-      });
+      actions.interval();
     }, 1000 * config.interval);
 
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
-        dispatcher.dispatch({
-          type: 'increment'
-        });
+        actions.increment();
       }
     });
 
@@ -1895,7 +1953,7 @@ module.exports = {
       return shop.name === 'systems';
     });
     var income = calculateShopIncome(systemsShop, state.inventory.systems);
-    state.counter += income;
+    state.counter += 1 + income;
   },
   interval: function (action, state) {
     var skillsShop = shops.find(function (shop) {
@@ -1903,11 +1961,21 @@ module.exports = {
     });
     var income = calculateShopIncome(skillsShop, state.inventory.skills);
     state.counter += income * config.interval;
+  },
+  setPage: function (action, state) {
+    state.page = action.path;
   }
   /* TODO: insert buy action */
 };
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./dispatcher.js":37,"./util/calculate-shop-income.js":42}],42:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-shop-income.js":44}],43:[function(require,module,exports){
+'use strict';
+
+module.exports = function calculateItemCost (item, alreadyBought) {
+  return null;
+};
+
+},{}],44:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateShopIncome (shop, bought) {
@@ -1924,7 +1992,46 @@ function sum (a, b) {
   return a + b;
 }
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
+'use strict';
+
+var actions = require('../actions.js');
+var h = require('virtual-dom/h');
+var shops = require('../../../resources/shops.json').shops;
+
+module.exports = function clickerView (state) {
+  // Convention: create a variable for every value that the view depends on
+  var counter = state.counter;
+  var incomePerSecond = null;
+  var incomePerClick = null;
+
+  return h('section.main.clicker', [
+    h('div.container', [
+      h('div.clicker-clickarea', {
+        onclick: function () {
+          actions.increment();
+        }
+      }, []),
+      h('div.clicker-counter', String(counter)),
+      h('div.clicker-incomes', [
+        h('span.clicker-income', String(incomePerSecond) + '/s'),
+        h('span.clicker-income', String(incomePerClick) + '/click')
+      ]),
+      h('div.clicker-controls', shops.map(function (shop) {
+        var buttonText = shop.buttonText;
+        var shopName = shop.name;
+
+        return h('button.clicker-controls-shopbutton', {
+          onclick: function () {
+            actions.setPage('shop/' + shopName);
+          }
+        }, buttonText);
+      }))
+    ])
+  ]);
+};
+
+},{"../../../resources/shops.json":36,"../actions.js":37,"virtual-dom/h":10}],46:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -1945,19 +2052,65 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],44:[function(require,module,exports){
+},{"virtual-dom/h":10}],47:[function(require,module,exports){
 'use strict';
 
+var actions = require('../actions.js');
+var calculateItemCost = require('../util/calculate-item-cost.js');
+var h = require('virtual-dom/h');
+var shops = require('../../../resources/shops.json').shops;
+
+module.exports = function shopView (shopName, state) {
+  var shop = shops.find(function (shop) {
+    return shop.name === shopName;
+  });
+  var bought = state.inventory[shopName];
+  var counter = state.counter;
+
+  return h('section.main.shop', [
+    h('div.container', [
+      h('div.shop-menu', [
+        h('button.shop-menu-button', {
+          onclick: function () {
+            actions.setPage('clicker');
+          }
+        }, 'Back'),
+        h('div.shop-menu-info', counter + ' commits')
+      ]),
+      h('h2.shop-title', shop.title),
+      h('div.shop-description', shop.description),
+      h('ul.shop-items', shop.items.map(function (item) {
+        var alreadyBought = bought[item.key];
+        var cost = calculateItemCost(item, alreadyBought);
+
+        return h('li.shop-item', [
+          h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
+          h('div.shop-item-description', item.description),
+          h('button.shop-item-buy', 'Buy (' + String(cost) + ' commits)')
+        ]);
+      }))
+    ])
+  ]);
+};
+
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"virtual-dom/h":10}],48:[function(require,module,exports){
+'use strict';
+
+var actions = require('../actions.js');
 var h = require('virtual-dom/h');
 
 module.exports = function textView (title, text) {
   return h('section.main.text', [
     h('div.container', [
-      h('button', 'Back'),
+      h('button', {
+        onclick: function () {
+          actions.setPage('clicker');
+        }
+      }, 'Back'),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])
   ]);
 };
 
-},{"virtual-dom/h":10}]},{},[39]);
+},{"../actions.js":37,"virtual-dom/h":10}]},{},[40]);

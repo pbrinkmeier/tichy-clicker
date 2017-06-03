@@ -3,11 +3,12 @@
     {
       "name": "systems",
       "title": "Systems",
+      "buttonText": "Buy systems",
       "description": "Generate commits over time",
       "items": [
         {
           "key": "maven",
-          "name": "Install Maven",
+          "displayText": "Install Maven",
           "description": "Generates 0.2 commits per second",
           "initialCost": 10,
           "costFactor": 1.2,
@@ -50,6 +51,7 @@
     {
       "name": "skills",
       "title": "Skills",
+      "buttonText": "Develop skills",
       "description": "Generate more commits per click",
       "items": [
         {
