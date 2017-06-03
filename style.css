@@ -104,3 +104,70 @@ body {
 .clicker-controls-shopbutton + .clicker-controls-shopbutton {
   margin-left: 1em;
 }
+
+/* main element on the shop pages */
+.shop {
+}
+
+.shop > .container {
+  outline: 1px dotted blue;
+}
+
+/* shop menu that can have some buttons and some info */
+.shop-menu {
+  display: flex;
+}
+
+/* a button in the shop menu */
+.shop-menu-buttom {
+}
+
+/* a text field in the shop menu. these should fill most of the space */
+.shop-menu-info {
+  flex: 1;
+  text-align: right;
+}
+
+/* The shop's title */
+.shop-title {
+  text-align: center;
+}
+
+/* A short (one line) description of the shop's items */
+.shop-description {
+  text-align: center;
+}
+
+/* The items one can buy in this shop */
+.shop-items {
+  padding: 0;
+}
+
+/* Items of the shop. On bigger screens, 2 should be on each "line" */
+.shop-item {
+  box-sizing: border-box;
+  padding: .25em;
+  float: left;
+  width: 50%;
+  list-style: none;
+}
+
+.shop-item:nth-child(2n+3) {
+  clear: left;
+}
+
+/* The name of the item */
+.shop-item-name {
+}
+
+/* A short (one line) description of an item */
+.shop-item-description {
+  font-size: .75em;
+}
+
+/* The button to buy the item */
+.shop-item-buy {
+  box-sizing: border-box;
+  margin-top: .5em;
+  width: 100%;
+}
