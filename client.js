@@ -1927,6 +1927,7 @@ module.exports = function render (state) {
 'use strict';
 
 var actions = require('./actions.js');
+var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
@@ -1948,30 +1949,45 @@ module.exports = {
     });
   },
   increment: function (action, state) {
-    var systemsShop = shops.find(function (shop) {
-      return shop.name === 'systems';
-    });
-    var income = calculateShopIncome(systemsShop, state.inventory.systems);
-    state.counter += 1 + income;
-  },
-  interval: function (action, state) {
     var skillsShop = shops.find(function (shop) {
       return shop.name === 'skills';
     });
     var income = calculateShopIncome(skillsShop, state.inventory.skills);
+    state.counter += income + 1;
+  },
+  interval: function (action, state) {
+    var systemsShop = shops.find(function (shop) {
+      return shop.name === 'systems';
+    });
+    var income = calculateShopIncome(systemsShop, state.inventory.systems);
     state.counter += income * config.interval;
   },
   setPage: function (action, state) {
     state.page = action.path;
+  },
+  buy: function (action, state) {
+    var shop = shops.find(function (shop) {
+      return shop.name === action.shopName;
+    });
+    var item = shop.items.find(function (item) {
+      return item.key === action.itemKey;
+    });
+    var alreadyBought = state.inventory[shop.name][item.key];
+    var cost = calculateItemCost(item, alreadyBought);
+
+    if (cost > state.counter) {
+      return;
+    }
+    state.counter -= cost;
+    state.inventory[shop.name][item.key]++;
   }
-  /* TODO: insert buy action */
 };
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-shop-income.js":44}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
-  return null;
+  return Math.ceil(item.initialCost * Math.pow(item.costFactor, alreadyBought));
 };
 
 },{}],44:[function(require,module,exports){
@@ -2004,9 +2020,8 @@ var skillsShop = shops[1];
 module.exports = function clickerView (state) {
   // Convention: create a variable for every value that the view depends on
   var counter = state.counter;
-  // TODO
   var incomePerSecond = calculateShopIncome(systemsShop, state.inventory.systems);
-  var incomePerClick = calculateShopIncome(skillsShop, state.inventory.skills);
+  var incomePerClick = 1 + calculateShopIncome(skillsShop, state.inventory.skills);
 
   return h('section.main.clicker', [
     h('div.container', [
@@ -2089,7 +2104,11 @@ module.exports = function shopView (shopName, state) {
         return h('li.shop-item', [
           h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
           h('div.shop-item-description', item.description),
-          h('button.shop-item-buy', 'Buy (' + String(cost) + ' commits)')
+          h('button.shop-item-buy', {
+            onclick: function () {
+              actions.buy(shop.name, item.key);
+            }
+          }, 'Buy (' + String(cost) + ' commits)')
         ]);
       }))
     ])

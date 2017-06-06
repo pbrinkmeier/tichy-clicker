@@ -31,7 +31,11 @@ module.exports = function shopView (shopName, state) {
         return h('li.shop-item', [
           h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
           h('div.shop-item-description', item.description),
-          h('button.shop-item-buy', 'Buy (' + String(cost) + ' commits)')
+          h('button.shop-item-buy', {
+            onclick: function () {
+              actions.buy(shop.name, item.key);
+            }
+          }, 'Buy (' + String(cost) + ' commits)')
         ]);
       }))
     ])
