@@ -160,6 +160,7 @@ button:disabled {
 
 /* Items of the shop. On bigger screens, 2 should be on each "line" */
 .shop-item {
+  display: block;
   box-sizing: border-box;
   padding: .25em;
   float: left;
@@ -199,4 +200,23 @@ button:disabled {
 /* The text content */
 .text-content {
   line-height: 1.5em;
+}
+
+/* Responsive version for screens narrower than 720 pixels */
+@media (max-width: 720px) {
+  .container {
+    margin: auto;
+    padding: .25em;
+    width: auto;
+  }
+
+  .main > .container {
+    padding: .5em .25em;
+  }
+
+  .shop-item {
+    float: none;
+    clear: none;
+    width: auto;
+  }
 }
