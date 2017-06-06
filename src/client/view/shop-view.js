@@ -2,6 +2,7 @@
 
 var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
+var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
 
@@ -20,7 +21,7 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, 'Back'),
-        h('div.shop-menu-info', counter + ' commits')
+        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -32,7 +33,7 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
-            disabled: cost > state.counter,
+            disabled: cost > counter,
             onclick: function () {
               actions.buy(shop.name, item.key);
             }

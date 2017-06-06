@@ -1923,7 +1923,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":45,"./view/rainbow-spans.js":46,"./view/shop-view.js":47,"./view/text-view.js":48,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":46,"./view/rainbow-spans.js":47,"./view/shop-view.js":48,"./view/text-view.js":49,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -2010,8 +2010,17 @@ function sum (a, b) {
 },{}],45:[function(require,module,exports){
 'use strict';
 
+module.exports = function floorPlaces (x, places) {
+  var f = Math.pow(10, places);
+  return Math.floor(x * f) / f;
+};
+
+},{}],46:[function(require,module,exports){
+'use strict';
+
 var actions = require('../actions.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
+var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
 var systemsShop = shops[0];
@@ -2030,10 +2039,10 @@ module.exports = function clickerView (state) {
           actions.increment();
         }
       }, []),
-      h('div.clicker-counter', String(counter)),
+      h('div.clicker-counter', String(floorPlaces(counter, 0))),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(incomePerSecond) + '/s'),
-        h('span.clicker-income', String(incomePerClick) + '/click')
+        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
       ]),
       h('div.clicker-controls', shops.map(function (shop) {
         var buttonText = shop.buttonText;
@@ -2049,7 +2058,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"virtual-dom/h":10}],46:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"virtual-dom/h":10}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2070,11 +2079,12 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],47:[function(require,module,exports){
+},{"virtual-dom/h":10}],48:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
+var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
 
@@ -2093,7 +2103,7 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, 'Back'),
-        h('div.shop-menu-info', counter + ' commits')
+        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -2105,7 +2115,7 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
-            disabled: cost > state.counter,
+            disabled: cost > counter,
             onclick: function () {
               actions.buy(shop.name, item.key);
             }
@@ -2116,7 +2126,7 @@ module.exports = function shopView (shopName, state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"virtual-dom/h":10}],48:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],49:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');

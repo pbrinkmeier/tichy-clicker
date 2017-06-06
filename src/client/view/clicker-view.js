@@ -2,6 +2,7 @@
 
 var actions = require('../actions.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
+var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
 var systemsShop = shops[0];
@@ -20,10 +21,10 @@ module.exports = function clickerView (state) {
           actions.increment();
         }
       }, []),
-      h('div.clicker-counter', String(counter)),
+      h('div.clicker-counter', String(floorPlaces(counter, 0))),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(incomePerSecond) + '/s'),
-        h('span.clicker-income', String(incomePerClick) + '/click')
+        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
       ]),
       h('div.clicker-controls', shops.map(function (shop) {
         var buttonText = shop.buttonText;
