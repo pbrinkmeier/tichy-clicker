@@ -1651,7 +1651,7 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.5,
+  "interval": 0.05,
   "enabledShops": ["systems", "skills"]
 }
 
@@ -1834,11 +1834,8 @@ var render = require('./render.js');
 var update = require('./update.js');
 
 var state = init();
-window.state = state;
 
 dispatcher.register(function (action) {
-  console.log(action);
-
   if (action.type in update) {
     update[action.type](action, state);
     rerender();
@@ -2122,7 +2119,9 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
             disabled: cost > counter,
-            onclick: function () {
+            onclick: function (e) {
+              /* Do not focus the buy buttons after clicking */
+              e.target.blur();
               actions.buy(shopName, item.key);
             }
           }, 'Buy (' + String(cost) + ' commits)')
