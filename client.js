@@ -1651,109 +1651,106 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.5
+  "interval": 0.5,
+  "enabledShops": ["systems", "skills"]
 }
 
 },{}],36:[function(require,module,exports){
 module.exports={
-  "shops": [
-    {
-      "name": "systems",
-      "title": "Systems",
-      "buttonText": "Buy systems",
-      "description": "Generate commits over time",
-      "items": [
-        {
-          "key": "maven",
-          "displayText": "Install Maven",
-          "description": "Generates 0.2 commits per second",
-          "initialCost": 10,
-          "costFactor": 1.2,
-          "income": 0.2
-        },
-        {
-          "key": "uml",
-          "displayText": "Draw UML diagram",
-          "description": "Generates 1 commits per second",
-          "initialCost": 100,
-          "costFactor": 1.3,
-          "income": 1
-        },
-        {
-          "key": "java-update",
-          "displayText": "Update Java",
-          "description": "Generates 5 commits per second",
-          "initialCost": 1330,
-          "costFactor": 1.5,
-          "income": 5
-        },
-        {
-          "key": "jmjrst",
-          "displayText": "Release a new JMJRST version",
-          "description": "Generates 125 commits per second",
-          "initialCost": 18080,
-          "costFactor": 1.3,
-          "income": 125
-        },
-        {
-          "key": "spec",
-          "displayText": "Write a specification (for a specification)",
-          "description": "Generates 800 commits per second",
-          "initialCost": 290000,
-          "costFactor": 1.1,
-          "income": 800
-        }
-      ]
-    },
-    {
-      "name": "skills",
-      "title": "Skills",
-      "buttonText": "Develop skills",
-      "description": "Generate more commits per click",
-      "items": [
-        {
-          "key": "git-article",
-          "displayText": "Read Git article",
-          "description": "Generates 1 commit per click",
-          "initialCost": 100,
-          "costFactor": 1.4,
-          "income": 1
-        },
-        {
-          "key": "oop",
-          "displayText": "Become OOP guru",
-          "description": "Generates 5 commits per click",
-          "initialCost": 1500,
-          "costFactor": 1.1,
-          "income": 5
-        },
-        {
-          "key": "coverage",
-          "displayText": "Get 110% code coverage",
-          "description": "Generate 25 commits per click",
-          "initialCost": 20000,
-          "costFactor": 1.8,
-          "income": 25
-        },
-        {
-          "key": "suit",
-          "displayText": "Wear a fancy suit",
-          "description": "Generates 230 commits per click",
-          "initialCost": 45000,
-          "costFactor": 1.4,
-          "income": 230
-        },
-        {
-          "key": "npp",
-          "displayText": "Go WOLOLO on a Notepad++ user",
-          "description": "Generates 800 commits per click",
-          "initialCost": 333000,
-          "costFactor": 1.4,
-          "income": 800
-        }
-      ]
-    }
-  ]
+  "systems": {
+    "title": "Systems",
+    "buttonText": "Buy systems",
+    "description": "Generate commits over time",
+    "items": [
+      {
+        "key": "maven",
+        "displayText": "Install Maven",
+        "description": "Generates 0.2 commits per second",
+        "initialCost": 10,
+        "costFactor": 1.2,
+        "income": 0.2
+      },
+      {
+        "key": "uml",
+        "displayText": "Draw UML diagram",
+        "description": "Generates 1 commits per second",
+        "initialCost": 100,
+        "costFactor": 1.3,
+        "income": 1
+      },
+      {
+        "key": "java-update",
+        "displayText": "Update Java",
+        "description": "Generates 5 commits per second",
+        "initialCost": 1330,
+        "costFactor": 1.5,
+        "income": 5
+      },
+      {
+        "key": "jmjrst",
+        "displayText": "Release a new JMJRST version",
+        "description": "Generates 125 commits per second",
+        "initialCost": 18080,
+        "costFactor": 1.3,
+        "income": 125
+      },
+      {
+        "key": "spec",
+        "displayText": "Write a specification (for a specification)",
+        "description": "Generates 800 commits per second",
+        "initialCost": 290000,
+        "costFactor": 1.1,
+        "income": 800
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "buttonText": "Develop skills",
+    "description": "Generate more commits per click",
+    "items": [
+      {
+        "key": "git-article",
+        "displayText": "Read Git article",
+        "description": "Generates 1 commit per click",
+        "initialCost": 100,
+        "costFactor": 1.4,
+        "income": 1
+      },
+      {
+        "key": "oop",
+        "displayText": "Become OOP guru",
+        "description": "Generates 5 commits per click",
+        "initialCost": 1500,
+        "costFactor": 1.1,
+        "income": 5
+      },
+      {
+        "key": "coverage",
+        "displayText": "Get 110% code coverage",
+        "description": "Generate 25 commits per click",
+        "initialCost": 20000,
+        "costFactor": 1.8,
+        "income": 25
+      },
+      {
+        "key": "suit",
+        "displayText": "Wear a fancy suit",
+        "description": "Generates 230 commits per click",
+        "initialCost": 45000,
+        "costFactor": 1.4,
+        "income": 230
+      },
+      {
+        "key": "npp",
+        "displayText": "Go WOLOLO on a Notepad++ user",
+        "description": "Generates 800 commits per click",
+        "initialCost": 333000,
+        "costFactor": 1.4,
+        "income": 800
+      }
+    ]
+  }
 }
 
 },{}],37:[function(require,module,exports){
@@ -1801,19 +1798,20 @@ module.exports = {
 },{}],39:[function(require,module,exports){
 'use strict';
 
-var shops = require('../../resources/shops.json').shops;
+var config = require('../../resources/config.json');
+var shops = require('../../resources/shops.json');
 
 module.exports = function init () {
   var inventory = {};
 
-  shops.forEach(function (shop) {
+  config.enabledShops.forEach(function (shopName) {
     var shopInventory = {};
 
-    shop.items.forEach(function (item) {
+    shops[shopName].items.forEach(function (item) {
       shopInventory[item.key] = 0;
     });
 
-    inventory[shop.name] = shopInventory;
+    inventory[shopName] = shopInventory;
   });
 
 	return {
@@ -1823,7 +1821,7 @@ module.exports = function init () {
 	};
 };
 
-},{"../../resources/shops.json":36}],40:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36}],40:[function(require,module,exports){
 'use strict';
 
 var createElement = require('virtual-dom/create-element');
@@ -1931,7 +1929,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
-var shops = require('../../resources/shops.json').shops;
+var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
@@ -1949,37 +1947,29 @@ module.exports = {
     });
   },
   increment: function (action, state) {
-    var skillsShop = shops.find(function (shop) {
-      return shop.name === 'skills';
-    });
-    var income = calculateShopIncome(skillsShop, state.inventory.skills);
+    var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
   },
   interval: function (action, state) {
-    var systemsShop = shops.find(function (shop) {
-      return shop.name === 'systems';
-    });
-    var income = calculateShopIncome(systemsShop, state.inventory.systems);
+    var income = calculateShopIncome(shops.systems, state.inventory.systems);
     state.counter += income * config.interval;
   },
   setPage: function (action, state) {
     state.page = action.path;
   },
   buy: function (action, state) {
-    var shop = shops.find(function (shop) {
-      return shop.name === action.shopName;
-    });
+    var shop = shops[action.shopName];
     var item = shop.items.find(function (item) {
       return item.key === action.itemKey;
     });
-    var alreadyBought = state.inventory[shop.name][item.key];
+    var alreadyBought = state.inventory[action.shopName][item.key];
     var cost = calculateItemCost(item, alreadyBought);
 
     if (cost > state.counter) {
       return;
     }
     state.counter -= cost;
-    state.inventory[shop.name][item.key]++;
+    state.inventory[action.shopName][item.key]++;
   }
 };
 
@@ -2020,17 +2010,16 @@ module.exports = function floorPlaces (x, places) {
 
 var actions = require('../actions.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
+var config = require('../../../resources/config.json');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
-var shops = require('../../../resources/shops.json').shops;
-var systemsShop = shops[0];
-var skillsShop = shops[1];
+var shops = require('../../../resources/shops.json');
 
 module.exports = function clickerView (state) {
   // Convention: create a variable for every value that the view depends on
   var counter = state.counter;
-  var incomePerSecond = calculateShopIncome(systemsShop, state.inventory.systems);
-  var incomePerClick = 1 + calculateShopIncome(skillsShop, state.inventory.skills);
+  var incomePerSecond = calculateShopIncome(shops.systems, state.inventory.systems);
+  var incomePerClick = 1 + calculateShopIncome(shops.skills, state.inventory.skills);
 
   return h('section.main.clicker', [
     h('div.container', [
@@ -2044,9 +2033,9 @@ module.exports = function clickerView (state) {
         h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
         h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
       ]),
-      h('div.clicker-controls', shops.map(function (shop) {
+      h('div.clicker-controls', config.enabledShops.map(function (shopName) {
+        var shop = shops[shopName];
         var buttonText = shop.buttonText;
-        var shopName = shop.name;
 
         return h('button.clicker-controls-shopbutton', {
           onclick: function () {
@@ -2058,7 +2047,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"virtual-dom/h":10}],47:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"virtual-dom/h":10}],47:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2086,12 +2075,10 @@ var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
-var shops = require('../../../resources/shops.json').shops;
+var shops = require('../../../resources/shops.json');
 
 module.exports = function shopView (shopName, state) {
-  var shop = shops.find(function (shop) {
-    return shop.name === shopName;
-  });
+  var shop = shops[shopName];
   var bought = state.inventory[shopName];
   var counter = state.counter;
 
@@ -2117,7 +2104,7 @@ module.exports = function shopView (shopName, state) {
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function () {
-              actions.buy(shop.name, item.key);
+              actions.buy(shopName, item.key);
             }
           }, 'Buy (' + String(cost) + ' commits)')
         ]);

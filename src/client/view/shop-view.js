@@ -4,12 +4,10 @@ var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
-var shops = require('../../../resources/shops.json').shops;
+var shops = require('../../../resources/shops.json');
 
 module.exports = function shopView (shopName, state) {
-  var shop = shops.find(function (shop) {
-    return shop.name === shopName;
-  });
+  var shop = shops[shopName];
   var bought = state.inventory[shopName];
   var counter = state.counter;
 
@@ -35,7 +33,7 @@ module.exports = function shopView (shopName, state) {
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function () {
-              actions.buy(shop.name, item.key);
+              actions.buy(shopName, item.key);
             }
           }, 'Buy (' + String(cost) + ' commits)')
         ]);

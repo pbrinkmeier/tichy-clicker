@@ -1,18 +1,19 @@
 'use strict';
 
-var shops = require('../../resources/shops.json').shops;
+var config = require('../../resources/config.json');
+var shops = require('../../resources/shops.json');
 
 module.exports = function init () {
   var inventory = {};
 
-  shops.forEach(function (shop) {
+  config.enabledShops.forEach(function (shopName) {
     var shopInventory = {};
 
-    shop.items.forEach(function (item) {
+    shops[shopName].items.forEach(function (item) {
       shopInventory[item.key] = 0;
     });
 
-    inventory[shop.name] = shopInventory;
+    inventory[shopName] = shopInventory;
   });
 
 	return {
