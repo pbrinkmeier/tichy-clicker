@@ -32,6 +32,7 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
+            disabled: cost > state.counter,
             onclick: function () {
               actions.buy(shop.name, item.key);
             }
