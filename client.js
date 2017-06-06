@@ -1933,6 +1933,9 @@ var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
+var KEYCODE_C = 67;
+var KEYCODE_V = 86;
+var KEYCODE_B = 66;
 
 module.exports = {
   init: function (action, state) {
@@ -1943,6 +1946,22 @@ module.exports = {
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
         actions.increment();
+      }
+
+      switch (e.keyCode) {
+        case KEYCODE_SPACEBAR:
+        case KEYCODE_ENTER:
+          actions.increment();
+          break;
+        case KEYCODE_C:
+          actions.setPage('clicker');
+          break;
+        case KEYCODE_V:
+          actions.setPage('shop/systems');
+          break;
+        case KEYCODE_B:
+          actions.setPage('shop/skills');
+          break;
       }
     });
   },
