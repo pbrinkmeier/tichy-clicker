@@ -1651,7 +1651,7 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.5,
+  "interval": 0.05,
   "enabledShops": ["systems", "skills"]
 }
 
@@ -1834,11 +1834,8 @@ var render = require('./render.js');
 var update = require('./update.js');
 
 var state = init();
-window.state = state;
 
 dispatcher.register(function (action) {
-  console.log(action);
-
   if (action.type in update) {
     update[action.type](action, state);
     rerender();
@@ -1933,6 +1930,9 @@ var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
+var KEYCODE_C = 67;
+var KEYCODE_V = 86;
+var KEYCODE_B = 66;
 
 module.exports = {
   init: function (action, state) {
@@ -1943,6 +1943,22 @@ module.exports = {
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
         actions.increment();
+      }
+
+      switch (e.keyCode) {
+        case KEYCODE_SPACEBAR:
+        case KEYCODE_ENTER:
+          actions.increment();
+          break;
+        case KEYCODE_C:
+          actions.setPage('clicker');
+          break;
+        case KEYCODE_V:
+          actions.setPage('shop/systems');
+          break;
+        case KEYCODE_B:
+          actions.setPage('shop/skills');
+          break;
       }
     });
   },
@@ -2103,7 +2119,9 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
             disabled: cost > counter,
-            onclick: function () {
+            onclick: function (e) {
+              /* Do not focus the buy buttons after clicking */
+              e.target.blur();
               actions.buy(shopName, item.key);
             }
           }, 'Buy (' + String(cost) + ' commits)')

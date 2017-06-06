@@ -1,4 +1,4 @@
 {
-  "interval": 0.5,
+  "interval": 0.05,
   "enabledShops": ["systems", "skills"]
 }

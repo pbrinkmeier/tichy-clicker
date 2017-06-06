@@ -32,7 +32,9 @@ module.exports = function shopView (shopName, state) {
           h('div.shop-item-description', item.description),
           h('button.shop-item-buy', {
             disabled: cost > counter,
-            onclick: function () {
+            onclick: function (e) {
+              /* Do not focus the buy buttons after clicking */
+              e.target.blur();
               actions.buy(shopName, item.key);
             }
           }, 'Buy (' + String(cost) + ' commits)')
