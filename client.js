@@ -1651,7 +1651,7 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.05
+  "interval": 0.5
 }
 
 },{}],36:[function(require,module,exports){
@@ -1836,9 +1836,10 @@ var render = require('./render.js');
 var update = require('./update.js');
 
 var state = init();
+window.state = state;
 
 dispatcher.register(function (action) {
-  // console.log(action);
+  console.log(action);
 
   if (action.type in update) {
     update[action.type](action, state);
@@ -1945,8 +1946,6 @@ module.exports = {
         actions.increment();
       }
     });
-
-    window.state = state;
   },
   increment: function (action, state) {
     var systemsShop = shops.find(function (shop) {
@@ -1996,19 +1995,23 @@ function sum (a, b) {
 'use strict';
 
 var actions = require('../actions.js');
+var calculateShopIncome = require('../util/calculate-shop-income.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
+var systemsShop = shops[0];
+var skillsShop = shops[1];
 
 module.exports = function clickerView (state) {
   // Convention: create a variable for every value that the view depends on
   var counter = state.counter;
-  var incomePerSecond = null;
-  var incomePerClick = null;
+  // TODO
+  var incomePerSecond = calculateShopIncome(systemsShop, state.inventory.systems);
+  var incomePerClick = calculateShopIncome(skillsShop, state.inventory.skills);
 
   return h('section.main.clicker', [
     h('div.container', [
       h('div.clicker-clickarea', {
-        onclick: function () {
+        onmousedown: function () {
           actions.increment();
         }
       }, []),
@@ -2031,7 +2034,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"virtual-dom/h":10}],46:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"virtual-dom/h":10}],46:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');

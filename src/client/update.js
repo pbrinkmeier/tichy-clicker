@@ -20,8 +20,6 @@ module.exports = {
         actions.increment();
       }
     });
-
-    window.state = state;
   },
   increment: function (action, state) {
     var systemsShop = shops.find(function (shop) {

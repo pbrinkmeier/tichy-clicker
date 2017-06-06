@@ -1,19 +1,23 @@
 'use strict';
 
 var actions = require('../actions.js');
+var calculateShopIncome = require('../util/calculate-shop-income.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json').shops;
+var systemsShop = shops[0];
+var skillsShop = shops[1];
 
 module.exports = function clickerView (state) {
   // Convention: create a variable for every value that the view depends on
   var counter = state.counter;
-  var incomePerSecond = null;
-  var incomePerClick = null;
+  // TODO
+  var incomePerSecond = calculateShopIncome(systemsShop, state.inventory.systems);
+  var incomePerClick = calculateShopIncome(skillsShop, state.inventory.skills);
 
   return h('section.main.clicker', [
     h('div.container', [
       h('div.clicker-clickarea', {
-        onclick: function () {
+        onmousedown: function () {
           actions.increment();
         }
       }, []),
