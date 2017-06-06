@@ -9,6 +9,25 @@ body {
   font-family: 'Comic Sans MS', sans-serif;
 }
 
+button {
+  padding: .2em .5em;
+  border: 2px solid;
+  border-radius: .2em;
+  background-color: white;
+  color: hsl(210, 80%, 40%);
+  transition: .2s;
+}
+
+button:not(:disabled):hover {
+  border-color: hsl(210, 80%, 40%);
+  background-color: hsl(210, 80%, 40%);
+  color: white;
+}
+
+button:disabled {
+  color: hsl(210, 40%, 80%);
+}
+
 /* Helper class that centers a box */
 .container {
   margin: 0 auto;
@@ -98,7 +117,7 @@ body {
 
 /* A button that leads to a shop */
 .clicker-controls-shopbutton {
-  padding: .5em .2em;
+  padding: .5em;
 }
 
 .clicker-controls-shopbutton + .clicker-controls-shopbutton {
