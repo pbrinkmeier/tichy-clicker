@@ -1651,102 +1651,136 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.05,
-  "systems": [
-    {
-      "key": "maven",
-      "displayText": "Install Maven",
-      "initialCost": 10,
-      "costFactor": 1.1,
-      "gain": 0.2
-    },
-    {
-      "key": "uml",
-      "displayText": "UML diagram",
-      "initialCost": 100,
-      "costFactor": 1.3,
-      "gain": 1
-    },
-    {
-      "key": "java-update",
-      "displayText": "Update Java",
-      "initialCost": 1330,
-      "costFactor": 1.5,
-      "gain": 5
-    },
-    {
-      "key": "jmjrst",
-      "displayText": "release new JMJRST version",
-      "initialCost": 18080,
-      "costFactor": 1.3,
-      "gain": 125
-    },
-    {
-      "key": "spec",
-      "displayText": "Write a specification (for a specification)",
-      "initialCost": 290000,
-      "costFactor": 1.1,
-      "gain": 800
-    }
-  ]
+  "interval": 0.5,
+  "enabledShops": ["systems", "skills"]
 }
 
 },{}],36:[function(require,module,exports){
 module.exports={
-  "upgrades": [
-    {
-      "key": "git-article",
-      "displayText": "Read Git article",
-      "initialCost": 100,
-      "costFactor": 1.4,
-      "gain": 1
-    },
-    {
-      "key": "oop",
-      "displayText": "Become OOP guru",
-      "initialCost": 1500,
-      "costFactor": 1.1,
-      "gain": 5
-    },
-    {
-      "key": "coverage",
-      "displayText": "Get 110% code coverage",
-      "initialCost": 20000,
-      "costFactor": 1.8,
-      "gain": 25
-    },
-    {
-      "key": "suit",
-      "displayText": "Wear a fancy suit",
-      "initialCost": 45000,
-      "costFactor": 1.4,
-      "gain": 230
-    },
-    {
-      "key": "npp",
-      "displayText": "Go WOLOLO on a Notepad++ user",
-      "initialCost": 333000,
-      "costFactor": 1.4,
-      "gain": 800
-    }
-  ]
+  "systems": {
+    "title": "Systems",
+    "buttonText": "Buy systems",
+    "description": "Generate commits over time",
+    "items": [
+      {
+        "key": "maven",
+        "displayText": "Install Maven",
+        "description": "Generates 0.2 commits per second",
+        "initialCost": 10,
+        "costFactor": 1.2,
+        "income": 0.2
+      },
+      {
+        "key": "uml",
+        "displayText": "Draw UML diagram",
+        "description": "Generates 1 commits per second",
+        "initialCost": 100,
+        "costFactor": 1.3,
+        "income": 1
+      },
+      {
+        "key": "java-update",
+        "displayText": "Update Java",
+        "description": "Generates 5 commits per second",
+        "initialCost": 1330,
+        "costFactor": 1.5,
+        "income": 5
+      },
+      {
+        "key": "jmjrst",
+        "displayText": "Release a new JMJRST version",
+        "description": "Generates 125 commits per second",
+        "initialCost": 18080,
+        "costFactor": 1.3,
+        "income": 125
+      },
+      {
+        "key": "spec",
+        "displayText": "Write a specification (for a specification)",
+        "description": "Generates 800 commits per second",
+        "initialCost": 290000,
+        "costFactor": 1.1,
+        "income": 800
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "buttonText": "Develop skills",
+    "description": "Generate more commits per click",
+    "items": [
+      {
+        "key": "git-article",
+        "displayText": "Read Git article",
+        "description": "Generates 1 commit per click",
+        "initialCost": 100,
+        "costFactor": 1.4,
+        "income": 1
+      },
+      {
+        "key": "oop",
+        "displayText": "Become OOP guru",
+        "description": "Generates 5 commits per click",
+        "initialCost": 1500,
+        "costFactor": 1.1,
+        "income": 5
+      },
+      {
+        "key": "coverage",
+        "displayText": "Get 110% code coverage",
+        "description": "Generate 25 commits per click",
+        "initialCost": 20000,
+        "costFactor": 1.8,
+        "income": 25
+      },
+      {
+        "key": "suit",
+        "displayText": "Wear a fancy suit",
+        "description": "Generates 230 commits per click",
+        "initialCost": 45000,
+        "costFactor": 1.4,
+        "income": 230
+      },
+      {
+        "key": "npp",
+        "displayText": "Go WOLOLO on a Notepad++ user",
+        "description": "Generates 800 commits per click",
+        "initialCost": 333000,
+        "costFactor": 1.4,
+        "income": 800
+      }
+    ]
+  }
 }
 
 },{}],37:[function(require,module,exports){
 'use strict';
 
-module.exports = function calculateCost (system, count) {
-	return Math.ceil(system.initialCost * Math.pow(system.costFactor, count));
+var dispatcher = require('./dispatcher.js');
+
+module.exports = {
+  interval: function () {
+    dispatcher.dispatch({ type: 'interval' });
+  },
+  increment: function () {
+    dispatcher.dispatch({ type: 'increment' });
+  },
+  buy: function (shopName, itemKey) {
+    dispatcher.dispatch({
+      type: 'buy',
+      shopName: shopName,
+      itemKey: itemKey
+    });
+  },
+  setPage: function (path) {
+    dispatcher.dispatch({
+      type: 'setPage',
+      path: path
+    });
+  }
 };
 
-},{}],38:[function(require,module,exports){
-'use strict';
-
-module.exports = function calculateUpgradeCost (upgrade, count) {
-  return Math.ceil(upgrade.initialCost * Math.pow(upgrade.costFactor, count));
-};
-
-},{}],39:[function(require,module,exports){
+},{"./dispatcher.js":38}],38:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -1761,65 +1795,33 @@ module.exports = {
 	}
 };
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
-var add = function (a, b) {
-	return a + b;
-};
-
-module.exports = function (availableSystems, systems, factor) {
-	return (
-		availableSystems
-		.map(function (system) {
-			return systems[system.key] * system.gain;
-		})
-		.reduce(add, 0)
-		* factor
-	);
-};
-
-},{}],41:[function(require,module,exports){
-'use strict';
-
-var add = function (a, b) {
-  return a + b;
-};
-
-module.exports = function getUpgradeGains (availableUpgrades, upgrades) {
-  return (
-    availableUpgrades
-    .map(function (upgrade) {
-      return upgrade.gain * upgrades[upgrade.key];
-    })
-    .reduce(add, 1)
-  );
-};
-
-},{}],42:[function(require,module,exports){
-'use strict';
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
+var config = require('../../resources/config.json');
+var shops = require('../../resources/shops.json');
 
 module.exports = function init () {
-	var systems = {};
-  var upgrades = {};
-	availableSystems.systems.forEach(function (system) {
-		systems[system.key] = 0;
-	});
-  availableUpgrades.upgrades.forEach(function (upgrade) {
-    upgrades[upgrade.key] = 0;
+  var inventory = {};
+
+  config.enabledShops.forEach(function (shopName) {
+    var shopInventory = {};
+
+    shops[shopName].items.forEach(function (item) {
+      shopInventory[item.key] = 0;
+    });
+
+    inventory[shopName] = shopInventory;
   });
 
 	return {
+    page: 'clicker',
 		counter: 0,
-		systems: systems,
-    upgrades: upgrades
+    inventory: inventory
 	};
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36}],40:[function(require,module,exports){
 'use strict';
 
 var createElement = require('virtual-dom/create-element');
@@ -1832,9 +1834,10 @@ var render = require('./render.js');
 var update = require('./update.js');
 
 var state = init();
+window.state = state;
 
 dispatcher.register(function (action) {
-  // console.log(action);
+  console.log(action);
 
   if (action.type in update) {
     update[action.type](action, state);
@@ -1857,117 +1860,76 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":39,"./init.js":42,"./render.js":44,"./update.js":46,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],44:[function(require,module,exports){
+},{"./dispatcher.js":38,"./init.js":39,"./render.js":41,"./update.js":42,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],41:[function(require,module,exports){
 'use strict';
 
+var actions = require('./actions.js');
+var clickerView = require('./view/clicker-view.js');
 var h = require('virtual-dom/h');
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
-var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
-var roundPlaces = require('./round-places.js');
-
-var systems = availableSystems.systems;
-var upgrades = availableUpgrades.upgrades;
+var rainbowSpans = require('./view/rainbow-spans.js');
+var shopView = require('./view/shop-view.js');
+var textView = require('./view/text-view.js');
 
 module.exports = function render (state) {
-  return h('div.container', [
-    h('h1.app-title', 'Tichy-Clicker'.split('').map(function (character, index, array) {
-      return h('span', {
-        style: {
-          color: 'hsl(' + (index / array.length) * 360 + ',100%,50%)'
-        },
-      }, character);
-    })),
-    h('div.cols', [
-      h('div.systems', [
-        h('h2.section-header', 'Systems'),
-        h('p.section-intro', 'Generate commits over time'),
-        h('ul.systems-list', systems.map(function (system) {
-          var count = state.systems[system.key];
-          var cost = calculateCost(system, count);
+  var main;
+  var path = state.page.split('/');
+  if (path[0] === 'clicker') {
+    main = clickerView(state);
+  } else if (path[0] === 'how-to-play') {
+  }
 
-          return h('li.system', [
-            h('div.system-name', system.displayText + ' (' + count + ')'),
-            h('div.system-desc', 'Generates ' +  system.gain + ' commits per second'),
-            h('button.system-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
+  switch (path[0]) {
+    case 'clicker':
+      main = clickerView(state);
+      break;
+    case 'how-to-play':
+      main = textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!');
+      break;
+    case 'about':
+      main = textView('About', 'I started this little project in a lecture some time. It is not meant to attack anyone, but if you have any inquiries or feedback, write me an E-Mail to paul (dot) brinkmeier (at) gmail (dot) com or create an issue on GitHub.');
+      break;
+    case 'shop':
+      main = shopView(path[1], state);
+      break;
+  }
 
-                dispatcher.dispatch({
-                  type: 'buySystem',
-                  key: system.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Buy (' + cost + 'cm.)')
-          ]);
-        }))
-      ]),
-      h('div.clickarea', [
-        h('div.clicker', {
-          onclick: function () {
-            dispatcher.dispatch({ type: 'increment' });
-          }
-        }),
-        h('div.counter', String(roundPlaces(0, state.counter)) + ' commits'),
-        h('div.system-gain',
-          roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
-          getUpgradeGains(upgrades, state.upgrades) + '/click'
-        ),
-        h('p.section-intro.spacebar-hint', 'Instead of clicking the picture, you can use the spacebar')
-      ]),
-      h('div.upgrades', [
-        h('h2.section-header', 'Skills'),
-        h('p.section-intro', 'Generate more commits per click'),
-        h('ul.upgrades-list', upgrades.map(function (upgrade) {
-          var count = state.upgrades[upgrade.key];
-          var cost = calculateUpgradeCost(upgrade, count);
-
-          return h('li.upgrade', [
-            h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
-            h('div.upgrade-desc', 'Generates ' + upgrade.gain + ' commit(s) per click'),
-            h('button.upgrade-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
-
-                dispatcher.dispatch({
-                  type: 'buyUpgrade',
-                  key: upgrade.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Develop (' + cost + 'cm.)')
-          ]);
-        }))
+  return h('div.tichy-clicker', [
+    h('section.topbar', [
+      h('div.container', [
+        h('h1.topbar-title', [
+          rainbowSpans('Tichy-Clicker')
+        ]),
+        h('div.topbar-links', [
+          h('a.topbar-link', {
+            href: 'https://github.com/pbrinkmeier/tichy-clicker',
+            target: '_blank'
+          }, 'GitHub'),
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('how-to-play');
+            }
+          }, 'How to play'),
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('about');
+            }
+          }, 'About')
+        ])
       ])
-    ])
+    ]),
+    main
   ]);
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41,"./round-places.js":45,"virtual-dom/h":10}],45:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":46,"./view/rainbow-spans.js":47,"./view/shop-view.js":48,"./view/text-view.js":49,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
-module.exports = function roundPlaces (places, x) {
-  return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
-};
-
-},{}],46:[function(require,module,exports){
-'use strict';
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
+var actions = require('./actions.js');
+var calculateItemCost = require('./util/calculate-item-cost.js');
+var calculateShopIncome = require('./util/calculate-shop-income.js');
+var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
+var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
@@ -1975,51 +1937,200 @@ var KEYCODE_ENTER = 13;
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
-      dispatcher.dispatch({
-        type: 'interval'
-      });
-    }, 1000 * availableSystems.interval);
+      actions.interval();
+    }, 1000 * config.interval);
 
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
-        dispatcher.dispatch({
-          type: 'increment'
-        });
+        actions.increment();
       }
     });
   },
   increment: function (action, state) {
-    var gains = getUpgradeGains(availableUpgrades.upgrades, state.upgrades);
-    state.counter += gains;
+    var income = calculateShopIncome(shops.skills, state.inventory.skills);
+    state.counter += income + 1;
   },
   interval: function (action, state) {
-    var gains = getSystemGains(availableSystems.systems, state.systems, availableSystems.interval);
-    state.counter += gains;
+    var income = calculateShopIncome(shops.systems, state.inventory.systems);
+    state.counter += income * config.interval;
   },
-  buySystem: function (action, state) {
-    var system = availableSystems.systems.find(function (system) {
-      return system.key === action.key;
+  setPage: function (action, state) {
+    state.page = action.path;
+  },
+  buy: function (action, state) {
+    var shop = shops[action.shopName];
+    var item = shop.items.find(function (item) {
+      return item.key === action.itemKey;
     });
-    var cost = calculateCost(system, state.systems[action.key]);
+    var alreadyBought = state.inventory[action.shopName][item.key];
+    var cost = calculateItemCost(item, alreadyBought);
+
     if (cost > state.counter) {
       return;
     }
-
     state.counter -= cost;
-    state.systems[action.key] += 1;
-  },
-  buyUpgrade: function (action, state) {
-    var upgrade = availableUpgrades.upgrades.find(function (upgrade) {
-      return upgrade.key === action.key;
-    });
-    var cost = calculateUpgradeCost(upgrade, state.upgrades[upgrade.key]);
-    if (cost > state.counter) {
-      return;
-    }
-
-    state.counter -= cost;
-    state.upgrades[upgrade.key] += 1;
+    state.inventory[action.shopName][item.key]++;
   }
 };
 
-},{"../../resources/systems.json":35,"../../resources/upgrades.json":36,"./calculate-cost.js":37,"./calculate-upgrade-cost.js":38,"./dispatcher.js":39,"./get-system-gains.js":40,"./get-upgrade-gains.js":41}]},{},[43]);
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44}],43:[function(require,module,exports){
+'use strict';
+
+module.exports = function calculateItemCost (item, alreadyBought) {
+  return Math.ceil(item.initialCost * Math.pow(item.costFactor, alreadyBought));
+};
+
+},{}],44:[function(require,module,exports){
+'use strict';
+
+module.exports = function calculateShopIncome (shop, bought) {
+  return (
+    shop.items
+    .map(function (item) {
+      return bought[item.key] * item.income;
+    })
+    .reduce(sum, 0)
+  );
+};
+
+function sum (a, b) {
+  return a + b;
+}
+
+},{}],45:[function(require,module,exports){
+'use strict';
+
+module.exports = function floorPlaces (x, places) {
+  var f = Math.pow(10, places);
+  return Math.floor(x * f) / f;
+};
+
+},{}],46:[function(require,module,exports){
+'use strict';
+
+var actions = require('../actions.js');
+var calculateShopIncome = require('../util/calculate-shop-income.js');
+var config = require('../../../resources/config.json');
+var floorPlaces = require('../util/floor-places.js');
+var h = require('virtual-dom/h');
+var shops = require('../../../resources/shops.json');
+
+module.exports = function clickerView (state) {
+  // Convention: create a variable for every value that the view depends on
+  var counter = state.counter;
+  var incomePerSecond = calculateShopIncome(shops.systems, state.inventory.systems);
+  var incomePerClick = 1 + calculateShopIncome(shops.skills, state.inventory.skills);
+
+  return h('section.main.clicker', [
+    h('div.container', [
+      h('div.clicker-clickarea', {
+        onmousedown: function () {
+          actions.increment();
+        }
+      }, []),
+      h('div.clicker-counter', String(floorPlaces(counter, 0))),
+      h('div.clicker-incomes', [
+        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
+      ]),
+      h('div.clicker-controls', config.enabledShops.map(function (shopName) {
+        var shop = shops[shopName];
+        var buttonText = shop.buttonText;
+
+        return h('button.clicker-controls-shopbutton', {
+          onclick: function () {
+            actions.setPage('shop/' + shopName);
+          }
+        }, buttonText);
+      }))
+    ])
+  ]);
+};
+
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"virtual-dom/h":10}],47:[function(require,module,exports){
+'use strict';
+
+var h = require('virtual-dom/h');
+
+module.exports = function rainbowSpans (text) {
+  var length = text.length;
+
+  return (
+    text.split('')
+    .map(function (character, index) {
+      var hueValue = 360 * (index / length);
+      return h('span', {
+        style: {
+          color: 'hsl(' + String(hueValue) + ',100%,50%)'
+        }
+      }, character);
+    })
+  );
+};
+
+},{"virtual-dom/h":10}],48:[function(require,module,exports){
+'use strict';
+
+var actions = require('../actions.js');
+var calculateItemCost = require('../util/calculate-item-cost.js');
+var floorPlaces = require('../util/floor-places.js');
+var h = require('virtual-dom/h');
+var shops = require('../../../resources/shops.json');
+
+module.exports = function shopView (shopName, state) {
+  var shop = shops[shopName];
+  var bought = state.inventory[shopName];
+  var counter = state.counter;
+
+  return h('section.main.shop', [
+    h('div.container', [
+      h('div.shop-menu', [
+        h('button.shop-menu-button', {
+          onclick: function () {
+            actions.setPage('clicker');
+          }
+        }, 'Back'),
+        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' commits')
+      ]),
+      h('h2.shop-title', shop.title),
+      h('div.shop-description', shop.description),
+      h('ul.shop-items', shop.items.map(function (item) {
+        var alreadyBought = bought[item.key];
+        var cost = calculateItemCost(item, alreadyBought);
+
+        return h('li.shop-item', [
+          h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
+          h('div.shop-item-description', item.description),
+          h('button.shop-item-buy', {
+            disabled: cost > counter,
+            onclick: function () {
+              actions.buy(shopName, item.key);
+            }
+          }, 'Buy (' + String(cost) + ' commits)')
+        ]);
+      }))
+    ])
+  ]);
+};
+
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],49:[function(require,module,exports){
+'use strict';
+
+var actions = require('../actions.js');
+var h = require('virtual-dom/h');
+
+module.exports = function textView (title, text) {
+  return h('section.main.text', [
+    h('div.container', [
+      h('button', {
+        onclick: function () {
+          actions.setPage('clicker');
+        }
+      }, 'Back'),
+      h('h2.text-title', title),
+      h('p.text-content', text)
+    ])
+  ]);
+};
+
+},{"../actions.js":37,"virtual-dom/h":10}]},{},[40]);

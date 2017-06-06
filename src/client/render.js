@@ -1,92 +1,59 @@
 'use strict';
 
+var actions = require('./actions.js');
+var clickerView = require('./view/clicker-view.js');
 var h = require('virtual-dom/h');
-
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
-var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
-var roundPlaces = require('./round-places.js');
-
-var systems = availableSystems.systems;
-var upgrades = availableUpgrades.upgrades;
+var rainbowSpans = require('./view/rainbow-spans.js');
+var shopView = require('./view/shop-view.js');
+var textView = require('./view/text-view.js');
 
 module.exports = function render (state) {
-  return h('div.container', [
-    h('h1.app-title', 'Tichy-Clicker'.split('').map(function (character, index, array) {
-      return h('span', {
-        style: {
-          color: 'hsl(' + (index / array.length) * 360 + ',100%,50%)'
-        },
-      }, character);
-    })),
-    h('div.cols', [
-      h('div.systems', [
-        h('h2.section-header', 'Systems'),
-        h('p.section-intro', 'Generate commits over time'),
-        h('ul.systems-list', systems.map(function (system) {
-          var count = state.systems[system.key];
-          var cost = calculateCost(system, count);
+  var main;
+  var path = state.page.split('/');
+  if (path[0] === 'clicker') {
+    main = clickerView(state);
+  } else if (path[0] === 'how-to-play') {
+  }
 
-          return h('li.system', [
-            h('div.system-name', system.displayText + ' (' + count + ')'),
-            h('div.system-desc', 'Generates ' +  system.gain + ' commits per second'),
-            h('button.system-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
+  switch (path[0]) {
+    case 'clicker':
+      main = clickerView(state);
+      break;
+    case 'how-to-play':
+      main = textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!');
+      break;
+    case 'about':
+      main = textView('About', 'I started this little project in a lecture some time. It is not meant to attack anyone, but if you have any inquiries or feedback, write me an E-Mail to paul (dot) brinkmeier (at) gmail (dot) com or create an issue on GitHub.');
+      break;
+    case 'shop':
+      main = shopView(path[1], state);
+      break;
+  }
 
-                dispatcher.dispatch({
-                  type: 'buySystem',
-                  key: system.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Buy (' + cost + 'cm.)')
-          ]);
-        }))
-      ]),
-      h('div.clickarea', [
-        h('div.clicker', {
-          onclick: function () {
-            dispatcher.dispatch({ type: 'increment' });
-          }
-        }),
-        h('div.counter', String(roundPlaces(0, state.counter)) + ' commits'),
-        h('div.system-gain',
-          roundPlaces(1, getSystemGains(systems, state.systems, 1)) + '/s ' +
-          getUpgradeGains(upgrades, state.upgrades) + '/click'
-        ),
-        h('p.section-intro.spacebar-hint', 'Instead of clicking the picture, you can use the spacebar')
-      ]),
-      h('div.upgrades', [
-        h('h2.section-header', 'Skills'),
-        h('p.section-intro', 'Generate more commits per click'),
-        h('ul.upgrades-list', upgrades.map(function (upgrade) {
-          var count = state.upgrades[upgrade.key];
-          var cost = calculateUpgradeCost(upgrade, count);
-
-          return h('li.upgrade', [
-            h('div.upgrade-name', upgrade.displayText + ' (' + count + ')'),
-            h('div.upgrade-desc', 'Generates ' + upgrade.gain + ' commit(s) per click'),
-            h('button.upgrade-buy', {
-              onclick: function (e) {
-                // Unfocus the button, so that the spacebar does not yield more buys
-                e.target.blur();
-
-                dispatcher.dispatch({
-                  type: 'buyUpgrade',
-                  key: upgrade.key
-                });
-              },
-              disabled: cost > state.counter
-            }, 'Develop (' + cost + 'cm.)')
-          ]);
-        }))
+  return h('div.tichy-clicker', [
+    h('section.topbar', [
+      h('div.container', [
+        h('h1.topbar-title', [
+          rainbowSpans('Tichy-Clicker')
+        ]),
+        h('div.topbar-links', [
+          h('a.topbar-link', {
+            href: 'https://github.com/pbrinkmeier/tichy-clicker',
+            target: '_blank'
+          }, 'GitHub'),
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('how-to-play');
+            }
+          }, 'How to play'),
+          h('span.topbar-link', {
+            onclick: function () {
+              actions.setPage('about');
+            }
+          }, 'About')
+        ])
       ])
-    ])
+    ]),
+    main
   ]);
 };
