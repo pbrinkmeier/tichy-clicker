@@ -1,21 +1,24 @@
 'use strict';
 
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
+var config = require('../../resources/config.json');
+var shops = require('../../resources/shops.json');
 
 module.exports = function init () {
-	var systems = {};
-  var upgrades = {};
-	availableSystems.systems.forEach(function (system) {
-		systems[system.key] = 0;
-	});
-  availableUpgrades.upgrades.forEach(function (upgrade) {
-    upgrades[upgrade.key] = 0;
+  var inventory = {};
+
+  config.enabledShops.forEach(function (shopName) {
+    var shopInventory = {};
+
+    shops[shopName].items.forEach(function (item) {
+      shopInventory[item.key] = 0;
+    });
+
+    inventory[shopName] = shopInventory;
   });
 
 	return {
+    page: 'clicker',
 		counter: 0,
-		systems: systems,
-    upgrades: upgrades
+    inventory: inventory
 	};
 };

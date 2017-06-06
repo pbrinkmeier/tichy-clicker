@@ -1,12 +1,11 @@
 'use strict';
 
-var availableSystems = require('../../resources/systems.json');
-var availableUpgrades = require('../../resources/upgrades.json');
-var calculateCost = require('./calculate-cost.js');
-var calculateUpgradeCost = require('./calculate-upgrade-cost.js');
+var actions = require('./actions.js');
+var calculateItemCost = require('./util/calculate-item-cost.js');
+var calculateShopIncome = require('./util/calculate-shop-income.js');
+var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
-var getSystemGains = require('./get-system-gains.js');
-var getUpgradeGains = require('./get-upgrade-gains.js');
+var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
 var KEYCODE_ENTER = 13;
@@ -14,49 +13,38 @@ var KEYCODE_ENTER = 13;
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
-      dispatcher.dispatch({
-        type: 'interval'
-      });
-    }, 1000 * availableSystems.interval);
+      actions.interval();
+    }, 1000 * config.interval);
 
     window.addEventListener('keyup', function (e) {
       if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
-        dispatcher.dispatch({
-          type: 'increment'
-        });
+        actions.increment();
       }
     });
   },
   increment: function (action, state) {
-    var gains = getUpgradeGains(availableUpgrades.upgrades, state.upgrades);
-    state.counter += gains;
+    var income = calculateShopIncome(shops.skills, state.inventory.skills);
+    state.counter += income + 1;
   },
   interval: function (action, state) {
-    var gains = getSystemGains(availableSystems.systems, state.systems, availableSystems.interval);
-    state.counter += gains;
+    var income = calculateShopIncome(shops.systems, state.inventory.systems);
+    state.counter += income * config.interval;
   },
-  buySystem: function (action, state) {
-    var system = availableSystems.systems.find(function (system) {
-      return system.key === action.key;
+  setPage: function (action, state) {
+    state.page = action.path;
+  },
+  buy: function (action, state) {
+    var shop = shops[action.shopName];
+    var item = shop.items.find(function (item) {
+      return item.key === action.itemKey;
     });
-    var cost = calculateCost(system, state.systems[action.key]);
+    var alreadyBought = state.inventory[action.shopName][item.key];
+    var cost = calculateItemCost(item, alreadyBought);
+
     if (cost > state.counter) {
       return;
     }
-
     state.counter -= cost;
-    state.systems[action.key] += 1;
-  },
-  buyUpgrade: function (action, state) {
-    var upgrade = availableUpgrades.upgrades.find(function (upgrade) {
-      return upgrade.key === action.key;
-    });
-    var cost = calculateUpgradeCost(upgrade, state.upgrades[upgrade.key]);
-    if (cost > state.counter) {
-      return;
-    }
-
-    state.counter -= cost;
-    state.upgrades[upgrade.key] += 1;
+    state.inventory[action.shopName][item.key]++;
   }
 };

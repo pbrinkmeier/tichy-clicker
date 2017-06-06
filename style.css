@@ -9,6 +9,25 @@ body {
   font-family: 'Comic Sans MS', sans-serif;
 }
 
+button {
+  padding: .2em .5em;
+  border: 2px solid;
+  border-radius: .2em;
+  background-color: white;
+  color: hsl(210, 80%, 40%);
+  transition: .2s;
+}
+
+button:not(:disabled):hover {
+  border-color: hsl(210, 80%, 40%);
+  background-color: hsl(210, 80%, 40%);
+  color: white;
+}
+
+button:disabled {
+  color: hsl(210, 40%, 80%);
+}
+
 /* Helper class that centers a box */
 .container {
   margin: 0 auto;
@@ -98,7 +117,7 @@ body {
 
 /* A button that leads to a shop */
 .clicker-controls-shopbutton {
-  padding: .5em .2em;
+  padding: .5em;
 }
 
 .clicker-controls-shopbutton + .clicker-controls-shopbutton {
@@ -107,10 +126,6 @@ body {
 
 /* main element on the shop pages */
 .shop {
-}
-
-.shop > .container {
-  outline: 1px dotted blue;
 }
 
 /* shop menu that can have some buttons and some info */
@@ -145,6 +160,7 @@ body {
 
 /* Items of the shop. On bigger screens, 2 should be on each "line" */
 .shop-item {
+  display: block;
   box-sizing: border-box;
   padding: .25em;
   float: left;
@@ -184,4 +200,23 @@ body {
 /* The text content */
 .text-content {
   line-height: 1.5em;
+}
+
+/* Responsive version for screens narrower than 720 pixels */
+@media (max-width: 720px) {
+  .container {
+    margin: auto;
+    padding: .25em;
+    width: auto;
+  }
+
+  .main > .container {
+    padding: .5em .25em;
+  }
+
+  .shop-item {
+    float: none;
+    clear: none;
+    width: auto;
+  }
 }
