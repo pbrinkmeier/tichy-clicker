@@ -1941,10 +1941,6 @@ module.exports = {
     }, 1000 * config.interval);
 
     window.addEventListener('keyup', function (e) {
-      if (e.keyCode === KEYCODE_SPACEBAR || e.keyCode === KEYCODE_ENTER) {
-        actions.increment();
-      }
-
       switch (e.keyCode) {
         case KEYCODE_SPACEBAR:
         case KEYCODE_ENTER:
