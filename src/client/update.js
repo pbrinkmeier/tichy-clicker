@@ -5,6 +5,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
@@ -36,10 +37,20 @@ module.exports = {
           break;
       }
     });
+
+    window.state = state;
   },
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
+
+    state.particles.push(Particle(
+      20 + 260 * Math.random(), 20 + 130 * Math.random(),
+      -15 + 30 * Math.random(), 30 * Math.random(),
+      0, 10 + 30 * Math.random(),
+      'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
+      income + 1
+    ));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
