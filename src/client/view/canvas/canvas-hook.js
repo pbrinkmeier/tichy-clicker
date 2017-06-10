@@ -1,5 +1,7 @@
 'use strict';
 
+var isInDom = require('../../util/is-in-dom.js');
+
 function CanvasHook (drawFn) {
   this.setState(null);
   this.setDrawFn(drawFn);
@@ -34,7 +36,7 @@ CanvasHook.prototype.hook = function (canvas) {
     drawFn(state, drawingContext, timeDelta);
     
     // Only keep drawing if the canvas is still in the page
-    if (canvas.parentNode !== null) {
+    if (isInDom(canvas.parentNode)) {
       window.requestAnimationFrame(renderLoop);
     }
   }
