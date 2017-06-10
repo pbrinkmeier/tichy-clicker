@@ -1872,10 +1872,6 @@ var textView = require('./view/text-view.js');
 module.exports = function render (state) {
   var main;
   var path = state.page.split('/');
-  if (path[0] === 'clicker') {
-    main = clickerView(state);
-  } else if (path[0] === 'how-to-play') {
-  }
 
   switch (path[0]) {
     case 'clicker':
