@@ -5,6 +5,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
@@ -13,11 +14,13 @@ var KEYCODE_C = 67;
 var KEYCODE_V = 86;
 var KEYCODE_B = 66;
 
+var interval = 1 / config.ticksPerSecond;
+
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
       actions.interval();
-    }, 1000 * config.interval);
+    }, 1000 * interval);
 
     window.addEventListener('keyup', function (e) {
       switch (e.keyCode) {
@@ -40,10 +43,16 @@ module.exports = {
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
+
+    state.particles.push(randomParticle(income + 1));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
-    state.counter += income * config.interval;
+    state.counter += income * interval;
+    state.ticks++;
+    if (state.ticks % config.ticksPerSecond === 0) {
+      state.particles.push(randomParticle(income));
+    }
   },
   setPage: function (action, state) {
     state.page = action.path;
@@ -63,3 +72,16 @@ module.exports = {
     state.inventory[action.shopName][item.key]++;
   }
 };
+
+function randomParticle (value) {
+  return Particle(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 80 * Math.random(),
+    'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
+    value
+  );
+}

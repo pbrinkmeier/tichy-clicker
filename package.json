@@ -1,6 +1,6 @@
 {
   "name": "tichy-clicker",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "",
   "main": "src/client/main.js",
   "scripts": {

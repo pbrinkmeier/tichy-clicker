@@ -1651,7 +1651,7 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.05,
+  "ticksPerSecond": 20,
   "enabledShops": ["systems", "skills"]
 }
 
@@ -1817,7 +1817,9 @@ module.exports = function init () {
 	return {
     page: 'clicker',
 		counter: 0,
-    inventory: inventory
+    ticks: 0,
+    inventory: inventory,
+    particles: []
 	};
 };
 
@@ -1918,7 +1920,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":46,"./view/rainbow-spans.js":47,"./view/shop-view.js":48,"./view/text-view.js":49,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":48,"./view/rainbow-spans.js":49,"./view/shop-view.js":50,"./view/text-view.js":51,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -1926,6 +1928,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
 var KEYCODE_SPACEBAR = 32;
@@ -1934,11 +1937,13 @@ var KEYCODE_C = 67;
 var KEYCODE_V = 86;
 var KEYCODE_B = 66;
 
+var interval = 1 / config.ticksPerSecond;
+
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
       actions.interval();
-    }, 1000 * config.interval);
+    }, 1000 * interval);
 
     window.addEventListener('keyup', function (e) {
       switch (e.keyCode) {
@@ -1961,10 +1966,16 @@ module.exports = {
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
+
+    state.particles.push(randomParticle(income + 1));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
-    state.counter += income * config.interval;
+    state.counter += income * interval;
+    state.ticks++;
+    if (state.ticks % config.ticksPerSecond === 0) {
+      state.particles.push(randomParticle(income));
+    }
   },
   setPage: function (action, state) {
     state.page = action.path;
@@ -1985,7 +1996,20 @@ module.exports = {
   }
 };
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44}],43:[function(require,module,exports){
+function randomParticle (value) {
+  return Particle(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 80 * Math.random(),
+    'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
+    value
+  );
+}
+
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/particle.js":46}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
@@ -2020,18 +2044,128 @@ module.exports = function floorPlaces (x, places) {
 },{}],46:[function(require,module,exports){
 'use strict';
 
+var floorPlaces = require('./floor-places.js');
+
+function Particle (x, y, velX, velY, accX, accY, colour, value) {
+  return {
+    x: x,
+    y: y,
+    velX: velX,
+    velY: velY,
+    accX: accX,
+    accY: accY,
+    colour: colour,
+    value: value
+  };
+}
+
+Particle.draw = function (ctx, particle) {
+  var particleText = '+' + floorPlaces(String(particle.value), 1);
+  ctx.font = '32px \'Comic Sans MS\', sans-serif';
+  // Rainbow particles for when the time has come
+  /*
+  for (var i = 0, n = 25; i < n; i++) {
+    ctx.fillStyle = 'hsla(' + String((360 / n) * (i + particle.y)) + ', 100%, 50%, ' + String(i / n) + ')';
+    ctx.fillText('+' + String(particle.value), particle.x, particle.y - n + i);
+  }
+  */
+  // The text should be centered at the position
+  var measurements = ctx.measureText(particleText);
+  var posX = particle.x - measurements.width / 2;
+  var posY = particle.y;
+  // Draw a shadow
+  ctx.fillStyle = 'black';
+  ctx.fillText(particleText, posX - 1, posY - 1);
+  ctx.fillStyle = particle.colour;
+  ctx.fillText(particleText, posX, posY);
+};
+
+Particle.update = function (f, particle) {
+  particle.x += particle.velX * f;
+  particle.y += particle.velY * f;
+  particle.velX += particle.accX * f;
+  particle.velY += particle.accY * f;
+};
+
+module.exports = Particle;
+
+},{"./floor-places.js":45}],47:[function(require,module,exports){
+'use strict';
+
+function CanvasHook (drawFn) {
+  this.setState(null);
+  this.setDrawFn(drawFn);
+}
+
+CanvasHook.prototype.setState = function (state) {
+  this.state = state;
+};
+
+CanvasHook.prototype.getState = function () {
+  return this.state;
+};
+
+CanvasHook.prototype.setDrawFn = function (drawFn) {
+  this.drawFn = drawFn;
+};
+
+CanvasHook.prototype.getDrawFn = function () {
+  return this.drawFn;
+};
+
+CanvasHook.prototype.hook = function (canvas) {
+  var drawingContext = canvas.getContext('2d');
+  var state = this.getState();
+  var drawFn = this.getDrawFn();
+  var lastRunTime = 0;
+  window.requestAnimationFrame(renderLoop);
+
+  function renderLoop (currentTime) {
+    var timeDelta = currentTime - lastRunTime;
+    lastRunTime = currentTime;
+    drawFn(state, drawingContext, timeDelta);
+    
+    // Only keep drawing if the canvas is still in the page
+    if (canvas.parentNode !== null) {
+      window.requestAnimationFrame(renderLoop);
+    }
+  }
+};
+
+module.exports = CanvasHook;
+
+},{}],48:[function(require,module,exports){
+'use strict';
+
 var actions = require('../actions.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
+var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
+var Particle = require('../util/particle.js');
 var shops = require('../../../resources/shops.json');
+
+var drawHook = new CanvasHook(function (state, ctx, timeDelta) {
+  var factor = timeDelta / 1000;
+  var w = ctx.canvas.width;
+  var h = ctx.canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  state.particles.forEach(function (particle) {
+    Particle.draw(ctx, particle);
+    Particle.update(factor, particle);
+  });
+  state.particles = state.particles.filter(function (particle) {
+    return particle.y <= 350;
+  });
+});
 
 module.exports = function clickerView (state) {
   // Convention: create a variable for every value that the view depends on
   var counter = state.counter;
   var incomePerSecond = calculateShopIncome(shops.systems, state.inventory.systems);
   var incomePerClick = 1 + calculateShopIncome(shops.skills, state.inventory.skills);
+  drawHook.setState(state);
 
   return h('section.main.clicker', [
     h('div.container', [
@@ -2039,7 +2173,13 @@ module.exports = function clickerView (state) {
         onmousedown: function () {
           actions.increment();
         }
-      }, []),
+      }, [
+        h('canvas', {
+          width: 300,
+          height: 300,
+          drawHook: drawHook
+        })
+      ]),
       h('div.clicker-counter', String(floorPlaces(counter, 0))),
       h('div.clicker-incomes', [
         h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
@@ -2059,7 +2199,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"virtual-dom/h":10}],47:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":46,"./canvas/canvas-hook.js":47,"virtual-dom/h":10}],49:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2080,7 +2220,7 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],48:[function(require,module,exports){
+},{"virtual-dom/h":10}],50:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2127,7 +2267,7 @@ module.exports = function shopView (shopName, state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],49:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],51:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');

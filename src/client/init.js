@@ -19,6 +19,8 @@ module.exports = function init () {
 	return {
     page: 'clicker',
 		counter: 0,
-    inventory: inventory
+    ticks: 0,
+    inventory: inventory,
+    particles: []
 	};
 };
