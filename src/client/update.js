@@ -39,8 +39,6 @@ module.exports = {
           break;
       }
     });
-
-    window.state = state;
   },
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
