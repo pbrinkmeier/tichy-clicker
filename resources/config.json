@@ -1,4 +1,4 @@
 {
-  "interval": 0.05,
+  "ticksPerSecond": 20,
   "enabledShops": ["systems", "skills"]
 }

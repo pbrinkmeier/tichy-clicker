@@ -1651,7 +1651,7 @@ function isArray(obj) {
 
 },{}],35:[function(require,module,exports){
 module.exports={
-  "interval": 0.05,
+  "ticksPerSecond": 20,
   "enabledShops": ["systems", "skills"]
 }
 
@@ -1817,6 +1817,7 @@ module.exports = function init () {
 	return {
     page: 'clicker',
 		counter: 0,
+    ticks: 0,
     inventory: inventory,
     particles: []
 	};
@@ -1936,11 +1937,13 @@ var KEYCODE_C = 67;
 var KEYCODE_V = 86;
 var KEYCODE_B = 66;
 
+var interval = 1 / config.ticksPerSecond;
+
 module.exports = {
   init: function (action, state) {
     setInterval(function () {
       actions.interval();
-    }, 1000 * config.interval);
+    }, 1000 * interval);
 
     window.addEventListener('keyup', function (e) {
       switch (e.keyCode) {
@@ -1966,20 +1969,15 @@ module.exports = {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
 
-    state.particles.push(Particle(
-      // position (in the upper half)
-      20 + 260 * Math.random(), 20 + 130 * Math.random(),
-      // initial velocity
-      -15 + 30 * Math.random(), 15 + 30 * Math.random(),
-      // acceleration
-      0, 30 + 80 * Math.random(),
-      'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
-      income + 1
-    ));
+    state.particles.push(randomParticle(income + 1));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
-    state.counter += income * config.interval;
+    state.counter += income * interval;
+    state.ticks++;
+    if (state.ticks % config.ticksPerSecond === 0) {
+      state.particles.push(randomParticle(income));
+    }
   },
   setPage: function (action, state) {
     state.page = action.path;
@@ -1999,6 +1997,19 @@ module.exports = {
     state.inventory[action.shopName][item.key]++;
   }
 };
+
+function randomParticle (value) {
+  return Particle(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 80 * Math.random(),
+    'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
+    value
+  );
+}
 
 },{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/particle.js":46}],43:[function(require,module,exports){
 'use strict';
@@ -2035,6 +2046,8 @@ module.exports = function floorPlaces (x, places) {
 },{}],46:[function(require,module,exports){
 'use strict';
 
+var floorPlaces = require('./floor-places.js');
+
 function Particle (x, y, velX, velY, accX, accY, colour, value) {
   return {
     x: x,
@@ -2049,7 +2062,7 @@ function Particle (x, y, velX, velY, accX, accY, colour, value) {
 }
 
 Particle.draw = function (ctx, particle) {
-  var particleText = '+' + String(particle.value);
+  var particleText = '+' + floorPlaces(String(particle.value), 1);
   ctx.font = '32px \'Comic Sans MS\', sans-serif';
   // Rainbow particles for when the time has come
   /*
@@ -2058,11 +2071,15 @@ Particle.draw = function (ctx, particle) {
     ctx.fillText('+' + String(particle.value), particle.x, particle.y - n + i);
   }
   */
+  // The text should be centered at the position
+  var measurements = ctx.measureText(particleText);
+  var posX = particle.x - measurements.width / 2;
+  var posY = particle.y;
   // Draw a shadow
   ctx.fillStyle = 'black';
-  ctx.fillText(particleText, particle.x - 1, particle.y - 1);
+  ctx.fillText(particleText, posX - 1, posY - 1);
   ctx.fillStyle = particle.colour;
-  ctx.fillText(particleText, particle.x, particle.y);
+  ctx.fillText(particleText, posX, posY);
 };
 
 Particle.update = function (f, particle) {
@@ -2074,7 +2091,7 @@ Particle.update = function (f, particle) {
 
 module.exports = Particle;
 
-},{}],47:[function(require,module,exports){
+},{"./floor-places.js":45}],47:[function(require,module,exports){
 'use strict';
 
 function CanvasHook (drawFn) {
