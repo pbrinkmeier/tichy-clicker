@@ -1920,7 +1920,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":48,"./view/rainbow-spans.js":49,"./view/shop-view.js":50,"./view/text-view.js":51,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":49,"./view/rainbow-spans.js":50,"./view/shop-view.js":51,"./view/text-view.js":52,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -2009,7 +2009,7 @@ function randomParticle (value) {
   );
 }
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/particle.js":46}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/particle.js":47}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
@@ -2042,6 +2042,22 @@ module.exports = function floorPlaces (x, places) {
 };
 
 },{}],46:[function(require,module,exports){
+'use strict';
+
+module.exports = function isInDom (element) {
+  var currentElement = element;
+
+  while (currentElement !== null) {
+    if (currentElement === document) {
+      return true;
+    }
+    currentElement = currentElement.parentNode;
+  }
+
+  return false;
+};
+
+},{}],47:[function(require,module,exports){
 'use strict';
 
 var floorPlaces = require('./floor-places.js');
@@ -2089,8 +2105,10 @@ Particle.update = function (f, particle) {
 
 module.exports = Particle;
 
-},{"./floor-places.js":45}],47:[function(require,module,exports){
+},{"./floor-places.js":45}],48:[function(require,module,exports){
 'use strict';
+
+var isInDom = require('../../util/is-in-dom.js');
 
 function CanvasHook (drawFn) {
   this.setState(null);
@@ -2126,7 +2144,7 @@ CanvasHook.prototype.hook = function (canvas) {
     drawFn(state, drawingContext, timeDelta);
     
     // Only keep drawing if the canvas is still in the page
-    if (canvas.parentNode !== null) {
+    if (isInDom(canvas.parentNode)) {
       window.requestAnimationFrame(renderLoop);
     }
   }
@@ -2134,7 +2152,7 @@ CanvasHook.prototype.hook = function (canvas) {
 
 module.exports = CanvasHook;
 
-},{}],48:[function(require,module,exports){
+},{"../../util/is-in-dom.js":46}],49:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2199,7 +2217,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":46,"./canvas/canvas-hook.js":47,"virtual-dom/h":10}],49:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2220,7 +2238,7 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],50:[function(require,module,exports){
+},{"virtual-dom/h":10}],51:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2267,7 +2285,7 @@ module.exports = function shopView (shopName, state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],51:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],52:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
