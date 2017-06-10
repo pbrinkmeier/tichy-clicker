@@ -45,9 +45,12 @@ module.exports = {
     state.counter += income + 1;
 
     state.particles.push(Particle(
+      // position (in the upper half)
       20 + 260 * Math.random(), 20 + 130 * Math.random(),
-      -15 + 30 * Math.random(), 30 * Math.random(),
-      0, 10 + 30 * Math.random(),
+      // initial velocity
+      -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+      // acceleration
+      0, 30 + 80 * Math.random(),
       'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
       income + 1
     ));

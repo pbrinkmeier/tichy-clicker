@@ -23,6 +23,9 @@ Particle.draw = function (ctx, particle) {
     ctx.fillText('+' + String(particle.value), particle.x, particle.y - n + i);
   }
   */
+  // Draw a shadow
+  ctx.fillStyle = 'black';
+  ctx.fillText(particleText, particle.x - 1, particle.y - 1);
   ctx.fillStyle = particle.colour;
   ctx.fillText(particleText, particle.x, particle.y);
 };
