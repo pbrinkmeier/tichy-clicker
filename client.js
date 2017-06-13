@@ -1937,6 +1937,8 @@ var interval = 1 / config.ticksPerSecond;
 
 module.exports = {
   init: function (action, state) {
+    window.state = state;
+
     setInterval(function () {
       actions.interval();
     }, 1000 * interval);
@@ -2152,6 +2154,7 @@ module.exports = CanvasHook;
 'use strict';
 
 var actions = require('../actions.js');
+var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
@@ -2201,19 +2204,33 @@ module.exports = function clickerView (state) {
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
-        var buttonText = shop.buttonText;
+        // Find all available items
+        var availableItems = shop.items.filter(function (item) {
+          var alreadyBought = state.inventory[shopName][item.key];
+          var cost = calculateItemCost(item, alreadyBought);
+          return cost <= state.counter;
+        });
+
+        // This is an array of all the children of the button element
+        var buttonContent = [
+          h('span', shop.buttonText)
+        ];
+        // If there are items in the shop that are buyable, show a notification bubble
+        if (availableItems.length !== 0) {
+          buttonContent.push(h('div.button-notification', String(availableItems.length)));
+        }
 
         return h('button.clicker-controls-shopbutton', {
           onclick: function () {
             actions.setPage('shop/' + shopName);
           }
-        }, buttonText);
+        }, buttonContent);
       }))
     ])
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');

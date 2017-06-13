@@ -10,6 +10,7 @@ body {
 }
 
 button {
+  position: relative;
   padding: .2em .5em;
   border: 2px solid;
   border-radius: .2em;
@@ -26,6 +27,33 @@ button:not(:disabled):hover {
 
 button:disabled {
   color: hsl(210, 40%, 80%);
+}
+
+/* A little circle in the upper corner of a button */
+.button-notification {
+  animation: plop .2s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: -1em;
+  margin-right: -1em;
+  padding: .5em;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: hsl(210, 80%, 40%);
+  color: white;
+  font-size: .75em;
+  line-height: 1em;
+}
+
+@keyframes plop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 /* Helper class that centers a box */
