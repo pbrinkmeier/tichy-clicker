@@ -2152,6 +2152,7 @@ module.exports = CanvasHook;
 'use strict';
 
 var actions = require('../actions.js');
+var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
@@ -2202,18 +2203,30 @@ module.exports = function clickerView (state) {
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
         var buttonText = shop.buttonText;
+        var availableItems = shop.items.filter(function (item) {
+          var alreadyBought = state.inventory[shopName][item.key];
+          var cost = calculateItemCost(item, alreadyBought);
+          return cost <= state.counter;
+        }).length;
+
+        var buttonContent = [
+          h('span', buttonText)
+        ];
+        if (availableItems !== 0) {
+          buttonContent.push(h('div.button-notification', String(availableItems)));
+        }
 
         return h('button.clicker-controls-shopbutton', {
           onclick: function () {
             actions.setPage('shop/' + shopName);
           }
-        }, buttonText);
+        }, buttonContent);
       }))
     ])
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
