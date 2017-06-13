@@ -1937,6 +1937,8 @@ var interval = 1 / config.ticksPerSecond;
 
 module.exports = {
   init: function (action, state) {
+    window.state = state;
+
     setInterval(function () {
       actions.interval();
     }, 1000 * interval);
@@ -2202,18 +2204,20 @@ module.exports = function clickerView (state) {
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
-        var buttonText = shop.buttonText;
+        // Find all available items
         var availableItems = shop.items.filter(function (item) {
           var alreadyBought = state.inventory[shopName][item.key];
           var cost = calculateItemCost(item, alreadyBought);
           return cost <= state.counter;
-        }).length;
+        });
 
+        // This is an array of all the children of the button element
         var buttonContent = [
-          h('span', buttonText)
+          h('span', shop.buttonText)
         ];
-        if (availableItems !== 0) {
-          buttonContent.push(h('div.button-notification', String(availableItems)));
+        // If there are items in the shop that are buyable, show a notification bubble
+        if (availableItems.length !== 0) {
+          buttonContent.push(h('div.button-notification', String(availableItems.length)));
         }
 
         return h('button.clicker-controls-shopbutton', {

@@ -18,6 +18,8 @@ var interval = 1 / config.ticksPerSecond;
 
 module.exports = {
   init: function (action, state) {
+    window.state = state;
+
     setInterval(function () {
       actions.interval();
     }, 1000 * interval);
