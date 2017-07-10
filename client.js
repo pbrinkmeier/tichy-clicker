@@ -1971,7 +1971,11 @@ module.exports = {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
     state.counter += income * interval;
     state.ticks++;
-    if (state.ticks % config.ticksPerSecond === 0) {
+
+    var secondHasPassed = state.ticks % config.ticksPerSecond === 0;
+    var hasIncome = income !== 0;
+
+    if (secondHasPassed && hasIncome) {
       state.particles.push(randomParticle(income));
     }
   },
