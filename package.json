@@ -8,7 +8,7 @@
     "build-client": "browserify src/client/main.js -o client.js"
   },
   "author": "Paul Brinkmeier",
-  "license": "MIT",
+  "license": "WTFPL",
   "dependencies": {
     "virtual-dom": "^2.1.1"
   },
