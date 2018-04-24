@@ -59,6 +59,8 @@ module.exports = {
     if (secondHasPassed && hasIncome) {
       state.particles.push(randomParticle(income));
     }
+
+    localStorage.setItem('store', JSON.stringify(state));
   },
   setPage: function (action, state) {
     state.page = action.path;
