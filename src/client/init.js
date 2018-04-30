@@ -16,15 +16,11 @@ module.exports = function init () {
     inventory[shopName] = shopInventory;
   });
 
-	var defaults = {
+  return {
     page: 'clicker',
 		counter: 0,
     ticks: 0,
     inventory: inventory,
     particles: []
-	};
-
-  var stored = JSON.parse(localStorage.getItem('store') || "{}");
-
-  return Object.assign(defaults, stored);
+  };
 };

@@ -1814,17 +1814,13 @@ module.exports = function init () {
     inventory[shopName] = shopInventory;
   });
 
-	var defaults = {
+  return {
     page: 'clicker',
 		counter: 0,
     ticks: 0,
     inventory: inventory,
     particles: []
-	};
-
-  var stored = JSON.parse(localStorage.getItem('store') || "{}");
-
-  return Object.assign(defaults, stored);
+  };
 };
 
 },{"../../resources/config.json":35,"../../resources/shops.json":36}],40:[function(require,module,exports){
@@ -1839,11 +1835,16 @@ var init = require('./init.js');
 var render = require('./render.js');
 var update = require('./update.js');
 
-var state = init();
+var defaults = init();
+
+var stored = JSON.parse(window.localStorage.getItem('store') || "{}");
+var state = Object.assign(defaults, stored);
 
 dispatcher.register(function (action) {
   if (action.type in update) {
     update[action.type](action, state);
+    localStorage.setItem('store', JSON.stringify(state));
+
     rerender();
   } else {
     console.log('Unrecognized action', action);
@@ -1982,8 +1983,6 @@ module.exports = {
     if (secondHasPassed && hasIncome) {
       state.particles.push(randomParticle(income));
     }
-
-    localStorage.setItem('store', JSON.stringify(state));
   },
   setPage: function (action, state) {
     state.page = action.path;
