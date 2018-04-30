@@ -9,11 +9,16 @@ var init = require('./init.js');
 var render = require('./render.js');
 var update = require('./update.js');
 
-var state = init();
+var defaults = init();
+
+var stored = JSON.parse(window.localStorage.getItem('store') || "{}");
+var state = Object.assign(defaults, stored);
 
 dispatcher.register(function (action) {
   if (action.type in update) {
     update[action.type](action, state);
+    localStorage.setItem('store', JSON.stringify(state));
+
     rerender();
   } else {
     console.log('Unrecognized action', action);
