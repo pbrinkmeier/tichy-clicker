@@ -16,11 +16,11 @@ module.exports = function init () {
     inventory[shopName] = shopInventory;
   });
 
-	return {
+  return {
     page: 'clicker',
 		counter: 0,
     ticks: 0,
     inventory: inventory,
     particles: []
-	};
+  };
 };
