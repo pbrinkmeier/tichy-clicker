@@ -18,8 +18,8 @@ module.exports = function shopView (shopName, state) {
           onclick: function () {
             actions.setPage('clicker');
           }
-        }, 'Back'),
-        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' commits')
+        }, 'Zurück'),
+        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' Commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -37,7 +37,7 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Buy (' + String(cost) + ' commits)')
+          }, 'Kaufen (' + String(cost) + ' commits)')
         ]);
       }))
     ])

@@ -1,45 +1,45 @@
 {
   "systems": {
-    "title": "Systems",
-    "buttonText": "Buy systems",
-    "description": "Generate commits over time",
+    "title": "Systeme",
+    "buttonText": "Systeme kaufen",
+    "description": "Systeme generieren Commits über Zeit.",
     "items": [
       {
         "key": "maven",
-        "displayText": "Install Maven",
-        "description": "Generates 0.2 commits per second",
+        "displayText": "Maven installieren",
+        "description": "Generiert 2 commits pro Sekunde",
         "initialCost": 10,
         "costFactor": 1.2,
         "income": 0.2
       },
       {
         "key": "uml",
-        "displayText": "Draw UML diagram",
-        "description": "Generates 1 commits per second",
+        "displayText": "UML-Diagramm malen",
+        "description": "Generiert 1 Commit pro Sekunde",
         "initialCost": 100,
         "costFactor": 1.3,
         "income": 1
       },
       {
         "key": "java-update",
-        "displayText": "Update Java",
-        "description": "Generates 5 commits per second",
+        "displayText": "Java-Update installieren",
+        "description": "Generiert 5 Commits pro Sekunde",
         "initialCost": 1330,
         "costFactor": 1.5,
         "income": 5
       },
       {
         "key": "jmjrst",
-        "displayText": "Release a new JMJRST version",
-        "description": "Generates 125 commits per second",
+        "displayText": "Neue JMJRST-Version",
+        "description": "Generiert 125 Commits pro Sekunde",
         "initialCost": 18080,
         "costFactor": 1.3,
         "income": 125
       },
       {
         "key": "spec",
-        "displayText": "Write a specification (for a specification)",
-        "description": "Generates 800 commits per second",
+        "displayText": "Pflichtenheft schreiben (für Pflichtenheft-Software)",
+        "description": "Generiert 800 Commits pro Sekunde",
         "initialCost": 290000,
         "costFactor": 1.1,
         "income": 800
@@ -47,46 +47,46 @@
     ]
   },
   "skills": {
-    "title": "Skills",
-    "buttonText": "Develop skills",
-    "description": "Generate more commits per click",
+    "title": "Fähigkeiten",
+    "buttonText": "Fähigkeiten erwerben",
+    "description": "Fähigkeiten generieren mehr Commits pro Klick.",
     "items": [
       {
         "key": "git-article",
-        "displayText": "Read Git article",
-        "description": "Generates 1 commit per click",
+        "displayText": "Git-Artikel lesen",
+        "description": "Generiert 1 Commit pro Klick",
         "initialCost": 100,
         "costFactor": 1.4,
         "income": 1
       },
       {
         "key": "oop",
-        "displayText": "Become OOP guru",
-        "description": "Generates 5 commits per click",
+        "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
+        "description": "Generiert 5 Commits pro Klick",
         "initialCost": 1500,
         "costFactor": 1.1,
         "income": 5
       },
       {
         "key": "coverage",
-        "displayText": "Get 110% code coverage",
-        "description": "Generate 25 commits per click",
+        "displayText": "110% Quelltext-Abdeckung erreichen",
+        "description": "Generiert 125 Commits pro Klick",
         "initialCost": 20000,
         "costFactor": 1.8,
         "income": 25
       },
       {
         "key": "suit",
-        "displayText": "Wear a fancy suit",
-        "description": "Generates 230 commits per click",
+        "displayText": "Anzug tragen",
+        "description": "Generiert 230 Commits pro Klick",
         "initialCost": 45000,
         "costFactor": 1.4,
         "income": 230
       },
       {
         "key": "npp",
-        "displayText": "Go WOLOLO on a Notepad++ user",
-        "description": "Generates 800 commits per click",
+        "displayText": "Notizbuch++-Benutzer konvertieren",
+        "description": "Generiert 800 Commits pro Klick",
         "initialCost": 333000,
         "costFactor": 1.4,
         "income": 800

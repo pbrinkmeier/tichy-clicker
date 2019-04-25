@@ -47,7 +47,7 @@ module.exports = function clickerView (state) {
       h('div.clicker-counter', String(floorPlaces(counter, 0))),
       h('div.clicker-incomes', [
         h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
+        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
