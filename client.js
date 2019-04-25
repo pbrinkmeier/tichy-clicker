@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
 /*!
@@ -1658,46 +1658,46 @@ module.exports={
 },{}],36:[function(require,module,exports){
 module.exports={
   "systems": {
-    "title": "Systems",
-    "buttonText": "Buy systems",
-    "description": "Generate commits over time",
+    "title": "Systeme",
+    "buttonText": "Systeme kaufen",
+    "description": "Systeme generieren Commits über Zeit.",
     "items": [
       {
         "key": "maven",
-        "displayText": "Install Maven",
-        "description": "Generates 0.2 commits per second",
+        "displayText": "Maven installieren",
+        "description": "Generiert 2 commits pro Sekunde",
         "initialCost": 10,
         "costFactor": 1.2,
         "income": 0.2
       },
       {
         "key": "uml",
-        "displayText": "Draw UML diagram",
-        "description": "Generates 1 commits per second",
+        "displayText": "UML-Diagramm malen",
+        "description": "Generiert 1 Commit pro Sekunde",
         "initialCost": 100,
         "costFactor": 1.3,
         "income": 1
       },
       {
         "key": "java-update",
-        "displayText": "Update Java",
-        "description": "Generates 5 commits per second",
+        "displayText": "Java-Update installieren",
+        "description": "Generiert 5 Commits pro Sekunde",
         "initialCost": 1330,
         "costFactor": 1.5,
         "income": 5
       },
       {
         "key": "jmjrst",
-        "displayText": "Release a new JMJRST version",
-        "description": "Generates 125 commits per second",
+        "displayText": "Neue JMJRST-Version",
+        "description": "Generiert 125 Commits pro Sekunde",
         "initialCost": 18080,
         "costFactor": 1.3,
         "income": 125
       },
       {
         "key": "spec",
-        "displayText": "Write a specification (for a specification)",
-        "description": "Generates 800 commits per second",
+        "displayText": "Pflichtenheft schreiben (für Pflichtenheft-Software)",
+        "description": "Generiert 800 Commits pro Sekunde",
         "initialCost": 290000,
         "costFactor": 1.1,
         "income": 800
@@ -1705,46 +1705,46 @@ module.exports={
     ]
   },
   "skills": {
-    "title": "Skills",
-    "buttonText": "Develop skills",
-    "description": "Generate more commits per click",
+    "title": "Fähigkeiten",
+    "buttonText": "Fähigkeiten erwerben",
+    "description": "Fähigkeiten generieren mehr Commits pro Klick.",
     "items": [
       {
         "key": "git-article",
-        "displayText": "Read Git article",
-        "description": "Generates 1 commit per click",
+        "displayText": "Git-Artikel lesen",
+        "description": "Generiert 1 Commit pro Klick",
         "initialCost": 100,
         "costFactor": 1.4,
         "income": 1
       },
       {
         "key": "oop",
-        "displayText": "Become OOP guru",
-        "description": "Generates 5 commits per click",
+        "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
+        "description": "Generiert 5 Commits pro Klick",
         "initialCost": 1500,
         "costFactor": 1.1,
         "income": 5
       },
       {
         "key": "coverage",
-        "displayText": "Get 110% code coverage",
-        "description": "Generate 25 commits per click",
+        "displayText": "110% Quelltext-Abdeckung erreichen",
+        "description": "Generiert 125 Commits pro Klick",
         "initialCost": 20000,
         "costFactor": 1.8,
         "income": 25
       },
       {
         "key": "suit",
-        "displayText": "Wear a fancy suit",
-        "description": "Generates 230 commits per click",
+        "displayText": "Anzug tragen",
+        "description": "Generiert 230 Commits pro Klick",
         "initialCost": 45000,
         "costFactor": 1.4,
         "income": 230
       },
       {
         "key": "npp",
-        "displayText": "Go WOLOLO on a Notepad++ user",
-        "description": "Generates 800 commits per click",
+        "displayText": "Notizbuch++-Benutzer konvertieren",
+        "description": "Generiert 800 Commits pro Klick",
         "initialCost": 333000,
         "costFactor": 1.4,
         "income": 800
@@ -1878,10 +1878,10 @@ module.exports = function render (state) {
       main = clickerView(state);
       break;
     case 'how-to-play':
-      main = textView('How to play', 'Click the image in the center to earn commits. To earn more, use them to buy systems, which generate commits over time, or skills, which give you more commits per click. That\'s it, have fun!');
+      main = textView('Wie man spielt', 'Klicken Sie auf das Bild, um Commits zu erhalten. Eignen Sie sich neue Fähigkeiten an, um mehr Commits pro Klick zu bekommen. Kaufen Sie Systeme für ein stetiges Einkommen. Das war\'s, haben Sie viel Spaß!');
       break;
     case 'about':
-      main = textView('About', 'I started this little project in a lecture some time. It is not meant to attack anyone, but if you have any inquiries or feedback, write me an E-Mail to paul (dot) brinkmeier (at) gmail (dot) com or create an issue on GitHub.');
+      main = textView('Über', 'Dieses Projekt habe ich in einer Vorlesung begonnen. Es soll niemanden angreifen; falls Sie Fragen oder Vorschläge haben, schreiben Sie mir doch eine E-Mail an paul (Punkt) brinkmeier (Bei) gmail (Punkt) com.');
       break;
     case 'shop':
       main = shopView(path[1], state);
@@ -1892,7 +1892,7 @@ module.exports = function render (state) {
     h('section.topbar', [
       h('div.container', [
         h('h1.topbar-title', [
-          rainbowSpans('Tichy-Clicker')
+          rainbowSpans('Tichy-Klicker')
         ]),
         h('div.topbar-links', [
           h('a.topbar-link', {
@@ -1903,12 +1903,12 @@ module.exports = function render (state) {
             onclick: function () {
               actions.setPage('how-to-play');
             }
-          }, 'How to play'),
+          }, 'Wie man spielt'),
           h('span.topbar-link', {
             onclick: function () {
               actions.setPage('about');
             }
-          }, 'About')
+          }, 'Über')
         ])
       ])
     ]),
@@ -2200,7 +2200,7 @@ module.exports = function clickerView (state) {
       h('div.clicker-counter', String(floorPlaces(counter, 0))),
       h('div.clicker-incomes', [
         h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/click')
+        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
@@ -2272,8 +2272,8 @@ module.exports = function shopView (shopName, state) {
           onclick: function () {
             actions.setPage('clicker');
           }
-        }, 'Back'),
-        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' commits')
+        }, 'Zurück'),
+        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' Commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -2291,7 +2291,7 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Buy (' + String(cost) + ' commits)')
+          }, 'Kaufen (' + String(cost) + ' commits)')
         ]);
       }))
     ])
