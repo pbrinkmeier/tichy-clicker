@@ -1665,7 +1665,7 @@ module.exports={
       {
         "key": "maven",
         "displayText": "Maven installieren",
-        "description": "Generiert 2 commits pro Sekunde",
+        "description": "Generiert 0,2 Commits pro Sekunde",
         "initialCost": 10,
         "costFactor": 1.2,
         "income": 0.2
@@ -1731,7 +1731,7 @@ module.exports={
         "description": "Generiert 125 Commits pro Klick",
         "initialCost": 20000,
         "costFactor": 1.8,
-        "income": 25
+        "income": 125
       },
       {
         "key": "suit",
