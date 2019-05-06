@@ -5,6 +5,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Event = require('./util/event.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -42,6 +43,18 @@ module.exports = {
       }
     });
   },
+  click: function (action, state) {
+    var prevLen = state.events.length;
+    state.events = state.events.filter(function (event) {
+      return !(action.x >= event.x && action.y >= event.y && action.x < event.x + 20 && action.y < event.y + 20);
+    });
+
+    if (prevLen > state.events.length) {
+      // activate power mode
+    }
+
+    actions.increment();
+  },
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
@@ -58,6 +71,11 @@ module.exports = {
 
     if (secondHasPassed && hasIncome) {
       state.particles.push(randomParticle(income));
+    }
+
+    // spawn event every ~ 10 sec
+    if (secondHasPassed && Math.random() < 10 / 100) {
+      state.events.push(randomEvent());
     }
   },
   setPage: function (action, state) {
@@ -89,5 +107,16 @@ function randomParticle (value) {
     0, 30 + 80 * Math.random(),
     'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
     value
+  );
+}
+
+function randomEvent () {
+  return Event(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 40 * Math.random()
   );
 }

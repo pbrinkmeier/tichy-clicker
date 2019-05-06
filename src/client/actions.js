@@ -6,6 +6,9 @@ module.exports = {
   interval: function () {
     dispatcher.dispatch({ type: 'interval' });
   },
+  click: function (x, y) {
+    dispatcher.dispatch({ type: 'click', x: x, y: y });
+  },
   increment: function () {
     dispatcher.dispatch({ type: 'increment' });
   },

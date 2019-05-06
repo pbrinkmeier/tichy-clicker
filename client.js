@@ -1762,6 +1762,9 @@ module.exports = {
   interval: function () {
     dispatcher.dispatch({ type: 'interval' });
   },
+  click: function (x, y) {
+    dispatcher.dispatch({ type: 'click', x: x, y: y });
+  },
   increment: function () {
     dispatcher.dispatch({ type: 'increment' });
   },
@@ -1819,7 +1822,8 @@ module.exports = function init () {
 		counter: 0,
     ticks: 0,
     inventory: inventory,
-    particles: []
+    particles: [],
+    events: []
   };
 };
 
@@ -1921,7 +1925,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":49,"./view/rainbow-spans.js":50,"./view/shop-view.js":51,"./view/text-view.js":52,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":50,"./view/rainbow-spans.js":51,"./view/shop-view.js":52,"./view/text-view.js":53,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -1929,6 +1933,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Event = require('./util/event.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -1966,6 +1971,18 @@ module.exports = {
       }
     });
   },
+  click: function (action, state) {
+    var prevLen = state.events.length;
+    state.events = state.events.filter(function (event) {
+      return !(action.x >= event.x && action.y >= event.y && action.x < event.x + 20 && action.y < event.y + 20);
+    });
+
+    if (prevLen > state.events.length) {
+      // activate power mode
+    }
+
+    actions.increment();
+  },
   increment: function (action, state) {
     var income = calculateShopIncome(shops.skills, state.inventory.skills);
     state.counter += income + 1;
@@ -1982,6 +1999,11 @@ module.exports = {
 
     if (secondHasPassed && hasIncome) {
       state.particles.push(randomParticle(income));
+    }
+
+    // spawn event every ~ 10 sec
+    if (secondHasPassed && Math.random() < 10 / 100) {
+      state.events.push(randomEvent());
     }
   },
   setPage: function (action, state) {
@@ -2016,7 +2038,18 @@ function randomParticle (value) {
   );
 }
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/particle.js":47}],43:[function(require,module,exports){
+function randomEvent () {
+  return Event(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 40 * Math.random()
+  );
+}
+
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/particle.js":48}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
@@ -2043,12 +2076,42 @@ function sum (a, b) {
 },{}],45:[function(require,module,exports){
 'use strict';
 
+var floorPlaces = require('./floor-places.js');
+
+function Event (x, y, velX, velY, accX, accY, colour, value) {
+  return {
+    x: x,
+    y: y,
+    velX: velX,
+    velY: velY,
+    accX: accX,
+    accY: accY
+  };
+}
+
+Event.draw = function (ctx, event) {
+  ctx.fillStyle = 'black';
+  ctx.fillRect(event.x, event.y, 20, 20);
+};
+
+Event.update = function (f, event) {
+  event.x += event.velX * f;
+  event.y += event.velY * f;
+  event.velX += event.accX * f;
+  event.velY += event.accY * f;
+};
+
+module.exports = Event;
+
+},{"./floor-places.js":46}],46:[function(require,module,exports){
+'use strict';
+
 module.exports = function floorPlaces (x, places) {
   var f = Math.pow(10, places);
   return Math.floor(x * f) / f;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 module.exports = function isInDom (element) {
@@ -2064,7 +2127,7 @@ module.exports = function isInDom (element) {
   return false;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 var floorPlaces = require('./floor-places.js');
@@ -2112,7 +2175,7 @@ Particle.update = function (f, particle) {
 
 module.exports = Particle;
 
-},{"./floor-places.js":45}],48:[function(require,module,exports){
+},{"./floor-places.js":46}],49:[function(require,module,exports){
 'use strict';
 
 var isInDom = require('../../util/is-in-dom.js');
@@ -2159,7 +2222,7 @@ CanvasHook.prototype.hook = function (canvas) {
 
 module.exports = CanvasHook;
 
-},{"../../util/is-in-dom.js":46}],49:[function(require,module,exports){
+},{"../../util/is-in-dom.js":47}],50:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2169,6 +2232,7 @@ var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
+var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
 var shops = require('../../../resources/shops.json');
 
@@ -2177,12 +2241,21 @@ var drawHook = new CanvasHook(function (state, ctx, timeDelta) {
   var w = ctx.canvas.width;
   var h = ctx.canvas.height;
   ctx.clearRect(0, 0, w, h);
+
   state.particles.forEach(function (particle) {
     Particle.draw(ctx, particle);
     Particle.update(factor, particle);
   });
+  state.events.forEach(function (event) {
+    Event.draw(ctx, event);
+    Event.update(factor, event);
+  });
+
   state.particles = state.particles.filter(function (particle) {
     return particle.y <= 350;
+  });
+  state.events = state.events.filter(function (event) {
+    return event.y <= 350;
   });
 });
 
@@ -2196,8 +2269,9 @@ module.exports = function clickerView (state) {
   return h('section.main.clicker', [
     h('div.container', [
       h('div.clicker-clickarea', {
-        onmousedown: function () {
-          actions.increment();
+        onmousedown: function (ev) {
+          var rect = ev.target.getBoundingClientRect();
+          actions.click(ev.clientX - rect.left, ev.clientY - rect.top);
         }
       }, [
         h('canvas', {
@@ -2239,7 +2313,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/floor-places.js":45,"../util/particle.js":47,"./canvas/canvas-hook.js":48,"virtual-dom/h":10}],50:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/event.js":45,"../util/floor-places.js":46,"../util/particle.js":48,"./canvas/canvas-hook.js":49,"virtual-dom/h":10}],51:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2260,7 +2334,7 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],51:[function(require,module,exports){
+},{"virtual-dom/h":10}],52:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2307,7 +2381,7 @@ module.exports = function shopView (shopName, state) {
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":45,"virtual-dom/h":10}],52:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":46,"virtual-dom/h":10}],53:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');

@@ -21,6 +21,7 @@ module.exports = function init () {
 		counter: 0,
     ticks: 0,
     inventory: inventory,
-    particles: []
+    particles: [],
+    events: []
   };
 };

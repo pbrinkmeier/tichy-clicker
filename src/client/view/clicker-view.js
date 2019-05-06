@@ -7,6 +7,7 @@ var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
 var floorPlaces = require('../util/floor-places.js');
 var h = require('virtual-dom/h');
+var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
 var shops = require('../../../resources/shops.json');
 
@@ -15,12 +16,21 @@ var drawHook = new CanvasHook(function (state, ctx, timeDelta) {
   var w = ctx.canvas.width;
   var h = ctx.canvas.height;
   ctx.clearRect(0, 0, w, h);
+
   state.particles.forEach(function (particle) {
     Particle.draw(ctx, particle);
     Particle.update(factor, particle);
   });
+  state.events.forEach(function (event) {
+    Event.draw(ctx, event);
+    Event.update(factor, event);
+  });
+
   state.particles = state.particles.filter(function (particle) {
     return particle.y <= 350;
+  });
+  state.events = state.events.filter(function (event) {
+    return event.y <= 350;
   });
 });
 
@@ -34,8 +44,9 @@ module.exports = function clickerView (state) {
   return h('section.main.clicker', [
     h('div.container', [
       h('div.clicker-clickarea', {
-        onmousedown: function () {
-          actions.increment();
+        onmousedown: function (ev) {
+          var rect = ev.target.getBoundingClientRect();
+          actions.click(ev.clientX - rect.left, ev.clientY - rect.top);
         }
       }, [
         h('canvas', {
