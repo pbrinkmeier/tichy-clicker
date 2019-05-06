@@ -10,7 +10,7 @@ module.exports = function textView (title, text) {
         onclick: function () {
           actions.setPage('clicker');
         }
-      }, 'Back'),
+      }, 'Zurück'),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])

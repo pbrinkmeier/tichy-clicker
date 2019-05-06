@@ -37,7 +37,7 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Kaufen (' + String(cost) + ' commits)')
+          }, 'Kaufen (' + String(cost) + ' Commits)')
         ]);
       }))
     ])
