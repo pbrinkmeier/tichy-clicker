@@ -43,6 +43,30 @@
         "initialCost": 290000,
         "costFactor": 1.1,
         "income": 800
+      },
+      {
+        "key": "parallel",
+        "displayText": "iMage parallelisieren",
+        "description": "Generiert 3000 Commits pro Sekunde",
+        "initialCost": 1500000,
+        "costFactor": 1.01,
+        "income": 3000
+      },
+      {
+        "key": "rcs",
+        "displayText": "Neue RCS-Version entwickeln",
+        "description": "Generiert 25000 Commits pro Sekunde",
+        "initialCost": 40000000,
+        "costFactor": 1.15,
+        "income": 25000
+      },
+      {
+        "key": "threadpool",
+        "displayText": "Fadenschwimmbecken aufsetzen",
+        "description": "Generiert 100000 Commits pro Sekunde",
+        "initialCost": 123000000,
+        "costFactor": 0.05,
+        "income": 100000
       }
     ]
   },

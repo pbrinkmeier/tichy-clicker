@@ -5,7 +5,7 @@ var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
-var floorPlaces = require('../util/floor-places.js');
+var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
@@ -55,10 +55,13 @@ module.exports = function clickerView (state) {
           drawHook: drawHook
         })
       ]),
-      h('div.clicker-counter', String(floorPlaces(counter, 0))),
+      h('div.clicker-counter', [
+        String(formatNumber(counter, 0)) + ' ',
+        h('span.clicker-counter-label', 'Commits')
+      ]),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/Klick')
+        h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(formatNumber(incomePerClick, 0)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];

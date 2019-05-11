@@ -1,7 +1,5 @@
 'use strict';
 
-var floorPlaces = require('./floor-places.js');
-
 function Event (x, y, velX, velY, accX, accY, colour, value) {
   return {
     x: x,

@@ -1701,6 +1701,30 @@ module.exports={
         "initialCost": 290000,
         "costFactor": 1.1,
         "income": 800
+      },
+      {
+        "key": "parallel",
+        "displayText": "iMage parallelisieren",
+        "description": "Generiert 3000 Commits pro Sekunde",
+        "initialCost": 1500000,
+        "costFactor": 1.01,
+        "income": 3000
+      },
+      {
+        "key": "rcs",
+        "displayText": "Neue RCS-Version entwickeln",
+        "description": "Generiert 25000 Commits pro Sekunde",
+        "initialCost": 40000000,
+        "costFactor": 1.15,
+        "income": 25000
+      },
+      {
+        "key": "threadpool",
+        "displayText": "Fadenschwimmbecken aufsetzen",
+        "description": "Generiert 100000 Commits pro Sekunde",
+        "initialCost": 123000000,
+        "costFactor": 0.05,
+        "income": 100000
       }
     ]
   },
@@ -1805,25 +1829,14 @@ var config = require('../../resources/config.json');
 var shops = require('../../resources/shops.json');
 
 module.exports = function init () {
-  var inventory = {};
-
-  config.enabledShops.forEach(function (shopName) {
-    var shopInventory = {};
-
-    shops[shopName].items.forEach(function (item) {
-      shopInventory[item.key] = 0;
-    });
-
-    inventory[shopName] = shopInventory;
-  });
-
   return {
     page: 'clicker',
 		counter: 0,
     ticks: 0,
-    inventory: inventory,
+    inventory: {},
     particles: [],
-    events: []
+    events: [],
+    rainbowModeTicks: 0
   };
 };
 
@@ -1925,7 +1938,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":50,"./view/rainbow-spans.js":51,"./view/shop-view.js":52,"./view/text-view.js":53,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":37,"./view/clicker-view.js":51,"./view/rainbow-spans.js":52,"./view/shop-view.js":53,"./view/text-view.js":54,"virtual-dom/h":10}],42:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -1934,6 +1947,7 @@ var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
 var Event = require('./util/event.js');
+var initializeStores = require('./util/initialize-stores.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -1948,6 +1962,8 @@ var interval = 1 / config.ticksPerSecond;
 module.exports = {
   init: function (action, state) {
     window.state = state;
+
+    initializeStores(state, config);
 
     setInterval(function () {
       actions.interval();
@@ -1978,27 +1994,30 @@ module.exports = {
     });
 
     if (prevLen > state.events.length) {
-      // activate power mode
+      state.rainbowModeTicks = 5 * config.ticksPerSecond;
     }
 
     actions.increment();
   },
   increment: function (action, state) {
-    var income = calculateShopIncome(shops.skills, state.inventory.skills);
-    state.counter += income + 1;
+    var income = (state.rainbowModeTicks > 0 ? 2 : 1) * (calculateShopIncome(shops.skills, state.inventory.skills) + 1);
+    state.counter += income;
 
-    state.particles.push(randomParticle(income + 1));
+    state.particles.push(randomParticle(income, state.rainbowModeTicks > 0));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
     state.counter += income * interval;
     state.ticks++;
+    if (state.rainbowModeTicks > 0) {
+      state.rainbowModeTicks--;
+    }
 
     var secondHasPassed = state.ticks % config.ticksPerSecond === 0;
     var hasIncome = income !== 0;
 
     if (secondHasPassed && hasIncome) {
-      state.particles.push(randomParticle(income));
+      state.particles.push(randomParticle(income, false));
     }
 
     // spawn event every ~ 10 sec
@@ -2025,7 +2044,7 @@ module.exports = {
   }
 };
 
-function randomParticle (value) {
+function randomParticle (value, rainbowMode) {
   return Particle(
     // position (in the upper half)
     20 + 260 * Math.random(), 20 + 130 * Math.random(),
@@ -2034,7 +2053,8 @@ function randomParticle (value) {
     // acceleration
     0, 30 + 80 * Math.random(),
     'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
-    value
+    value,
+    rainbowMode
   );
 }
 
@@ -2049,7 +2069,7 @@ function randomEvent () {
   );
 }
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/particle.js":48}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/initialize-stores.js":47,"./util/particle.js":49}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
@@ -2076,8 +2096,6 @@ function sum (a, b) {
 },{}],45:[function(require,module,exports){
 'use strict';
 
-var floorPlaces = require('./floor-places.js');
-
 function Event (x, y, velX, velY, accX, accY, colour, value) {
   return {
     x: x,
@@ -2103,15 +2121,45 @@ Event.update = function (f, event) {
 
 module.exports = Event;
 
-},{"./floor-places.js":46}],46:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
-module.exports = function floorPlaces (x, places) {
-  var f = Math.pow(10, places);
-  return Math.floor(x * f) / f;
+var THOUSAND_DELIM = '.';
+var DECIMAL_DELIM = ',';
+
+module.exports = function formatNumber (n, decimalPlaces) {
+  var decimals = decimalPlaces > 0 ? DECIMAL_DELIM + String(Math.floor(n * Math.pow(10, decimalPlaces)) % Math.pow(10, decimalPlaces)) : '';
+  var wholeNums = String(Math.floor(n));
+  var wholeNumsWithDelim = '';
+
+  while (wholeNums.length > 3) {
+    wholeNumsWithDelim = THOUSAND_DELIM + wholeNums.slice(-3) + wholeNumsWithDelim;
+    wholeNums = wholeNums.slice(0, -3);
+  }
+  wholeNumsWithDelim = wholeNums + wholeNumsWithDelim;
+
+  return wholeNumsWithDelim + decimals;
 };
 
 },{}],47:[function(require,module,exports){
+var config = require('../../../resources/config.json');
+var shops = require('../../../resources/shops.json');
+
+module.exports = function (state) {
+  config.enabledShops.forEach(function (shopName) {
+    if (!state.inventory.hasOwnProperty(shopName)) {
+      state.inventory[shopName] = {};
+    }
+
+    shops[shopName].items.forEach(function (shopItem) {
+      if (!state.inventory[shopName].hasOwnProperty(shopItem.key)) {
+        state.inventory[shopName][shopItem.key] = 0;
+      }
+    });
+  });
+};
+
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36}],48:[function(require,module,exports){
 'use strict';
 
 module.exports = function isInDom (element) {
@@ -2127,12 +2175,12 @@ module.exports = function isInDom (element) {
   return false;
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
-var floorPlaces = require('./floor-places.js');
+var formatNumber = require('./format-number.js');
 
-function Particle (x, y, velX, velY, accX, accY, colour, value) {
+function Particle (x, y, velX, velY, accX, accY, colour, value, rainbowMode) {
   return {
     x: x,
     y: y,
@@ -2141,29 +2189,30 @@ function Particle (x, y, velX, velY, accX, accY, colour, value) {
     accX: accX,
     accY: accY,
     colour: colour,
-    value: value
+    value: value,
+    rainbowMode: rainbowMode
   };
 }
 
 Particle.draw = function (ctx, particle) {
-  var particleText = '+' + floorPlaces(String(particle.value), 1);
+  var particleText = '+' + formatNumber(String(particle.value), 1);
   ctx.font = '32px \'Comic Sans MS\', sans-serif';
-  // Rainbow particles for when the time has come
-  /*
-  for (var i = 0, n = 25; i < n; i++) {
-    ctx.fillStyle = 'hsla(' + String((360 / n) * (i + particle.y)) + ', 100%, 50%, ' + String(i / n) + ')';
-    ctx.fillText('+' + String(particle.value), particle.x, particle.y - n + i);
+  ctx.textAlign = 'center';
+
+  if (particle.rainbowMode) {
+    for (var i = 0, n = 25; i < n; i++) {
+      ctx.fillStyle = 'hsla(' + String((360 / n) * (i + particle.y)) + ', 100%, 50%, ' + String(i / n) + ')';
+      ctx.fillText('+' + String(particleText), particle.x, particle.y - n + i);
+    }
+  } else {
+    var posX = particle.x;
+    var posY = particle.y;
+    // Draw a shadow
+    ctx.fillStyle = 'black';
+    ctx.fillText(particleText, posX - 1, posY - 1);
+    ctx.fillStyle = particle.colour;
+    ctx.fillText(particleText, posX, posY);
   }
-  */
-  // The text should be centered at the position
-  var measurements = ctx.measureText(particleText);
-  var posX = particle.x - measurements.width / 2;
-  var posY = particle.y;
-  // Draw a shadow
-  ctx.fillStyle = 'black';
-  ctx.fillText(particleText, posX - 1, posY - 1);
-  ctx.fillStyle = particle.colour;
-  ctx.fillText(particleText, posX, posY);
 };
 
 Particle.update = function (f, particle) {
@@ -2175,7 +2224,7 @@ Particle.update = function (f, particle) {
 
 module.exports = Particle;
 
-},{"./floor-places.js":46}],49:[function(require,module,exports){
+},{"./format-number.js":46}],50:[function(require,module,exports){
 'use strict';
 
 var isInDom = require('../../util/is-in-dom.js');
@@ -2222,7 +2271,7 @@ CanvasHook.prototype.hook = function (canvas) {
 
 module.exports = CanvasHook;
 
-},{"../../util/is-in-dom.js":47}],50:[function(require,module,exports){
+},{"../../util/is-in-dom.js":48}],51:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
@@ -2230,7 +2279,7 @@ var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
-var floorPlaces = require('../util/floor-places.js');
+var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
@@ -2280,10 +2329,13 @@ module.exports = function clickerView (state) {
           drawHook: drawHook
         })
       ]),
-      h('div.clicker-counter', String(floorPlaces(counter, 0))),
+      h('div.clicker-counter', [
+        String(formatNumber(counter, 0)) + ' ',
+        h('span.clicker-counter-label', 'Commits')
+      ]),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/Klick')
+        h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(formatNumber(incomePerClick, 1)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
@@ -2313,7 +2365,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/event.js":45,"../util/floor-places.js":46,"../util/particle.js":48,"./canvas/canvas-hook.js":49,"virtual-dom/h":10}],51:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/event.js":45,"../util/format-number.js":46,"../util/particle.js":49,"./canvas/canvas-hook.js":50,"virtual-dom/h":10}],52:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2334,12 +2386,12 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],52:[function(require,module,exports){
+},{"virtual-dom/h":10}],53:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
-var floorPlaces = require('../util/floor-places.js');
+var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json');
 
@@ -2356,7 +2408,7 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, 'Zurück'),
-        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' Commits')
+        h('div.shop-menu-info', formatNumber(counter, 0) + ' Commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -2374,14 +2426,14 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Kaufen (' + String(cost) + ' Commits)')
+          }, 'Kaufen (' + formatNumber(cost, 0) + ' Commits)')
         ]);
       }))
     ])
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/floor-places.js":46,"virtual-dom/h":10}],53:[function(require,module,exports){
+},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/format-number.js":46,"virtual-dom/h":10}],54:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');

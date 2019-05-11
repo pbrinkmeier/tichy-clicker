@@ -6,6 +6,7 @@ var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
 var Event = require('./util/event.js');
+var initializeStores = require('./util/initialize-stores.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -20,6 +21,8 @@ var interval = 1 / config.ticksPerSecond;
 module.exports = {
   init: function (action, state) {
     window.state = state;
+
+    initializeStores(state, config);
 
     setInterval(function () {
       actions.interval();
@@ -50,27 +53,30 @@ module.exports = {
     });
 
     if (prevLen > state.events.length) {
-      // activate power mode
+      state.rainbowModeTicks = 5 * config.ticksPerSecond;
     }
 
     actions.increment();
   },
   increment: function (action, state) {
-    var income = calculateShopIncome(shops.skills, state.inventory.skills);
-    state.counter += income + 1;
+    var income = (state.rainbowModeTicks > 0 ? 2 : 1) * (calculateShopIncome(shops.skills, state.inventory.skills) + 1);
+    state.counter += income;
 
-    state.particles.push(randomParticle(income + 1));
+    state.particles.push(randomParticle(income, state.rainbowModeTicks > 0));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
     state.counter += income * interval;
     state.ticks++;
+    if (state.rainbowModeTicks > 0) {
+      state.rainbowModeTicks--;
+    }
 
     var secondHasPassed = state.ticks % config.ticksPerSecond === 0;
     var hasIncome = income !== 0;
 
     if (secondHasPassed && hasIncome) {
-      state.particles.push(randomParticle(income));
+      state.particles.push(randomParticle(income, false));
     }
 
     // spawn event every ~ 10 sec
@@ -97,7 +103,7 @@ module.exports = {
   }
 };
 
-function randomParticle (value) {
+function randomParticle (value, rainbowMode) {
   return Particle(
     // position (in the upper half)
     20 + 260 * Math.random(), 20 + 130 * Math.random(),
@@ -106,7 +112,8 @@ function randomParticle (value) {
     // acceleration
     0, 30 + 80 * Math.random(),
     'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
-    value
+    value,
+    rainbowMode
   );
 }
 

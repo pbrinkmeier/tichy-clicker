@@ -2,7 +2,7 @@
 
 var actions = require('../actions.js');
 var calculateItemCost = require('../util/calculate-item-cost.js');
-var floorPlaces = require('../util/floor-places.js');
+var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json');
 
@@ -19,7 +19,7 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, 'Zurück'),
-        h('div.shop-menu-info', String(floorPlaces(counter, 0)) + ' Commits')
+        h('div.shop-menu-info', formatNumber(counter, 0) + ' Commits')
       ]),
       h('h2.shop-title', shop.title),
       h('div.shop-description', shop.description),
@@ -37,7 +37,7 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Kaufen (' + String(cost) + ' Commits)')
+          }, 'Kaufen (' + formatNumber(cost, 0) + ' Commits)')
         ]);
       }))
     ])
