@@ -145,6 +145,10 @@ button:disabled {
   text-align: center;
 }
 
+.clicker-counter-label {
+    font-size: .5em;
+}
+
 /* The main income counters */
 .clicker-incomes {
   margin-top: .5em;

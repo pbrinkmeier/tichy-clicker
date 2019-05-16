@@ -5,8 +5,9 @@ var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
-var floorPlaces = require('../util/floor-places.js');
+var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
+var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
 var shops = require('../../../resources/shops.json');
 
@@ -15,12 +16,21 @@ var drawHook = new CanvasHook(function (state, ctx, timeDelta) {
   var w = ctx.canvas.width;
   var h = ctx.canvas.height;
   ctx.clearRect(0, 0, w, h);
+
   state.particles.forEach(function (particle) {
     Particle.draw(ctx, particle);
     Particle.update(factor, particle);
   });
+  state.events.forEach(function (event) {
+    Event.draw(ctx, event);
+    Event.update(factor, event);
+  });
+
   state.particles = state.particles.filter(function (particle) {
     return particle.y <= 350;
+  });
+  state.events = state.events.filter(function (event) {
+    return event.y <= 350;
   });
 });
 
@@ -34,8 +44,9 @@ module.exports = function clickerView (state) {
   return h('section.main.clicker', [
     h('div.container', [
       h('div.clicker-clickarea', {
-        onmousedown: function () {
-          actions.increment();
+        onmousedown: function (ev) {
+          var rect = ev.target.getBoundingClientRect();
+          actions.click(ev.clientX - rect.left, ev.clientY - rect.top);
         }
       }, [
         h('canvas', {
@@ -44,10 +55,13 @@ module.exports = function clickerView (state) {
           drawHook: drawHook
         })
       ]),
-      h('div.clicker-counter', String(floorPlaces(counter, 0))),
+      h('div.clicker-counter', [
+        String(formatNumber(counter, 0)) + ' ',
+        h('span.clicker-counter-label', 'Commits')
+      ]),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(floorPlaces(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(floorPlaces(incomePerClick, 1)) + '/Klick')
+        h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(formatNumber(incomePerClick, 0)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];

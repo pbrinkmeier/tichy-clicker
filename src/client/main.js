@@ -6,6 +6,7 @@ var patch = require('virtual-dom/patch');
 
 var dispatcher = require('./dispatcher.js');
 var init = require('./init.js');
+var initializeStores = require('./util/initialize-stores.js');
 var render = require('./render.js');
 var update = require('./update.js');
 
@@ -13,6 +14,8 @@ var defaults = init();
 
 var stored = JSON.parse(window.localStorage.getItem('store') || "{}");
 var state = Object.assign(defaults, stored);
+
+initializeStores(state);
 
 dispatcher.register(function (action) {
   if (action.type in update) {

@@ -5,6 +5,7 @@ var calculateItemCost = require('./util/calculate-item-cost.js');
 var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
+var Event = require('./util/event.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -42,22 +43,42 @@ module.exports = {
       }
     });
   },
-  increment: function (action, state) {
-    var income = calculateShopIncome(shops.skills, state.inventory.skills);
-    state.counter += income + 1;
+  click: function (action, state) {
+    var prevLen = state.events.length;
+    state.events = state.events.filter(function (event) {
+      return !(action.x >= event.x && action.y >= event.y && action.x < event.x + 20 && action.y < event.y + 20);
+    });
 
-    state.particles.push(randomParticle(income + 1));
+    if (prevLen > state.events.length) {
+      state.rainbowModeTicks = 5 * config.ticksPerSecond;
+    }
+
+    actions.increment();
+  },
+  increment: function (action, state) {
+    var income = (state.rainbowModeTicks > 0 ? 2 : 1) * (calculateShopIncome(shops.skills, state.inventory.skills) + 1);
+    state.counter += income;
+
+    state.particles.push(randomParticle(income, state.rainbowModeTicks > 0));
   },
   interval: function (action, state) {
     var income = calculateShopIncome(shops.systems, state.inventory.systems);
     state.counter += income * interval;
     state.ticks++;
+    if (state.rainbowModeTicks > 0) {
+      state.rainbowModeTicks--;
+    }
 
     var secondHasPassed = state.ticks % config.ticksPerSecond === 0;
     var hasIncome = income !== 0;
 
     if (secondHasPassed && hasIncome) {
-      state.particles.push(randomParticle(income));
+      state.particles.push(randomParticle(income, false));
+    }
+
+    // spawn event every ~ 10 sec
+    if (secondHasPassed && Math.random() < 10 / 100) {
+      state.events.push(randomEvent());
     }
   },
   setPage: function (action, state) {
@@ -79,7 +100,7 @@ module.exports = {
   }
 };
 
-function randomParticle (value) {
+function randomParticle (value, rainbowMode) {
   return Particle(
     // position (in the upper half)
     20 + 260 * Math.random(), 20 + 130 * Math.random(),
@@ -88,6 +109,18 @@ function randomParticle (value) {
     // acceleration
     0, 30 + 80 * Math.random(),
     'hsl(' + (360 * Math.random()) + ', 100%, 50%)',
-    value
+    value,
+    rainbowMode
+  );
+}
+
+function randomEvent () {
+  return Event(
+    // position (in the upper half)
+    20 + 260 * Math.random(), 20 + 130 * Math.random(),
+    // initial velocity
+    -15 + 30 * Math.random(), 15 + 30 * Math.random(),
+    // acceleration
+    0, 30 + 40 * Math.random()
   );
 }
