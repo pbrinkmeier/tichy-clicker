@@ -1723,7 +1723,7 @@ module.exports={
         "displayText": "Fadenschwimmbecken aufsetzen",
         "description": "Generiert 100000 Commits pro Sekunde",
         "initialCost": 123000000,
-        "costFactor": 0.05,
+        "costFactor": 1.05,
         "income": 100000
       }
     ]
@@ -1849,6 +1849,7 @@ var patch = require('virtual-dom/patch');
 
 var dispatcher = require('./dispatcher.js');
 var init = require('./init.js');
+var initializeStores = require('./util/initialize-stores.js');
 var render = require('./render.js');
 var update = require('./update.js');
 
@@ -1856,6 +1857,8 @@ var defaults = init();
 
 var stored = JSON.parse(window.localStorage.getItem('store') || "{}");
 var state = Object.assign(defaults, stored);
+
+initializeStores(state);
 
 dispatcher.register(function (action) {
   if (action.type in update) {
@@ -1881,7 +1884,7 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":38,"./init.js":39,"./render.js":41,"./update.js":42,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],41:[function(require,module,exports){
+},{"./dispatcher.js":38,"./init.js":39,"./render.js":41,"./update.js":42,"./util/initialize-stores.js":47,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],41:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -1947,7 +1950,6 @@ var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
 var Event = require('./util/event.js');
-var initializeStores = require('./util/initialize-stores.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -1962,8 +1964,6 @@ var interval = 1 / config.ticksPerSecond;
 module.exports = {
   init: function (action, state) {
     window.state = state;
-
-    initializeStores(state, config);
 
     setInterval(function () {
       actions.interval();
@@ -2069,7 +2069,7 @@ function randomEvent () {
   );
 }
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/initialize-stores.js":47,"./util/particle.js":49}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/particle.js":49}],43:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
@@ -2103,13 +2103,20 @@ function Event (x, y, velX, velY, accX, accY, colour, value) {
     velX: velX,
     velY: velY,
     accX: accX,
-    accY: accY
+    accY: accY,
+    ticks: 0
   };
 }
 
+Event.image = new Image(10, 10);
+Event.image.src = './resources/event.png';
+
 Event.draw = function (ctx, event) {
-  ctx.fillStyle = 'black';
-  ctx.fillRect(event.x, event.y, 20, 20);
+  ctx.save();
+  ctx.translate(event.x, event.y);
+  ctx.rotate((2 * event.y) * (Math.PI / 180));
+  ctx.drawImage(Event.image, -5, -5); 
+  ctx.restore();
 };
 
 Event.update = function (f, event) {
@@ -2117,6 +2124,7 @@ Event.update = function (f, event) {
   event.y += event.velY * f;
   event.velX += event.accX * f;
   event.velY += event.accY * f;
+  event.ticks++;
 };
 
 module.exports = Event;
@@ -2202,7 +2210,7 @@ Particle.draw = function (ctx, particle) {
   if (particle.rainbowMode) {
     for (var i = 0, n = 25; i < n; i++) {
       ctx.fillStyle = 'hsla(' + String((360 / n) * (i + particle.y)) + ', 100%, 50%, ' + String(i / n) + ')';
-      ctx.fillText('+' + String(particleText), particle.x, particle.y - n + i);
+      ctx.fillText(particleText, particle.x, particle.y - n + i);
     }
   } else {
     var posX = particle.x;
@@ -2335,7 +2343,7 @@ module.exports = function clickerView (state) {
       ]),
       h('div.clicker-incomes', [
         h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(formatNumber(incomePerClick, 1)) + '/Klick')
+        h('span.clicker-income', String(formatNumber(incomePerClick, 0)) + '/Klick')
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];

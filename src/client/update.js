@@ -6,7 +6,6 @@ var calculateShopIncome = require('./util/calculate-shop-income.js');
 var config = require('../../resources/config.json');
 var dispatcher = require('./dispatcher.js');
 var Event = require('./util/event.js');
-var initializeStores = require('./util/initialize-stores.js');
 var Particle = require('./util/particle.js');
 var shops = require('../../resources/shops.json');
 
@@ -21,8 +20,6 @@ var interval = 1 / config.ticksPerSecond;
 module.exports = {
   init: function (action, state) {
     window.state = state;
-
-    initializeStores(state, config);
 
     setInterval(function () {
       actions.interval();

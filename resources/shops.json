@@ -65,7 +65,7 @@
         "displayText": "Fadenschwimmbecken aufsetzen",
         "description": "Generiert 100000 Commits pro Sekunde",
         "initialCost": 123000000,
-        "costFactor": 0.05,
+        "costFactor": 1.05,
         "income": 100000
       }
     ]

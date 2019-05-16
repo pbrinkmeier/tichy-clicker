@@ -24,7 +24,7 @@ Particle.draw = function (ctx, particle) {
   if (particle.rainbowMode) {
     for (var i = 0, n = 25; i < n; i++) {
       ctx.fillStyle = 'hsla(' + String((360 / n) * (i + particle.y)) + ', 100%, 50%, ' + String(i / n) + ')';
-      ctx.fillText('+' + String(particleText), particle.x, particle.y - n + i);
+      ctx.fillText(particleText, particle.x, particle.y - n + i);
     }
   } else {
     var posX = particle.x;
