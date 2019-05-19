@@ -1696,7 +1696,7 @@ module.exports={
       },
       {
         "key": "spec",
-        "displayText": "Pflichtenheft schreiben (für Pflichtenheft-Software)",
+        "displayText": "Pflichtenheft schreiben",
         "description": "Generiert 800 Commits pro Sekunde",
         "initialCost": 290000,
         "costFactor": 1.1,
@@ -1705,10 +1705,10 @@ module.exports={
       {
         "key": "parallel",
         "displayText": "iMage parallelisieren",
-        "description": "Generiert 3000 Commits pro Sekunde",
+        "description": "Generiert 1500 Commits pro Sekunde",
         "initialCost": 1500000,
-        "costFactor": 1.01,
-        "income": 3000
+        "costFactor": 1.2,
+        "income": 1500
       },
       {
         "key": "rcs",
@@ -1721,10 +1721,10 @@ module.exports={
       {
         "key": "threadpool",
         "displayText": "Fadenschwimmbecken aufsetzen",
-        "description": "Generiert 100000 Commits pro Sekunde",
-        "initialCost": 123000000,
+        "description": "Generiert 99999 Commits pro Sekunde",
+        "initialCost": 333000000,
         "costFactor": 1.05,
-        "income": 100000
+        "income": 99999
       }
     ]
   },
@@ -1772,6 +1772,14 @@ module.exports={
         "initialCost": 333000,
         "costFactor": 1.4,
         "income": 800
+      },
+      {
+        "key": "peer",
+        "displayText": "Paarprogrammierung",
+        "description": "Generiert 5000 Commits pro Klick",
+        "initialCost": 42000000,
+        "costFactor": 1.5,
+        "income": 5000
       }
     ]
   }
