@@ -1,12 +1,12 @@
-npm_binary_path = ./node_modules/.bin
+export PATH := ./node_modules/.bin/:$(PATH)
 
 all: style.min.css client.min.js
 
 style.min.css: style.css
-	$(npm_binary_path)/ycssmin style.css > style.min.css
+	ycssmin style.css > style.min.css
 
-client.js: src/client/main.js
-	$(npm_binary_path)/browserify src/client/main.js -o ./client.js
+client.js: $(shell find src/client/ -name '*.js')
+	browserify src/client/main.js -o ./client.js
 
 client.min.js: client.js
-	$(npm_binary_path)/yuglify ./client.js
+	yuglify ./client.js
