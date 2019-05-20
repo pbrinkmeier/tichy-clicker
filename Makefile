@@ -1,5 +1,7 @@
 npm_binary_path = ./node_modules/.bin
 
+all: style.min.css client.min.js
+
 style.min.css: style.css
 	$(npm_binary_path)/ycssmin style.css > style.min.css
 
