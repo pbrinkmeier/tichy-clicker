@@ -10,7 +10,7 @@
 }
 
 html {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 body {
@@ -26,6 +26,7 @@ button {
   background-color: white;
   color: hsl(210, 80%, 40%);
   transition: .2s;
+  font-family: 'Comic Sans MS', sans-serif;
 }
 
 button:not(:disabled):hover {
