@@ -1998,11 +1998,13 @@ module.exports = {
   click: function (action, state) {
     var prevLen = state.events.length;
     state.events = state.events.filter(function (event) {
-      return !(action.x >= event.x && action.y >= event.y && action.x < event.x + 20 && action.y < event.y + 20);
+      return !(action.x >= event.x - 8 && action.y >= event.y - 8 && action.x < event.x + 8 && action.y < event.y + 8);
     });
 
-    if (prevLen > state.events.length) {
-      state.rainbowModeTicks = 5 * config.ticksPerSecond;
+    var clickedEvents = prevLen - state.events.length;
+    if (clickedEvents > 0) {
+      // prolong rainbow mode time by 5 seconds for every clicked event
+      state.rainbowModeTicks = 5 * clickedEvents * config.ticksPerSecond;
     }
 
     actions.increment();
@@ -2028,8 +2030,8 @@ module.exports = {
       state.particles.push(randomParticle(income, false));
     }
 
-    // spawn event every ~ 10 sec
-    if (secondHasPassed && Math.random() < 10 / 100) {
+    // spawn event every ~ 15 sec
+    if (secondHasPassed && Math.random() < 1 / 15) {
       state.events.push(randomEvent());
     }
   },
@@ -2116,14 +2118,19 @@ function Event (x, y, velX, velY, accX, accY, colour, value) {
   };
 }
 
-Event.image = new Image(10, 10);
+Event.image = new Image(16, 16);
 Event.image.src = './resources/event.png';
 
 Event.draw = function (ctx, event) {
   ctx.save();
   ctx.translate(event.x, event.y);
+  /*
+  // Uncomment to show hitbox
+  ctx.strokeStyle = 'red';
+  ctx.strokeRect(-8, -8, 16, 16);
+  */
   ctx.rotate((2 * event.y) * (Math.PI / 180));
-  ctx.drawImage(Event.image, -5, -5); 
+  ctx.drawImage(Event.image, -8, -8);
   ctx.restore();
 };
 

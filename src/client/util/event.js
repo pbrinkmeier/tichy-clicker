@@ -12,14 +12,19 @@ function Event (x, y, velX, velY, accX, accY, colour, value) {
   };
 }
 
-Event.image = new Image(10, 10);
+Event.image = new Image(16, 16);
 Event.image.src = './resources/event.png';
 
 Event.draw = function (ctx, event) {
   ctx.save();
   ctx.translate(event.x, event.y);
+  /*
+  // Uncomment to show hitbox
+  ctx.strokeStyle = 'red';
+  ctx.strokeRect(-8, -8, 16, 16);
+  */
   ctx.rotate((2 * event.y) * (Math.PI / 180));
-  ctx.drawImage(Event.image, -5, -5); 
+  ctx.drawImage(Event.image, -8, -8);
   ctx.restore();
 };
 
