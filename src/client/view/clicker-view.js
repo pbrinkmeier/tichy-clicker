@@ -39,6 +39,7 @@ module.exports = function clickerView (state) {
   var counter = state.counter;
   var incomePerSecond = calculateShopIncome(shops.systems, state.inventory.systems);
   var incomePerClick = 1 + calculateShopIncome(shops.skills, state.inventory.skills);
+  var rainbowModeSeconds = state.rainbowModeTicks / config.ticksPerSecond;
   drawHook.setState(state);
 
   return h('section.main.clicker', [
@@ -61,7 +62,17 @@ module.exports = function clickerView (state) {
       ]),
       h('div.clicker-incomes', [
         h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
-        h('span.clicker-income', String(formatNumber(incomePerClick, 0)) + '/Klick')
+        ' · ',
+        (function () {
+          var elBase = 'span.clicker-income';
+          var formattedIncome = String(formatNumber((rainbowModeSeconds === 0 ? 1 : 2) * incomePerClick, 0)) + '/Klick';
+
+          if (rainbowModeSeconds === 0) {
+            return h(elBase,  formattedIncome);
+          }
+
+          return h(elBase + '.-rainbowmode', { attributes: { 'data-seconds': Math.ceil(rainbowModeSeconds) } }, formattedIncome);
+        })(),
       ]),
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];

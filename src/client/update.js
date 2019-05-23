@@ -52,7 +52,7 @@ module.exports = {
     var clickedEvents = prevLen - state.events.length;
     if (clickedEvents > 0) {
       // prolong rainbow mode time by 5 seconds for every clicked event
-      state.rainbowModeTicks = 5 * clickedEvents * config.ticksPerSecond;
+      state.rainbowModeTicks += 5 * clickedEvents * config.ticksPerSecond;
     }
 
     actions.increment();

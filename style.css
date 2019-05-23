@@ -156,8 +156,55 @@ button:disabled {
   text-align: center;
 }
 
-.clicker-income + .clicker-income:before {
-  content: ' · ';
+.clicker-income {
+  display: inline-block;
+}
+
+.clicker-income.-rainbowmode {
+  animation: rainbowtext .5s linear 0s infinite;
+}
+
+.clicker-income.-rainbowmode:before {
+    display: block;
+    position: absolute;
+    content: attr(data-seconds) "s";
+    left: 0;
+    top: -1em;
+    right: 0;
+    height: 1em;
+
+    font-size: .75em;
+    text-align: center;
+}
+
+@keyframes rainbowtext {
+    0% {
+        color: hsl(0, 100%, 50%);
+    }
+
+    25% {
+        transform: translate(0, -.1em);
+    }
+
+    33.3% {
+        color: hsl(120, 100%, 50%);
+    }
+
+    50% {
+        transform: translate(0, 0);
+    }
+
+    66.6% {
+        color: hsl(240, 100%, 50%);
+    }
+
+    75% {
+        transform: translate(0, .1em);
+    }
+
+    100% {
+        color: hsl(360, 100%, 50%);
+    }
 }
 
 /* Area where the shop buttons etc are */
