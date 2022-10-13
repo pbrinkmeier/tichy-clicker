@@ -88,7 +88,7 @@ module.exports = {
   },
   buy: function (action, state) {
     var shop = shops[action.shopName];
-    var item = shop.items.find(function (item) {
+    var item = shop.find(function (item) {
       return item.key === action.itemKey;
     });
     var alreadyBought = state.inventory[action.shopName][item.key];

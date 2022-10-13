@@ -1,8 +1,8 @@
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var calculateItemCost = require('../util/calculate-item-cost.js');
-var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json');
 
@@ -18,18 +18,18 @@ module.exports = function shopView (shopName, state) {
           onclick: function () {
             actions.setPage('clicker');
           }
-        }, 'Zurück'),
-        h('div.shop-menu-info', formatNumber(counter, 0) + ' Commits')
+        }, i18n.tr('back')),
+        h('div.shop-menu-info', i18n.tr("num_commits", counter))
       ]),
-      h('h2.shop-title', shop.title),
-      h('div.shop-description', shop.description),
-      h('ul.shop-items', shop.items.map(function (item) {
+      h('h2.shop-title', i18n.tr("shop_title_" + shopName)),
+      h('div.shop-description', i18n.tr("shop_description_" + shopName)),
+      h('ul.shop-items', shop.map(function (item) {
         var alreadyBought = bought[item.key];
         var cost = calculateItemCost(item, alreadyBought);
 
         return h('li.shop-item', [
-          h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
-          h('div.shop-item-description', item.description),
+          h('div.shop-item-name', i18n.tr("shop_item_text_" + item.key, alreadyBought)),
+          h('div.shop-item-description', i18n.tr("shop_item_description_" + item.key)),
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function (e) {
@@ -37,7 +37,7 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Kaufen (' + formatNumber(cost, 0) + ' Commits)')
+          }, i18n.tr('buy', cost))
         ]);
       }))
     ])

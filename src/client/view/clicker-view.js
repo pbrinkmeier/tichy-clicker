@@ -1,11 +1,11 @@
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
-var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
@@ -57,15 +57,15 @@ module.exports = function clickerView (state) {
         })
       ]),
       h('div.clicker-counter', [
-        String(formatNumber(counter, 0)) + ' ',
+        String(i18n.formatNumber(counter, 0)) + ' ',
         h('span.clicker-counter-label', 'Commits')
       ]),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(i18n.formatNumber(incomePerSecond, 1)) + i18n.tr('per_second')),
         ' · ',
         (function () {
           var elBase = 'span.clicker-income';
-          var formattedIncome = String(formatNumber((rainbowModeSeconds === 0 ? 1 : 2) * incomePerClick, 0)) + '/Klick';
+          var formattedIncome = String(i18n.formatNumber((rainbowModeSeconds === 0 ? 1 : 2) * incomePerClick, 0)) + i18n.tr('per_click');
 
           if (rainbowModeSeconds === 0) {
             return h(elBase,  formattedIncome);
@@ -77,7 +77,7 @@ module.exports = function clickerView (state) {
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
         // Find all available items
-        var availableItems = shop.items.filter(function (item) {
+        var availableItems = shop.filter(function (item) {
           var alreadyBought = state.inventory[shopName][item.key];
           var cost = calculateItemCost(item, alreadyBought);
           return cost <= state.counter;
@@ -85,7 +85,7 @@ module.exports = function clickerView (state) {
 
         // This is an array of all the children of the button element
         var buttonContent = [
-          h('span', shop.buttonText)
+          h('span', i18n.tr("shop_button_" + shopName))
         ];
         // If there are items in the shop that are buyable, show a notification bubble
         if (availableItems.length !== 0) {

@@ -1657,135 +1657,172 @@ module.exports={
 
 },{}],36:[function(require,module,exports){
 module.exports={
-  "systems": {
-    "title": "Systeme",
-    "buttonText": "Systeme kaufen",
-    "description": "Systeme generieren Commits über Zeit.",
-    "items": [
-      {
-        "key": "maven",
-        "displayText": "Maven installieren",
-        "description": "Generiert 0,2 Commits pro Sekunde",
-        "initialCost": 10,
-        "costFactor": 1.2,
-        "income": 0.2
-      },
-      {
-        "key": "uml",
-        "displayText": "UML-Diagramm malen",
-        "description": "Generiert 1 Commit pro Sekunde",
-        "initialCost": 100,
-        "costFactor": 1.3,
-        "income": 1
-      },
-      {
-        "key": "java-update",
-        "displayText": "Java-Update installieren",
-        "description": "Generiert 5 Commits pro Sekunde",
-        "initialCost": 1330,
-        "costFactor": 1.5,
-        "income": 5
-      },
-      {
-        "key": "jmjrst",
-        "displayText": "Neue JMJRST-Version",
-        "description": "Generiert 125 Commits pro Sekunde",
-        "initialCost": 18080,
-        "costFactor": 1.3,
-        "income": 125
-      },
-      {
-        "key": "spec",
-        "displayText": "Pflichtenheft schreiben",
-        "description": "Generiert 800 Commits pro Sekunde",
-        "initialCost": 290000,
-        "costFactor": 1.1,
-        "income": 800
-      },
-      {
-        "key": "parallel",
-        "displayText": "iMage parallelisieren",
-        "description": "Generiert 1500 Commits pro Sekunde",
-        "initialCost": 1500000,
-        "costFactor": 1.2,
-        "income": 1500
-      },
-      {
-        "key": "rcs",
-        "displayText": "Neue RCS-Version entwickeln",
-        "description": "Generiert 25000 Commits pro Sekunde",
-        "initialCost": 40000000,
-        "costFactor": 1.15,
-        "income": 25000
-      },
-      {
-        "key": "threadpool",
-        "displayText": "Fadenschwimmbecken aufsetzen",
-        "description": "Generiert 99999 Commits pro Sekunde",
-        "initialCost": 333000000,
-        "costFactor": 1.05,
-        "income": 99999
-      }
-    ]
-  },
-  "skills": {
-    "title": "Fähigkeiten",
-    "buttonText": "Fähigkeiten erwerben",
-    "description": "Fähigkeiten generieren mehr Commits pro Klick.",
-    "items": [
-      {
-        "key": "git-article",
-        "displayText": "Git-Artikel lesen",
-        "description": "Generiert 1 Commit pro Klick",
-        "initialCost": 100,
-        "costFactor": 1.4,
-        "income": 1
-      },
-      {
-        "key": "oop",
-        "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
-        "description": "Generiert 5 Commits pro Klick",
-        "initialCost": 1500,
-        "costFactor": 1.1,
-        "income": 5
-      },
-      {
-        "key": "coverage",
-        "displayText": "110% Quelltext-Abdeckung erreichen",
-        "description": "Generiert 125 Commits pro Klick",
-        "initialCost": 20000,
-        "costFactor": 1.8,
-        "income": 125
-      },
-      {
-        "key": "suit",
-        "displayText": "Anzug tragen",
-        "description": "Generiert 230 Commits pro Klick",
-        "initialCost": 45000,
-        "costFactor": 1.4,
-        "income": 230
-      },
-      {
-        "key": "npp",
-        "displayText": "Notizbuch++-Benutzer konvertieren",
-        "description": "Generiert 800 Commits pro Klick",
-        "initialCost": 333000,
-        "costFactor": 1.4,
-        "income": 800
-      },
-      {
-        "key": "peer",
-        "displayText": "Paarprogrammierung",
-        "description": "Generiert 5000 Commits pro Klick",
-        "initialCost": 42000000,
-        "costFactor": 1.5,
-        "income": 5000
-      }
-    ]
-  }
+  "tichy_clicker": "Tichy-Klicker",
+  "how_to_play": "Wie man spielt",
+  "how_to_play_description": "Klicken Sie auf das Bild, um Commits zu erhalten. Eignen Sie sich neue Fähigkeiten an, um mehr Commits pro Klick zu bekommen. Kaufen Sie Systeme für ein stetiges Einkommen. Das war's, haben Sie viel Spaß!",
+  "about": "Über",
+  "about_description": "Dieses Projekt habe ich in einer Vorlesung begonnen. Es soll niemanden angreifen; falls Sie Fragen oder Vorschläge haben, schreiben Sie mir doch einen E-Brief an paul (Punkt) brinkmeier (Bei) gmail (Punkt) com.",
+  "per_second": "/s",
+  "per_click": "/Klick",
+  "back": "Zurück",
+  "num_commits": "%i Commits",
+  "buy": "Kaufen (%i Commits)",
+  "decimal_delim": ",",
+  "number_group_delim": ".",
+  "number_group_size": 3,
+
+  "shop_title_systems": "Systeme",
+  "shop_button_systems": "Systeme kaufen",
+  "shop_description_systems": "Systeme generieren Commits über Zeit.",
+  "shop_item_text_maven": "Maven installieren (%i)",
+  "shop_item_description_maven": "Generiert 0,2 Commits pro Sekunde",
+  "shop_item_text_uml": "UML-Diagramm malen (%i)",
+  "shop_item_description_uml": "Generiert 1 Commit pro Sekunde",
+  "shop_item_text_java-update": "Java-Update installieren (%i)",
+  "shop_item_description_java-update": "Generiert 5 Commits pro Sekunde",
+  "shop_item_text_jmjrst": "Neue JMJRST-Version (%i)",
+  "shop_item_description_jmjrst": "Generiert 125 Commits pro Sekunde",
+  "shop_item_text_spec": "Pflichtenheft schreiben (%i)",
+  "shop_item_description_spec": "Generiert 800 Commits pro Sekunde",
+  "shop_item_text_parallel": "iMage parallelisieren (%i)",
+  "shop_item_description_parallel": "Generiert 1500 Commits pro Sekunde",
+  "shop_item_text_rcs": "Neue RCS-Version entwickeln (%i)",
+  "shop_item_description_rcs": "Generiert 25000 Commits pro Sekunde",
+  "shop_item_text_threadpool": "Fadenschwimmbecken aufsetzen (%i)",
+  "shop_item_description_threadpool": "Generiert 99999 Commits pro Sekunde",
+
+
+  "shop_title_skills": "Fähigkeiten",
+  "shop_button_skills": "Fähigkeiten erwerben",
+  "shop_description_skills": "Fähigkeiten generieren mehr Commits pro Klick.",
+  "shop_item_text_git-article": "Git-Artikel lesen (%i)",
+  "shop_item_description_git-article": "Generiert 1 Commit pro Klick",
+  "shop_item_text_oop": "OOP-Guru werden (Besuchermuster!!1!) (%i)",
+  "shop_item_description_oop": "Generiert 5 Commits pro Klick",
+  "shop_item_text_coverage": "110% Quelltext-Abdeckung erreichen (%i)",
+  "shop_item_description_coverage": "Generiert 125 Commits pro Klick",
+  "shop_item_text_suit": "Anzug tragen (%i)",
+  "shop_item_description_suit": "Generiert 230 Commits pro Klick",
+  "shop_item_text_npp": "Notizbuch++-Benutzer konvertieren (%i)",
+  "shop_item_description_npp": "Generiert 800 Commits pro Klick",
+  "shop_item_text_peer": "Paarprogrammierung (%i)",
+  "shop_item_description_peer": "Generiert 5000 Commits pro Klick"
 }
 
 },{}],37:[function(require,module,exports){
+module.exports={
+  "per_second": "/წმ",
+  "decimal_delim": ",",
+  "number_group_delim": " ",
+  "number_group_size": 3
+}
+
+},{}],38:[function(require,module,exports){
+module.exports={
+  "systems": [
+    {
+      "key": "maven",
+      "initialCost": 10,
+      "costFactor": 1.2,
+      "income": 0.2
+    },
+    {
+      "key": "uml",
+      "initialCost": 100,
+      "costFactor": 1.3,
+      "income": 1
+    },
+    {
+      "key": "java-update",
+      "initialCost": 1330,
+      "costFactor": 1.5,
+      "income": 5
+    },
+    {
+      "key": "jmjrst",
+      "initialCost": 18080,
+      "costFactor": 1.3,
+      "income": 125
+    },
+    {
+      "key": "spec",
+      "initialCost": 290000,
+      "costFactor": 1.1,
+      "income": 800
+    },
+    {
+      "key": "parallel",
+      "initialCost": 1500000,
+      "costFactor": 1.2,
+      "income": 1500
+    },
+    {
+      "key": "rcs",
+      "initialCost": 40000000,
+      "costFactor": 1.15,
+      "income": 25000
+    },
+    {
+      "key": "threadpool",
+      "initialCost": 333000000,
+      "costFactor": 1.05,
+      "income": 99999
+    }
+  ]
+  ,
+  "skills": [
+    {
+      "key": "git-article",
+      "displayText": "Git-Artikel lesen",
+      "description": "Generiert 1 Commit pro Klick",
+      "initialCost": 100,
+      "costFactor": 1.4,
+      "income": 1
+    },
+    {
+      "key": "oop",
+      "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
+      "description": "Generiert 5 Commits pro Klick",
+      "initialCost": 1500,
+      "costFactor": 1.1,
+      "income": 5
+    },
+    {
+      "key": "coverage",
+      "displayText": "110% Quelltext-Abdeckung erreichen",
+      "description": "Generiert 125 Commits pro Klick",
+      "initialCost": 20000,
+      "costFactor": 1.8,
+      "income": 125
+    },
+    {
+      "key": "suit",
+      "displayText": "Anzug tragen",
+      "description": "Generiert 230 Commits pro Klick",
+      "initialCost": 45000,
+      "costFactor": 1.4,
+      "income": 230
+    },
+    {
+      "key": "npp",
+      "displayText": "Notizbuch++-Benutzer konvertieren",
+      "description": "Generiert 800 Commits pro Klick",
+      "initialCost": 333000,
+      "costFactor": 1.4,
+      "income": 800
+    },
+    {
+      "key": "peer",
+      "displayText": "Paarprogrammierung",
+      "description": "Generiert 5000 Commits pro Klick",
+      "initialCost": 42000000,
+      "costFactor": 1.5,
+      "income": 5000
+    }
+  ]
+}
+
+},{}],39:[function(require,module,exports){
 'use strict';
 
 var dispatcher = require('./dispatcher.js');
@@ -1815,7 +1852,7 @@ module.exports = {
   }
 };
 
-},{"./dispatcher.js":38}],38:[function(require,module,exports){
+},{"./dispatcher.js":40}],40:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -1830,7 +1867,7 @@ module.exports = {
 	}
 };
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var config = require('../../resources/config.json');
@@ -1848,7 +1885,7 @@ module.exports = function init () {
   };
 };
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36}],40:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":38}],42:[function(require,module,exports){
 'use strict';
 
 var createElement = require('virtual-dom/create-element');
@@ -1892,10 +1929,11 @@ function rerender () {
   tree = newTree;
 }
 
-},{"./dispatcher.js":38,"./init.js":39,"./render.js":41,"./update.js":42,"./util/initialize-stores.js":47,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],41:[function(require,module,exports){
+},{"./dispatcher.js":40,"./init.js":41,"./render.js":43,"./update.js":44,"./util/initialize-stores.js":49,"virtual-dom/create-element":8,"virtual-dom/diff":9,"virtual-dom/patch":11}],43:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
+var i18n = require('./util/i18n.js');
 var clickerView = require('./view/clicker-view.js');
 var h = require('virtual-dom/h');
 var rainbowSpans = require('./view/rainbow-spans.js');
@@ -1911,10 +1949,10 @@ module.exports = function render (state) {
       main = clickerView(state);
       break;
     case 'how-to-play':
-      main = textView('Wie man spielt', 'Klicken Sie auf das Bild, um Commits zu erhalten. Eignen Sie sich neue Fähigkeiten an, um mehr Commits pro Klick zu bekommen. Kaufen Sie Systeme für ein stetiges Einkommen. Das war\'s, haben Sie viel Spaß!');
+      main = textView(i18n.tr('how_to_play'), i18n.tr('how_to_play_description'));
       break;
     case 'about':
-      main = textView('Über', 'Dieses Projekt habe ich in einer Vorlesung begonnen. Es soll niemanden angreifen; falls Sie Fragen oder Vorschläge haben, schreiben Sie mir doch einen E-Brief an paul (Punkt) brinkmeier (Bei) gmail (Punkt) com.');
+      main = textView(i18n.tr('about'), i18n.tr('about_description'));
       break;
     case 'shop':
       main = shopView(path[1], state);
@@ -1925,7 +1963,7 @@ module.exports = function render (state) {
     h('section.topbar', [
       h('div.container', [
         h('h1.topbar-title', [
-          rainbowSpans('Tichy-Klicker')
+          rainbowSpans(i18n.tr('tichy_clicker'))
         ]),
         h('div.topbar-links', [
           h('a.topbar-link', {
@@ -1936,12 +1974,12 @@ module.exports = function render (state) {
             onclick: function () {
               actions.setPage('how-to-play');
             }
-          }, 'Wie man spielt'),
+          }, i18n.tr("how_to_play")),
           h('span.topbar-link', {
             onclick: function () {
               actions.setPage('about');
             }
-          }, 'Über')
+          }, i18n.tr("about"))
         ])
       ])
     ]),
@@ -1949,7 +1987,7 @@ module.exports = function render (state) {
   ]);
 };
 
-},{"./actions.js":37,"./view/clicker-view.js":51,"./view/rainbow-spans.js":52,"./view/shop-view.js":53,"./view/text-view.js":54,"virtual-dom/h":10}],42:[function(require,module,exports){
+},{"./actions.js":39,"./util/i18n.js":48,"./view/clicker-view.js":53,"./view/rainbow-spans.js":54,"./view/shop-view.js":55,"./view/text-view.js":56,"virtual-dom/h":10}],44:[function(require,module,exports){
 'use strict';
 
 var actions = require('./actions.js');
@@ -2040,7 +2078,7 @@ module.exports = {
   },
   buy: function (action, state) {
     var shop = shops[action.shopName];
-    var item = shop.items.find(function (item) {
+    var item = shop.find(function (item) {
       return item.key === action.itemKey;
     });
     var alreadyBought = state.inventory[action.shopName][item.key];
@@ -2079,19 +2117,19 @@ function randomEvent () {
   );
 }
 
-},{"../../resources/config.json":35,"../../resources/shops.json":36,"./actions.js":37,"./dispatcher.js":38,"./util/calculate-item-cost.js":43,"./util/calculate-shop-income.js":44,"./util/event.js":45,"./util/particle.js":49}],43:[function(require,module,exports){
+},{"../../resources/config.json":35,"../../resources/shops.json":38,"./actions.js":39,"./dispatcher.js":40,"./util/calculate-item-cost.js":45,"./util/calculate-shop-income.js":46,"./util/event.js":47,"./util/particle.js":51}],45:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateItemCost (item, alreadyBought) {
   return Math.ceil(item.initialCost * Math.pow(item.costFactor, alreadyBought));
 };
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 module.exports = function calculateShopIncome (shop, bought) {
   return (
-    shop.items
+    shop
     .map(function (item) {
       return bought[item.key] * item.income;
     })
@@ -2103,7 +2141,7 @@ function sum (a, b) {
   return a + b;
 }
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 function Event (x, y, velX, velY, accX, accY, colour, value) {
@@ -2144,27 +2182,65 @@ Event.update = function (f, event) {
 
 module.exports = Event;
 
-},{}],46:[function(require,module,exports){
-'use strict';
+},{}],48:[function(require,module,exports){
+'use strict'
 
-var THOUSAND_DELIM = '.';
-var DECIMAL_DELIM = ',';
+var lang_de = require('../../../resources/lang/de.json');
+var lang_ka = require('../../../resources/lang/ka.json');
 
-module.exports = function formatNumber (n, decimalPlaces) {
-  var decimals = decimalPlaces > 0 ? DECIMAL_DELIM + String(Math.floor(n * Math.pow(10, decimalPlaces)) % Math.pow(10, decimalPlaces)) : '';
-  var wholeNums = String(Math.floor(n));
-  var wholeNumsWithDelim = '';
-
-  while (wholeNums.length > 3) {
-    wholeNumsWithDelim = THOUSAND_DELIM + wholeNums.slice(-3) + wholeNumsWithDelim;
-    wholeNums = wholeNums.slice(0, -3);
-  }
-  wholeNumsWithDelim = wholeNums + wholeNumsWithDelim;
-
-  return wholeNumsWithDelim + decimals;
+var languages = {
+    de: lang_de,
+    ka: lang_ka
 };
 
-},{}],47:[function(require,module,exports){
+function i18n () {
+    return {};
+}
+
+i18n.lang = "de";
+
+i18n.tr = function (string) {
+    console.log('translating ' + string + " to " + i18n.lang);
+    var format_string = languages[i18n.lang][string];
+    var position = -1;
+    var index = 1;
+    while ((position = format_string.indexOf("%")) !== -1) {
+        switch (format_string[position+1]) {
+            case "s":
+                format_string = format_string.replace("%s", arguments[index++]);
+                break;
+            case "d":
+                format_string = format_string.replace("%d", i18n.formatNumber(arguments[index++], 2));
+                break;
+            case "i":
+                format_string = format_string.replace("%i", i18n.formatNumber(arguments[index++], 0));
+                break;
+        }
+    }
+    return format_string;
+
+};
+
+i18n.formatNumber = function (n, decimalPlaces) {
+    var decimal_delim = languages[i18n.lang]['decimal_delim']
+    var number_group_delim = languages[i18n.lang]['number_group_delim']
+    var number_group_size = languages[i18n.lang]['number_group_size']
+    var decimals = decimalPlaces > 0 ? decimal_delim + String(Math.floor(n * Math.pow(10, decimalPlaces)) % Math.pow(10, decimalPlaces)) : '';
+    var wholeNums = String(Math.floor(n));
+    var wholeNumsWithDelim = '';
+
+    while (wholeNums.length > number_group_size) {
+        wholeNumsWithDelim = number_group_delim + wholeNums.slice(-number_group_size) + wholeNumsWithDelim;
+        wholeNums = wholeNums.slice(0, -number_group_size);
+    }
+    wholeNumsWithDelim = wholeNums + wholeNumsWithDelim;
+
+    return wholeNumsWithDelim + decimals;
+};
+
+module.exports = i18n;
+
+},{"../../../resources/lang/de.json":36,"../../../resources/lang/ka.json":37}],49:[function(require,module,exports){
 var config = require('../../../resources/config.json');
 var shops = require('../../../resources/shops.json');
 
@@ -2174,7 +2250,7 @@ module.exports = function (state) {
       state.inventory[shopName] = {};
     }
 
-    shops[shopName].items.forEach(function (shopItem) {
+    shops[shopName].forEach(function (shopItem) {
       if (!state.inventory[shopName].hasOwnProperty(shopItem.key)) {
         state.inventory[shopName][shopItem.key] = 0;
       }
@@ -2182,7 +2258,7 @@ module.exports = function (state) {
   });
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36}],48:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":38}],50:[function(require,module,exports){
 'use strict';
 
 module.exports = function isInDom (element) {
@@ -2198,10 +2274,10 @@ module.exports = function isInDom (element) {
   return false;
 };
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
-var formatNumber = require('./format-number.js');
+var i18n = require('./i18n.js');
 
 function Particle (x, y, velX, velY, accX, accY, colour, value, rainbowMode) {
   return {
@@ -2218,7 +2294,7 @@ function Particle (x, y, velX, velY, accX, accY, colour, value, rainbowMode) {
 }
 
 Particle.draw = function (ctx, particle) {
-  var particleText = '+' + formatNumber(String(particle.value), 1);
+  var particleText = '+' + i18n.formatNumber(String(particle.value), 1);
   ctx.font = '32px \'Comic Sans MS\', sans-serif';
   ctx.textAlign = 'center';
 
@@ -2247,7 +2323,7 @@ Particle.update = function (f, particle) {
 
 module.exports = Particle;
 
-},{"./format-number.js":46}],50:[function(require,module,exports){
+},{"./i18n.js":48}],52:[function(require,module,exports){
 'use strict';
 
 var isInDom = require('../../util/is-in-dom.js');
@@ -2294,15 +2370,15 @@ CanvasHook.prototype.hook = function (canvas) {
 
 module.exports = CanvasHook;
 
-},{"../../util/is-in-dom.js":48}],51:[function(require,module,exports){
+},{"../../util/is-in-dom.js":50}],53:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var calculateItemCost = require('../util/calculate-item-cost.js');
 var calculateShopIncome = require('../util/calculate-shop-income.js');
 var CanvasHook = require('./canvas/canvas-hook.js');
 var config = require('../../../resources/config.json');
-var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var Event = require('../util/event.js');
 var Particle = require('../util/particle.js');
@@ -2354,15 +2430,15 @@ module.exports = function clickerView (state) {
         })
       ]),
       h('div.clicker-counter', [
-        String(formatNumber(counter, 0)) + ' ',
+        String(i18n.formatNumber(counter, 0)) + ' ',
         h('span.clicker-counter-label', 'Commits')
       ]),
       h('div.clicker-incomes', [
-        h('span.clicker-income', String(formatNumber(incomePerSecond, 1)) + '/s'),
+        h('span.clicker-income', String(i18n.formatNumber(incomePerSecond, 1)) + i18n.tr('per_second')),
         ' · ',
         (function () {
           var elBase = 'span.clicker-income';
-          var formattedIncome = String(formatNumber((rainbowModeSeconds === 0 ? 1 : 2) * incomePerClick, 0)) + '/Klick';
+          var formattedIncome = String(i18n.formatNumber((rainbowModeSeconds === 0 ? 1 : 2) * incomePerClick, 0)) + i18n.tr('per_click');
 
           if (rainbowModeSeconds === 0) {
             return h(elBase,  formattedIncome);
@@ -2374,7 +2450,7 @@ module.exports = function clickerView (state) {
       h('div.clicker-controls', config.enabledShops.map(function (shopName) {
         var shop = shops[shopName];
         // Find all available items
-        var availableItems = shop.items.filter(function (item) {
+        var availableItems = shop.filter(function (item) {
           var alreadyBought = state.inventory[shopName][item.key];
           var cost = calculateItemCost(item, alreadyBought);
           return cost <= state.counter;
@@ -2382,7 +2458,7 @@ module.exports = function clickerView (state) {
 
         // This is an array of all the children of the button element
         var buttonContent = [
-          h('span', shop.buttonText)
+          h('span', i18n.tr("shop_button_" + shopName))
         ];
         // If there are items in the shop that are buyable, show a notification bubble
         if (availableItems.length !== 0) {
@@ -2399,7 +2475,7 @@ module.exports = function clickerView (state) {
   ]);
 };
 
-},{"../../../resources/config.json":35,"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/calculate-shop-income.js":44,"../util/event.js":45,"../util/format-number.js":46,"../util/particle.js":49,"./canvas/canvas-hook.js":50,"virtual-dom/h":10}],52:[function(require,module,exports){
+},{"../../../resources/config.json":35,"../../../resources/shops.json":38,"../actions.js":39,"../util/calculate-item-cost.js":45,"../util/calculate-shop-income.js":46,"../util/event.js":47,"../util/i18n":48,"../util/particle.js":51,"./canvas/canvas-hook.js":52,"virtual-dom/h":10}],54:[function(require,module,exports){
 'use strict';
 
 var h = require('virtual-dom/h');
@@ -2420,12 +2496,12 @@ module.exports = function rainbowSpans (text) {
   );
 };
 
-},{"virtual-dom/h":10}],53:[function(require,module,exports){
+},{"virtual-dom/h":10}],55:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var calculateItemCost = require('../util/calculate-item-cost.js');
-var formatNumber = require('../util/format-number.js');
 var h = require('virtual-dom/h');
 var shops = require('../../../resources/shops.json');
 
@@ -2441,18 +2517,18 @@ module.exports = function shopView (shopName, state) {
           onclick: function () {
             actions.setPage('clicker');
           }
-        }, 'Zurück'),
-        h('div.shop-menu-info', formatNumber(counter, 0) + ' Commits')
+        }, i18n.tr('back')),
+        h('div.shop-menu-info', i18n.tr("num_commits", counter))
       ]),
-      h('h2.shop-title', shop.title),
-      h('div.shop-description', shop.description),
-      h('ul.shop-items', shop.items.map(function (item) {
+      h('h2.shop-title', i18n.tr("shop_title_" + shopName)),
+      h('div.shop-description', i18n.tr("shop_description_" + shopName)),
+      h('ul.shop-items', shop.map(function (item) {
         var alreadyBought = bought[item.key];
         var cost = calculateItemCost(item, alreadyBought);
 
         return h('li.shop-item', [
-          h('div.shop-item-name', item.displayText + ' (' + alreadyBought + ')'),
-          h('div.shop-item-description', item.description),
+          h('div.shop-item-name', i18n.tr("shop_item_text_" + item.key, alreadyBought)),
+          h('div.shop-item-description', i18n.tr("shop_item_description_" + item.key)),
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function (e) {
@@ -2460,17 +2536,18 @@ module.exports = function shopView (shopName, state) {
               e.target.blur();
               actions.buy(shopName, item.key);
             }
-          }, 'Kaufen (' + formatNumber(cost, 0) + ' Commits)')
+          }, i18n.tr('buy', cost))
         ]);
       }))
     ])
   ]);
 };
 
-},{"../../../resources/shops.json":36,"../actions.js":37,"../util/calculate-item-cost.js":43,"../util/format-number.js":46,"virtual-dom/h":10}],54:[function(require,module,exports){
+},{"../../../resources/shops.json":38,"../actions.js":39,"../util/calculate-item-cost.js":45,"../util/i18n":48,"virtual-dom/h":10}],56:[function(require,module,exports){
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var h = require('virtual-dom/h');
 
 module.exports = function textView (title, text) {
@@ -2480,11 +2557,11 @@ module.exports = function textView (title, text) {
         onclick: function () {
           actions.setPage('clicker');
         }
-      }, 'Zurück'),
+      }, i18n.tr("back")),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])
   ]);
 };
 
-},{"../actions.js":37,"virtual-dom/h":10}]},{},[40]);
+},{"../actions.js":39,"../util/i18n":48,"virtual-dom/h":10}]},{},[42]);

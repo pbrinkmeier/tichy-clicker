@@ -7,7 +7,7 @@ module.exports = function (state) {
       state.inventory[shopName] = {};
     }
 
-    shops[shopName].items.forEach(function (shopItem) {
+    shops[shopName].forEach(function (shopItem) {
       if (!state.inventory[shopName].hasOwnProperty(shopItem.key)) {
         state.inventory[shopName][shopItem.key] = 0;
       }

@@ -1,6 +1,7 @@
 'use strict';
 
 var actions = require('../actions.js');
+var i18n = require('../util/i18n')
 var h = require('virtual-dom/h');
 
 module.exports = function textView (title, text) {
@@ -10,7 +11,7 @@ module.exports = function textView (title, text) {
         onclick: function () {
           actions.setPage('clicker');
         }
-      }, 'Zurück'),
+      }, i18n.tr("back")),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])

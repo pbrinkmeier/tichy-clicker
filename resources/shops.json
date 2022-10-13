@@ -1,128 +1,103 @@
 {
-  "systems": {
-    "title": "Systeme",
-    "buttonText": "Systeme kaufen",
-    "description": "Systeme generieren Commits über Zeit.",
-    "items": [
-      {
-        "key": "maven",
-        "displayText": "Maven installieren",
-        "description": "Generiert 0,2 Commits pro Sekunde",
-        "initialCost": 10,
-        "costFactor": 1.2,
-        "income": 0.2
-      },
-      {
-        "key": "uml",
-        "displayText": "UML-Diagramm malen",
-        "description": "Generiert 1 Commit pro Sekunde",
-        "initialCost": 100,
-        "costFactor": 1.3,
-        "income": 1
-      },
-      {
-        "key": "java-update",
-        "displayText": "Java-Update installieren",
-        "description": "Generiert 5 Commits pro Sekunde",
-        "initialCost": 1330,
-        "costFactor": 1.5,
-        "income": 5
-      },
-      {
-        "key": "jmjrst",
-        "displayText": "Neue JMJRST-Version",
-        "description": "Generiert 125 Commits pro Sekunde",
-        "initialCost": 18080,
-        "costFactor": 1.3,
-        "income": 125
-      },
-      {
-        "key": "spec",
-        "displayText": "Pflichtenheft schreiben",
-        "description": "Generiert 800 Commits pro Sekunde",
-        "initialCost": 290000,
-        "costFactor": 1.1,
-        "income": 800
-      },
-      {
-        "key": "parallel",
-        "displayText": "iMage parallelisieren",
-        "description": "Generiert 1500 Commits pro Sekunde",
-        "initialCost": 1500000,
-        "costFactor": 1.2,
-        "income": 1500
-      },
-      {
-        "key": "rcs",
-        "displayText": "Neue RCS-Version entwickeln",
-        "description": "Generiert 25000 Commits pro Sekunde",
-        "initialCost": 40000000,
-        "costFactor": 1.15,
-        "income": 25000
-      },
-      {
-        "key": "threadpool",
-        "displayText": "Fadenschwimmbecken aufsetzen",
-        "description": "Generiert 99999 Commits pro Sekunde",
-        "initialCost": 333000000,
-        "costFactor": 1.05,
-        "income": 99999
-      }
-    ]
-  },
-  "skills": {
-    "title": "Fähigkeiten",
-    "buttonText": "Fähigkeiten erwerben",
-    "description": "Fähigkeiten generieren mehr Commits pro Klick.",
-    "items": [
-      {
-        "key": "git-article",
-        "displayText": "Git-Artikel lesen",
-        "description": "Generiert 1 Commit pro Klick",
-        "initialCost": 100,
-        "costFactor": 1.4,
-        "income": 1
-      },
-      {
-        "key": "oop",
-        "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
-        "description": "Generiert 5 Commits pro Klick",
-        "initialCost": 1500,
-        "costFactor": 1.1,
-        "income": 5
-      },
-      {
-        "key": "coverage",
-        "displayText": "110% Quelltext-Abdeckung erreichen",
-        "description": "Generiert 125 Commits pro Klick",
-        "initialCost": 20000,
-        "costFactor": 1.8,
-        "income": 125
-      },
-      {
-        "key": "suit",
-        "displayText": "Anzug tragen",
-        "description": "Generiert 230 Commits pro Klick",
-        "initialCost": 45000,
-        "costFactor": 1.4,
-        "income": 230
-      },
-      {
-        "key": "npp",
-        "displayText": "Notizbuch++-Benutzer konvertieren",
-        "description": "Generiert 800 Commits pro Klick",
-        "initialCost": 333000,
-        "costFactor": 1.4,
-        "income": 800
-      },
-      {
-        "key": "peer",
-        "displayText": "Paarprogrammierung",
-        "description": "Generiert 5000 Commits pro Klick",
-        "initialCost": 42000000,
-        "costFactor": 1.5,
-        "income": 5000
-      }
-    ]
-  }
+  "systems": [
+    {
+      "key": "maven",
+      "initialCost": 10,
+      "costFactor": 1.2,
+      "income": 0.2
+    },
+    {
+      "key": "uml",
+      "initialCost": 100,
+      "costFactor": 1.3,
+      "income": 1
+    },
+    {
+      "key": "java-update",
+      "initialCost": 1330,
+      "costFactor": 1.5,
+      "income": 5
+    },
+    {
+      "key": "jmjrst",
+      "initialCost": 18080,
+      "costFactor": 1.3,
+      "income": 125
+    },
+    {
+      "key": "spec",
+      "initialCost": 290000,
+      "costFactor": 1.1,
+      "income": 800
+    },
+    {
+      "key": "parallel",
+      "initialCost": 1500000,
+      "costFactor": 1.2,
+      "income": 1500
+    },
+    {
+      "key": "rcs",
+      "initialCost": 40000000,
+      "costFactor": 1.15,
+      "income": 25000
+    },
+    {
+      "key": "threadpool",
+      "initialCost": 333000000,
+      "costFactor": 1.05,
+      "income": 99999
+    }
+  ]
+  ,
+  "skills": [
+    {
+      "key": "git-article",
+      "displayText": "Git-Artikel lesen",
+      "description": "Generiert 1 Commit pro Klick",
+      "initialCost": 100,
+      "costFactor": 1.4,
+      "income": 1
+    },
+    {
+      "key": "oop",
+      "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
+      "description": "Generiert 5 Commits pro Klick",
+      "initialCost": 1500,
+      "costFactor": 1.1,
+      "income": 5
+    },
+    {
+      "key": "coverage",
+      "displayText": "110% Quelltext-Abdeckung erreichen",
+      "description": "Generiert 125 Commits pro Klick",
+      "initialCost": 20000,
+      "costFactor": 1.8,
+      "income": 125
+    },
+    {
+      "key": "suit",
+      "displayText": "Anzug tragen",
+      "description": "Generiert 230 Commits pro Klick",
+      "initialCost": 45000,
+      "costFactor": 1.4,
+      "income": 230
+    },
+    {
+      "key": "npp",
+      "displayText": "Notizbuch++-Benutzer konvertieren",
+      "description": "Generiert 800 Commits pro Klick",
+      "initialCost": 333000,
+      "costFactor": 1.4,
+      "income": 800
+    },
+    {
+      "key": "peer",
+      "displayText": "Paarprogrammierung",
+      "description": "Generiert 5000 Commits pro Klick",
+      "initialCost": 42000000,
+      "costFactor": 1.5,
+      "income": 5000
+    }
+  ]
 }
