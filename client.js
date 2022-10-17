@@ -1964,12 +1964,12 @@ module.exports = function render (state) {
             onclick: function () {
               actions.setPage('how-to-play');
             }
-          }, i18n.tr("how_to_play")),
+          }, i18n.tr('how_to_play')),
           h('span.topbar-link', {
             onclick: function () {
               actions.setPage('about');
             }
-          }, i18n.tr("about"))
+          }, i18n.tr('about'))
         ])
       ])
     ]),
@@ -2187,22 +2187,22 @@ function i18n () {
     return {};
 }
 
-i18n.lang = "de";
+i18n.lang = 'de';
 
 i18n.tr = function (string) {
     var format_string = languages[i18n.lang][string];
     var position = -1;
     var index = 1;
-    while ((position = format_string.indexOf("%")) !== -1) {
+    while ((position = format_string.indexOf('%')) !== -1) {
         switch (format_string[position+1]) {
-            case "s":
-                format_string = format_string.replace("%s", arguments[index++]);
+            case 's':
+                format_string = format_string.replace('%s', arguments[index++]);
                 break;
-            case "d":
-                format_string = format_string.replace("%d", i18n.formatNumber(arguments[index++], 2));
+            case 'd':
+                format_string = format_string.replace('%d', i18n.formatNumber(arguments[index++], 2));
                 break;
-            case "i":
-                format_string = format_string.replace("%i", i18n.formatNumber(arguments[index++], 0));
+            case 'i':
+                format_string = format_string.replace('%i', i18n.formatNumber(arguments[index++], 0));
                 break;
         }
     }
@@ -2447,7 +2447,7 @@ module.exports = function clickerView (state) {
 
         // This is an array of all the children of the button element
         var buttonContent = [
-          h('span', i18n.tr("shop_button_" + shopName))
+          h('span', i18n.tr('shop_button_' + shopName))
         ];
         // If there are items in the shop that are buyable, show a notification bubble
         if (availableItems.length !== 0) {
@@ -2507,17 +2507,17 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, i18n.tr('back')),
-        h('div.shop-menu-info', i18n.tr("num_commits", counter))
+        h('div.shop-menu-info', i18n.tr('num_commits', counter))
       ]),
-      h('h2.shop-title', i18n.tr("shop_title_" + shopName)),
-      h('div.shop-description', i18n.tr("shop_description_" + shopName)),
+      h('h2.shop-title', i18n.tr('shop_title_' + shopName)),
+      h('div.shop-description', i18n.tr('shop_description_' + shopName)),
       h('ul.shop-items', shop.map(function (item) {
         var alreadyBought = bought[item.key];
         var cost = calculateItemCost(item, alreadyBought);
 
         return h('li.shop-item', [
-          h('div.shop-item-name', i18n.tr("shop_item_text_" + item.key, alreadyBought)),
-          h('div.shop-item-description', i18n.tr("shop_item_description_" + item.key)),
+          h('div.shop-item-name', i18n.tr('shop_item_text_' + item.key, alreadyBought)),
+          h('div.shop-item-description', i18n.tr('shop_item_description_' + item.key)),
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function (e) {
@@ -2546,7 +2546,7 @@ module.exports = function textView (title, text) {
         onclick: function () {
           actions.setPage('clicker');
         }
-      }, i18n.tr("back")),
+      }, i18n.tr('back')),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])
