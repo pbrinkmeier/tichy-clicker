@@ -37,7 +37,7 @@ module.exports = function render (state) {
           h('a.topbar-link', {
             href: 'https://github.com/pbrinkmeier/tichy-clicker',
             target: '_blank'
-          }, 'GitHub'),
+          }, i18n.tr('github')),
           h('span.topbar-link', {
             onclick: function () {
               actions.setPage('how-to-play');
