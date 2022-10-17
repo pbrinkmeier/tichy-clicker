@@ -12,22 +12,22 @@ function i18n () {
     return {};
 }
 
-i18n.lang = "de";
+i18n.lang = 'de';
 
 i18n.tr = function (string) {
     var format_string = languages[i18n.lang][string];
     var position = -1;
     var index = 1;
-    while ((position = format_string.indexOf("%")) !== -1) {
+    while ((position = format_string.indexOf('%')) !== -1) {
         switch (format_string[position+1]) {
-            case "s":
-                format_string = format_string.replace("%s", arguments[index++]);
+            case 's':
+                format_string = format_string.replace('%s', arguments[index++]);
                 break;
-            case "d":
-                format_string = format_string.replace("%d", i18n.formatNumber(arguments[index++], 2));
+            case 'd':
+                format_string = format_string.replace('%d', i18n.formatNumber(arguments[index++], 2));
                 break;
-            case "i":
-                format_string = format_string.replace("%i", i18n.formatNumber(arguments[index++], 0));
+            case 'i':
+                format_string = format_string.replace('%i', i18n.formatNumber(arguments[index++], 0));
                 break;
         }
     }

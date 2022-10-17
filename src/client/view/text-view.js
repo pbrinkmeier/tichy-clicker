@@ -11,7 +11,7 @@ module.exports = function textView (title, text) {
         onclick: function () {
           actions.setPage('clicker');
         }
-      }, i18n.tr("back")),
+      }, i18n.tr('back')),
       h('h2.text-title', title),
       h('p.text-content', text)
     ])

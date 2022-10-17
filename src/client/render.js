@@ -42,12 +42,12 @@ module.exports = function render (state) {
             onclick: function () {
               actions.setPage('how-to-play');
             }
-          }, i18n.tr("how_to_play")),
+          }, i18n.tr('how_to_play')),
           h('span.topbar-link', {
             onclick: function () {
               actions.setPage('about');
             }
-          }, i18n.tr("about"))
+          }, i18n.tr('about'))
         ])
       ])
     ]),

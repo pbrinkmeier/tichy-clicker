@@ -85,7 +85,7 @@ module.exports = function clickerView (state) {
 
         // This is an array of all the children of the button element
         var buttonContent = [
-          h('span', i18n.tr("shop_button_" + shopName))
+          h('span', i18n.tr('shop_button_' + shopName))
         ];
         // If there are items in the shop that are buyable, show a notification bubble
         if (availableItems.length !== 0) {

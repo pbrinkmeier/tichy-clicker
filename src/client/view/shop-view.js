@@ -19,17 +19,17 @@ module.exports = function shopView (shopName, state) {
             actions.setPage('clicker');
           }
         }, i18n.tr('back')),
-        h('div.shop-menu-info', i18n.tr("num_commits", counter))
+        h('div.shop-menu-info', i18n.tr('num_commits', counter))
       ]),
-      h('h2.shop-title', i18n.tr("shop_title_" + shopName)),
-      h('div.shop-description', i18n.tr("shop_description_" + shopName)),
+      h('h2.shop-title', i18n.tr('shop_title_' + shopName)),
+      h('div.shop-description', i18n.tr('shop_description_' + shopName)),
       h('ul.shop-items', shop.map(function (item) {
         var alreadyBought = bought[item.key];
         var cost = calculateItemCost(item, alreadyBought);
 
         return h('li.shop-item', [
-          h('div.shop-item-name', i18n.tr("shop_item_text_" + item.key, alreadyBought)),
-          h('div.shop-item-description', i18n.tr("shop_item_description_" + item.key)),
+          h('div.shop-item-name', i18n.tr('shop_item_text_' + item.key, alreadyBought)),
+          h('div.shop-item-description', i18n.tr('shop_item_description_' + item.key)),
           h('button.shop-item-buy', {
             disabled: cost > counter,
             onclick: function (e) {
