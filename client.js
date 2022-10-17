@@ -1712,6 +1712,7 @@ module.exports={
 },{}],37:[function(require,module,exports){
 module.exports={
   "per_second": "/წმ",
+  "back": "უკან",
   "decimal_delim": ",",
   "number_group_delim": " ",
   "number_group_size": 3
@@ -1773,48 +1774,36 @@ module.exports={
   "skills": [
     {
       "key": "git-article",
-      "displayText": "Git-Artikel lesen",
-      "description": "Generiert 1 Commit pro Klick",
       "initialCost": 100,
       "costFactor": 1.4,
       "income": 1
     },
     {
       "key": "oop",
-      "displayText": "OOP-Guru werden (Besuchermuster!!1!)",
-      "description": "Generiert 5 Commits pro Klick",
       "initialCost": 1500,
       "costFactor": 1.1,
       "income": 5
     },
     {
       "key": "coverage",
-      "displayText": "110% Quelltext-Abdeckung erreichen",
-      "description": "Generiert 125 Commits pro Klick",
       "initialCost": 20000,
       "costFactor": 1.8,
       "income": 125
     },
     {
       "key": "suit",
-      "displayText": "Anzug tragen",
-      "description": "Generiert 230 Commits pro Klick",
       "initialCost": 45000,
       "costFactor": 1.4,
       "income": 230
     },
     {
       "key": "npp",
-      "displayText": "Notizbuch++-Benutzer konvertieren",
-      "description": "Generiert 800 Commits pro Klick",
       "initialCost": 333000,
       "costFactor": 1.4,
       "income": 800
     },
     {
       "key": "peer",
-      "displayText": "Paarprogrammierung",
-      "description": "Generiert 5000 Commits pro Klick",
       "initialCost": 42000000,
       "costFactor": 1.5,
       "income": 5000
@@ -2200,7 +2189,6 @@ function i18n () {
 i18n.lang = "de";
 
 i18n.tr = function (string) {
-    console.log('translating ' + string + " to " + i18n.lang);
     var format_string = languages[i18n.lang][string];
     var position = -1;
     var index = 1;
