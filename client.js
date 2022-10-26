@@ -131,7 +131,7 @@ function EvStore(elem) {
 }
 
 },{"individual/one-version":6}],4:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
 var minDoc = require('min-document');
@@ -150,9 +150,9 @@ if (typeof document !== 'undefined') {
 
 module.exports = doccy;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"min-document":1}],5:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 'use strict';
 
 /*global window, global*/
@@ -173,7 +173,7 @@ function Individual(key, value) {
     return value;
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
 'use strict';
 
