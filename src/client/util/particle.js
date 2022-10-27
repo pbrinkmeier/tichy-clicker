@@ -1,6 +1,6 @@
 'use strict';
 
-var formatNumber = require('./format-number.js');
+var i18n = require('./i18n.js');
 
 function Particle (x, y, velX, velY, accX, accY, colour, value, rainbowMode) {
   return {
@@ -17,7 +17,7 @@ function Particle (x, y, velX, velY, accX, accY, colour, value, rainbowMode) {
 }
 
 Particle.draw = function (ctx, particle) {
-  var particleText = '+' + formatNumber(String(particle.value), 1);
+  var particleText = '+' + i18n.formatNumber(String(particle.value), 1);
   ctx.font = '32px \'Comic Sans MS\', sans-serif';
   ctx.textAlign = 'center';
 

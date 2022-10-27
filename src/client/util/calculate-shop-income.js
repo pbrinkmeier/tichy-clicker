@@ -2,7 +2,7 @@
 
 module.exports = function calculateShopIncome (shop, bought) {
   return (
-    shop.items
+    shop
     .map(function (item) {
       return bought[item.key] * item.income;
     })
