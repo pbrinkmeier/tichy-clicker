@@ -13,8 +13,8 @@
     "virtual-dom": "^2.1.1"
   },
   "devDependencies": {
-    "browserify": "^14.3.0",
+    "browserify": "^17.0.0",
     "ycssmin": "^1.0.1",
-    "yuglify": "^0.1.4"
+    "yuglify": "^2.0.0"
   }
 }
